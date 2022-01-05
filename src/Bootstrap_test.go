@@ -1,4 +1,4 @@
-package pmemdb
+package src
 
 import (
 	"strings"
