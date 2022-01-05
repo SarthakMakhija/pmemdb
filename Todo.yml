@@ -10,7 +10,16 @@ tasks:
     - status: done
     - name: Add a build badge
     - status: done
+    - name: Add skip list engine
+    - status: WIP
 
 pending:
   items:
     - name: Verify what happens to the badge if build passes but linting fails
+    - name: Add skip list engine
+        - Provide support for delete
+        - Provide support for update
+        - Add test for node and nodes
+        - See if []byte can be abstracted from code & test
+        - Probably change key from []byte to proto ..
+        - Refactor put (break it down)
