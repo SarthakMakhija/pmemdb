@@ -18,7 +18,7 @@ func (node *node) updateDown(down *node) *node {
 }
 
 func (node *node) matchesKey(key []byte) bool {
-	return bytes.Compare(node.key, key) == 0
+	return bytes.Equal(node.key, key)
 }
 
 func (node *node) isKeyLessEqualTo(key []byte) bool {
