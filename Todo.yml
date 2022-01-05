@@ -1,0 +1,16 @@
+tasks:
+  items:
+    - name: Set up a go project with version 1.17
+    - status: done
+    - name: Add a bootstrap test
+    - status: done
+    - name: Integrate github actions
+    - status: done
+    - name: Integrate golangci
+    - status: done
+    - name: Add a build badge
+    - status: done
+
+pending:
+  items:
+    - name: Verify what happens to the badge if build passes but linting fails
