@@ -8,7 +8,7 @@ type SkipList struct {
 	tower []*node
 }
 
-func NewList(towerSize int) *SkipList {
+func NewSkipList(towerSize int) *SkipList {
 	initializeWithSentinelNodesOf := func(list *SkipList) {
 		for index := 0; index < towerSize; index++ {
 			sentinelNode := &node{}

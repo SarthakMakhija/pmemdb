@@ -5,7 +5,7 @@ import (
 )
 
 func TestCreatesASkipListAndGetsAValueByKey1(t *testing.T) {
-	skipList := NewList(5)
+	skipList := NewSkipList(5)
 	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
 	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
 
@@ -16,7 +16,7 @@ func TestCreatesASkipListAndGetsAValueByKey1(t *testing.T) {
 }
 
 func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize1(t *testing.T) {
-	skipList := NewList(3)
+	skipList := NewSkipList(3)
 	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
 	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
 	skipList.Put([]byte("SDD"), []byte("Solid State Drive"))
@@ -29,7 +29,7 @@ func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize1(t *testing.T
 }
 
 func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize2(t *testing.T) {
-	skipList := NewList(1)
+	skipList := NewSkipList(1)
 	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
 	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
 	skipList.Put([]byte("SDD"), []byte("Solid State Drive"))
@@ -42,7 +42,7 @@ func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize2(t *testing.T
 }
 
 func TestCreatesASkipListAndGetsAValueByKeyGivenKeyDoesNotExist(t *testing.T) {
-	skipList := NewList(5)
+	skipList := NewSkipList(5)
 	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
 	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
 	skipList.Put([]byte("SDD"), []byte("Solid State Drive"))
