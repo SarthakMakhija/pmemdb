@@ -23,9 +23,7 @@ func TestCreatesASkipListAndGetsAValueByKey(t *testing.T) {
 	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
 
 	value, _ := skipList.GetByKey([]byte("HDD"))
-	if string(value) != ("Hard disk drive") {
-		t.Fatalf("Expected value to be %v, received %v", "Hard disk drive", string(value))
-	}
+	assert.Equalf(t, "Hard disk drive", string(value), "Expected value to be %v, received %v", "Hard disk drive", string(value))
 }
 
 func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize1(t *testing.T) {
@@ -36,9 +34,7 @@ func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize1(t *testing.T
 	skipList.Put([]byte("NVMe"), []byte("Non Volatile memory express"))
 
 	value, _ := skipList.GetByKey([]byte("NVMe"))
-	if string(value) != ("Non Volatile memory express") {
-		t.Fatalf("Expected value to be %v, received %v", "Non Volatile memory express", string(value))
-	}
+	assert.Equalf(t, "Non Volatile memory express", string(value), "Expected value to be %v, received %v", "Non Volatile memory express", string(value))
 }
 
 func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize2(t *testing.T) {
@@ -49,9 +45,7 @@ func TestCreatesASkipListAndGetsAValueByKeyWithIncreaseInTowerSize2(t *testing.T
 	skipList.Put([]byte("NVMe"), []byte("Non Volatile memory express"))
 
 	value, _ := skipList.GetByKey([]byte("NVMe"))
-	if string(value) != ("Non Volatile memory express") {
-		t.Fatalf("Expected value to be %v, received %v", "Non Volatile memory express", string(value))
-	}
+	assert.Equalf(t, "Non Volatile memory express", string(value), "Expected value to be %v, received %v", "Non Volatile memory express", string(value))
 }
 
 func TestCreatesASkipListAndGetsAValueByKeyGivenKeyDoesNotExist(t *testing.T) {
@@ -62,7 +56,5 @@ func TestCreatesASkipListAndGetsAValueByKeyGivenKeyDoesNotExist(t *testing.T) {
 	skipList.Put([]byte("NVMe"), []byte("Non Volatile memory express"))
 
 	value, _ := skipList.GetByKey([]byte("HDD@"))
-	if value != nil {
-		t.Fatalf("Expected value to be %v, received %v", nil, value)
-	}
+	assert.Nilf(t, value, "Expected value to be %v, received %v", nil, value)
 }
