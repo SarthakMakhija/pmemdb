@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"github.com/SarthakMakhija/pmemdb/src/assert"
 	"math/rand"
 )
 
@@ -24,6 +25,9 @@ func NewSkipList(towerSize int) *SkipList {
 }
 
 func (list *SkipList) Put(key, value []byte) {
+	assert.Assert(key != nil, "Key can not be nil")
+	assert.Assert(value != nil, "Key can not be nil")
+
 	parents := &nodes{}
 	targetNode := list.tower[len(list.tower)-1]
 	for ; targetNode != nil; targetNode = targetNode.down {
