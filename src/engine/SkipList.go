@@ -40,14 +40,14 @@ func (list *SkipList) Put(key, value []byte) {
 	}
 
 	left := parents.pop()
-	node := left.addWith(key, value)
+	node := left.addToRightWith(key, value)
 	for rand.Intn(2) == 1 {
 		if parents.isEmpty() {
 			sentinelNode := list.increaseTowerSize()
 			parents.add(sentinelNode)
 		}
 		left = parents.pop()
-		newNode := left.addWith(key, value)
+		newNode := left.addToRightWith(key, value)
 		newNode.updateDown(node)
 		node = newNode
 	}
