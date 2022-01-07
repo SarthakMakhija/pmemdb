@@ -17,13 +17,15 @@ pending:
   items:
     - name: Add skip list engine
     - tasks:
-        - Provide support for delete
-        - See if []byte can be abstracted from `code & test`
-        - Probably change key from []byte to proto ..
-        - Add test for nodes
-        - Go through skiplist code once again
-        - Refactor put (break it down)
-        - Remove duplication in for loop (put, get, update)
-        - Abstract rand.Intn(2)
-        - See if tower which is an array of pointer to node can be changed to *nodes
-        - Verify the signature of put, do we want to return something
+        - task: Provide support for delete
+        - task: See if []byte can be abstracted from `code & test`
+        - task: Probably change key from []byte to proto ..
+        - task: Add test for nodes
+        - task: Go through skiplist code once again
+        - task: Refactor put (break it down)
+        - status: done
+        - task: Remove duplication in for loop (put, get, update)
+        - status: done
+        - task: Abstract rand.Intn(2)
+        - task: See if tower which is an array of pointer to node can be changed to *nodes
+        - task: Verify the signature of put, do we want to return something
