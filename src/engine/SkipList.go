@@ -54,17 +54,25 @@ func (list *SkipList) Put(key, value []byte) {
 }
 
 func (list *SkipList) GetByKey(key []byte) ([]byte, bool) {
+	targetNode := list.getByKey(key)
+	if targetNode != nil {
+		return targetNode.value, true
+	}
+	return nil, false
+}
+
+func (list *SkipList) getByKey(key []byte) *skipListNode {
 	targetNode := list.tower[len(list.tower)-1]
 	for targetNode != nil {
 		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
 			targetNode = targetNode.right
 		}
 		if targetNode.matchesKey(key) {
-			return targetNode.value, true
+			return targetNode
 		}
 		targetNode = targetNode.down
 	}
-	return nil, false
+	return nil
 }
 
 func (list *SkipList) increaseTowerSize() *skipListNode {
