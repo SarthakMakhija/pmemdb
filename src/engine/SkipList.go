@@ -5,20 +5,20 @@ import (
 )
 
 type SkipList struct {
-	tower []*node
+	tower []*skipListNode
 }
 
 func NewSkipList(towerSize int) *SkipList {
 	initializeWithSentinelNodesOf := func(list *SkipList) {
 		for index := 0; index < towerSize; index++ {
-			sentinelNode := &node{}
+			sentinelNode := &skipListNode{}
 			list.tower[index] = sentinelNode
 			if index > 0 {
 				sentinelNode.down = list.tower[index-1]
 			}
 		}
 	}
-	list := &SkipList{tower: make([]*node, towerSize)}
+	list := &SkipList{tower: make([]*skipListNode, towerSize)}
 	initializeWithSentinelNodesOf(list)
 	return list
 }
@@ -34,14 +34,14 @@ func (list *SkipList) Put(key, value []byte) {
 	}
 
 	left := parents.pop()
-	node := addNewNode(key, value, left)
+	node := left.addWith(key, value)
 	for rand.Intn(2) == 1 {
 		if parents.isEmpty() {
 			sentinelNode := list.increaseTowerSize()
 			parents.add(sentinelNode)
 		}
 		left = parents.pop()
-		newNode := addNewNode(key, value, left)
+		newNode := left.addWith(key, value)
 		newNode.updateDown(node)
 		node = newNode
 	}
@@ -61,8 +61,8 @@ func (list *SkipList) GetByKey(key []byte) ([]byte, bool) {
 	return nil, false
 }
 
-func (list *SkipList) increaseTowerSize() *node {
-	sentinelNode := &node{}
+func (list *SkipList) increaseTowerSize() *skipListNode {
+	sentinelNode := &skipListNode{}
 	list.tower = append(list.tower, sentinelNode)
 	topIndex := len(list.tower) - 1
 	list.tower[topIndex].down = list.tower[topIndex-1].down

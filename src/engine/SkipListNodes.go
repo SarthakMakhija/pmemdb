@@ -1,14 +1,14 @@
 package engine
 
 type nodes struct {
-	nodes []*node
+	nodes []*skipListNode
 }
 
-func (nodes *nodes) add(n *node) {
+func (nodes *nodes) add(n *skipListNode) {
 	nodes.nodes = append(nodes.nodes, n)
 }
 
-func (nodes *nodes) pop() *node {
+func (nodes *nodes) pop() *skipListNode {
 	n := nodes.nodes[len(nodes.nodes)-1]
 	nodes.nodes = nodes.nodes[0 : len(nodes.nodes)-1]
 	return n
