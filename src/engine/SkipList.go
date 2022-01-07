@@ -108,7 +108,7 @@ func (list *SkipList) increaseTowerSize() *skipListNode {
 	return sentinelNode
 }
 
-func (list SkipList) traverse(startingNode *skipListNode, key []byte, execute func(key []byte, node *skipListNode) traversalStatus) *skipListNode {
+func (list *SkipList) traverse(startingNode *skipListNode, key []byte, execute func(key []byte, node *skipListNode) traversalStatus) *skipListNode {
 	targetNode := startingNode
 	for ; targetNode != nil; targetNode = targetNode.down {
 		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
