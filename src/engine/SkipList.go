@@ -39,26 +39,31 @@ func (list *SkipList) Put(key, value []byte) {
 }
 
 func (list *SkipList) put(key []byte, value []byte) {
-	parents := &nodes{}
 	targetNode := list.tower[len(list.tower)-1]
 
-	list.traverse(targetNode, key, func(key []byte, node *skipListNode) traversalStatus {
-		parents.add(node)
-		return traversalStatus{node: node, shouldContinue: true}
-	})
-
-	left := parents.pop()
-	node := left.addToRightWith(key, value)
-	for rand.Intn(2) == 1 {
-		if parents.isEmpty() {
-			sentinelNode := list.increaseTowerSize()
-			parents.add(sentinelNode)
-		}
-		left = parents.pop()
-		newNode := left.addToRightWith(key, value)
-		newNode.updateDown(node)
-		node = newNode
+	collectNodesAtLevels := func() *nodes {
+		parents := &nodes{}
+		list.traverse(targetNode, key, func(key []byte, node *skipListNode) traversalStatus {
+			parents.add(node)
+			return traversalStatus{node: node, shouldContinue: true}
+		})
+		return parents
 	}
+	multilevelPut := func(parents *nodes) {
+		left := parents.pop()
+		node := left.addToRightWith(key, value)
+		for rand.Intn(2) == 1 {
+			if parents.isEmpty() {
+				sentinelNode := list.increaseTowerSize()
+				parents.add(sentinelNode)
+			}
+			left = parents.pop()
+			newNode := left.addToRightWith(key, value)
+			newNode.updateDown(node)
+			node = newNode
+		}
+	}
+	multilevelPut(collectNodesAtLevels())
 }
 
 func (list *SkipList) update(key []byte, value []byte, startingNode *skipListNode) {
