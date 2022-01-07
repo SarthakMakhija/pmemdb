@@ -41,12 +41,11 @@ func (list *SkipList) Put(key, value []byte) {
 func (list *SkipList) put(key []byte, value []byte) {
 	parents := &nodes{}
 	targetNode := list.tower[len(list.tower)-1]
-	for ; targetNode != nil; targetNode = targetNode.down {
-		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
-			targetNode = targetNode.right
-		}
-		parents.add(targetNode)
-	}
+
+	list.traverse(targetNode, key, func(key []byte, node *skipListNode) traversalStatus {
+		parents.add(node)
+		return traversalStatus{node: node, shouldContinue: true}
+	})
 
 	left := parents.pop()
 	node := left.addToRightWith(key, value)
@@ -64,16 +63,13 @@ func (list *SkipList) put(key []byte, value []byte) {
 
 func (list *SkipList) update(key []byte, value []byte, startingNode *skipListNode) {
 	targetNode := startingNode
-	targetNode.updateValue(value)
 
-	for ; targetNode != nil; targetNode = targetNode.down {
-		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
-			targetNode = targetNode.right
+	list.traverse(targetNode, key, func(key []byte, node *skipListNode) traversalStatus {
+		if node.matchesKey(key) {
+			node.updateValue(value)
 		}
-		if targetNode.matchesKey(key) {
-			targetNode.updateValue(value)
-		}
-	}
+		return traversalStatus{node: node, shouldContinue: true}
+	})
 }
 
 func (list *SkipList) GetByKey(key []byte) ([]byte, bool) {
@@ -86,13 +82,15 @@ func (list *SkipList) GetByKey(key []byte) ([]byte, bool) {
 
 func (list *SkipList) getByKey(key []byte) (*skipListNode, bool) {
 	targetNode := list.tower[len(list.tower)-1]
-	for ; targetNode != nil; targetNode = targetNode.down {
-		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
-			targetNode = targetNode.right
+	node := list.traverse(targetNode, key, func(key []byte, node *skipListNode) traversalStatus {
+		if node.matchesKey(key) {
+			return traversalStatus{node: node, shouldContinue: false}
+		} else {
+			return traversalStatus{node: nil, shouldContinue: true}
 		}
-		if targetNode.matchesKey(key) {
-			return targetNode, true
-		}
+	})
+	if node != nil {
+		return node, true
 	}
 	return nil, false
 }
@@ -103,4 +101,23 @@ func (list *SkipList) increaseTowerSize() *skipListNode {
 	topIndex := len(list.tower) - 1
 	list.tower[topIndex].down = list.tower[topIndex-1].down
 	return sentinelNode
+}
+
+func (list SkipList) traverse(startingNode *skipListNode, key []byte, execute func(key []byte, node *skipListNode) traversalStatus) *skipListNode {
+	targetNode := startingNode
+	for ; targetNode != nil; targetNode = targetNode.down {
+		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
+			targetNode = targetNode.right
+		}
+		status := execute(key, targetNode)
+		if !status.shouldContinue {
+			return status.node
+		}
+	}
+	return nil
+}
+
+type traversalStatus struct {
+	node           *skipListNode
+	shouldContinue bool
 }
