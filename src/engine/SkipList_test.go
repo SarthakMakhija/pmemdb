@@ -1,23 +1,20 @@
 package engine
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestFailsWhileCreatingASkipListWithTowerSizeEqualToZero(t *testing.T) {
-	defer func() { recover() }()
-
-	NewSkipList(0)
-
-	t.Errorf("Did not panic")
+	assert.Panics(t, func() {
+		NewSkipList(0)
+	})
 }
 
 func TestFailsWhileCreatingASkipListWithTowerSizeLessThanZero(t *testing.T) {
-	defer func() { recover() }()
-
-	NewSkipList(-1)
-
-	t.Errorf("Did not panic")
+	assert.Panics(t, func() {
+		NewSkipList(-1)
+	})
 }
 
 func TestCreatesASkipListAndGetsAValueByKey(t *testing.T) {
