@@ -72,14 +72,13 @@ func (list *SkipList) GetByKey(key []byte) ([]byte, bool) {
 
 func (list *SkipList) getByKey(key []byte) (*skipListNode, bool) {
 	targetNode := list.tower[len(list.tower)-1]
-	for targetNode != nil {
+	for ; targetNode != nil; targetNode = targetNode.down {
 		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
 			targetNode = targetNode.right
 		}
 		if targetNode.matchesKey(key) {
 			return targetNode, true
 		}
-		targetNode = targetNode.down
 	}
 	return nil, false
 }
@@ -96,13 +95,12 @@ func (list *SkipList) update(key []byte, value []byte, startingNode *skipListNod
 	targetNode := startingNode
 	targetNode.updateValue(value)
 
-	for targetNode != nil {
+	for ; targetNode != nil; targetNode = targetNode.down {
 		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
 			targetNode = targetNode.right
 		}
 		if targetNode.matchesKey(key) {
 			targetNode.updateValue(value)
 		}
-		targetNode = targetNode.down
 	}
 }
