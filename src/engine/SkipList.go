@@ -62,6 +62,20 @@ func (list *SkipList) put(key []byte, value []byte) {
 	}
 }
 
+func (list *SkipList) update(key []byte, value []byte, startingNode *skipListNode) {
+	targetNode := startingNode
+	targetNode.updateValue(value)
+
+	for ; targetNode != nil; targetNode = targetNode.down {
+		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
+			targetNode = targetNode.right
+		}
+		if targetNode.matchesKey(key) {
+			targetNode.updateValue(value)
+		}
+	}
+}
+
 func (list *SkipList) GetByKey(key []byte) ([]byte, bool) {
 	targetNode, ok := list.getByKey(key)
 	if ok {
@@ -89,18 +103,4 @@ func (list *SkipList) increaseTowerSize() *skipListNode {
 	topIndex := len(list.tower) - 1
 	list.tower[topIndex].down = list.tower[topIndex-1].down
 	return sentinelNode
-}
-
-func (list *SkipList) update(key []byte, value []byte, startingNode *skipListNode) {
-	targetNode := startingNode
-	targetNode.updateValue(value)
-
-	for ; targetNode != nil; targetNode = targetNode.down {
-		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
-			targetNode = targetNode.right
-		}
-		if targetNode.matchesKey(key) {
-			targetNode.updateValue(value)
-		}
-	}
 }
