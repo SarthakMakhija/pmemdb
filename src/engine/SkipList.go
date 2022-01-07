@@ -10,7 +10,7 @@ type SkipList struct {
 }
 
 func NewSkipList(towerSize int) *SkipList {
-	assert.Assert(towerSize > 0, "initial towerSize must be greater than zero")
+	assert.Assert(towerSize > 0, "Initial towerSize must be greater than zero")
 
 	initializeWithSentinelNodesOf := func(list *SkipList) {
 		for index := 0; index < towerSize; index++ {
@@ -28,7 +28,7 @@ func NewSkipList(towerSize int) *SkipList {
 
 func (list *SkipList) Put(key, value []byte) {
 	assert.Assert(key != nil, "Key can not be nil")
-	assert.Assert(value != nil, "Key can not be nil")
+	assert.Assert(value != nil, "Value can not be nil")
 
 	targetNode, ok := list.getByKey(key)
 	if !ok {
