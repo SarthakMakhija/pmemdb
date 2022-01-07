@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestCreatesASkipListAndGetsAValueByKey1(t *testing.T) {
+func TestCreatesASkipListAndGetsAValueByKey(t *testing.T) {
 	skipList := NewSkipList(5)
 	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
 	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
