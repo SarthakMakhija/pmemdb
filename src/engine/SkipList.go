@@ -10,6 +10,8 @@ type SkipList struct {
 }
 
 func NewSkipList(towerSize int) *SkipList {
+	assert.Assert(towerSize > 0, "initial towerSize must be greater than zero")
+
 	initializeWithSentinelNodesOf := func(list *SkipList) {
 		for index := 0; index < towerSize; index++ {
 			sentinelNode := &skipListNode{}

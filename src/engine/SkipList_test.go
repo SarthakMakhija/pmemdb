@@ -4,6 +4,22 @@ import (
 	"testing"
 )
 
+func TestFailsWhileCreatingASkipListWithTowerSizeEqualToZero(t *testing.T) {
+	defer func() { recover() }()
+
+	NewSkipList(0)
+
+	t.Errorf("Did not panic")
+}
+
+func TestFailsWhileCreatingASkipListWithTowerSizeLessThanZero(t *testing.T) {
+	defer func() { recover() }()
+
+	NewSkipList(-1)
+
+	t.Errorf("Did not panic")
+}
+
 func TestCreatesASkipListAndGetsAValueByKey(t *testing.T) {
 	skipList := NewSkipList(5)
 	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
