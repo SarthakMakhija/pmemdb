@@ -58,3 +58,14 @@ func TestCreatesASkipListAndGetsAValueByKeyGivenKeyDoesNotExist(t *testing.T) {
 	value, _ := skipList.GetByKey([]byte("HDD@"))
 	assert.Nilf(t, value, "Expected value to be %v, received %v", nil, value)
 }
+
+func TestUpdatesTheValueOfAnExistingKey(t *testing.T) {
+	skipList := NewSkipList(5)
+	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
+	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
+
+	skipList.Put([]byte("HDD"), []byte("Hard disk"))
+	value, _ := skipList.GetByKey([]byte("HDD"))
+
+	assert.Equalf(t, "Hard disk", string(value), "Expected value to be %v, received %v", "Hard disk", string(value))
+}

@@ -35,3 +35,7 @@ func (node *skipListNode) updateRight(right *skipListNode) *skipListNode {
 	node.right = right
 	return node
 }
+
+func (node *skipListNode) updateValue(value []byte) {
+	node.value = value
+}

@@ -30,6 +30,15 @@ func (list *SkipList) Put(key, value []byte) {
 	assert.Assert(key != nil, "Key can not be nil")
 	assert.Assert(value != nil, "Key can not be nil")
 
+	targetNode, ok := list.getByKey(key)
+	if !ok {
+		list.put(key, value)
+	} else {
+		list.update(key, value, targetNode)
+	}
+}
+
+func (list *SkipList) put(key []byte, value []byte) {
 	parents := &nodes{}
 	targetNode := list.tower[len(list.tower)-1]
 	for ; targetNode != nil; targetNode = targetNode.down {
@@ -54,25 +63,25 @@ func (list *SkipList) Put(key, value []byte) {
 }
 
 func (list *SkipList) GetByKey(key []byte) ([]byte, bool) {
-	targetNode := list.getByKey(key)
-	if targetNode != nil {
+	targetNode, ok := list.getByKey(key)
+	if ok {
 		return targetNode.value, true
 	}
 	return nil, false
 }
 
-func (list *SkipList) getByKey(key []byte) *skipListNode {
+func (list *SkipList) getByKey(key []byte) (*skipListNode, bool) {
 	targetNode := list.tower[len(list.tower)-1]
 	for targetNode != nil {
 		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
 			targetNode = targetNode.right
 		}
 		if targetNode.matchesKey(key) {
-			return targetNode
+			return targetNode, true
 		}
 		targetNode = targetNode.down
 	}
-	return nil
+	return nil, false
 }
 
 func (list *SkipList) increaseTowerSize() *skipListNode {
@@ -81,4 +90,19 @@ func (list *SkipList) increaseTowerSize() *skipListNode {
 	topIndex := len(list.tower) - 1
 	list.tower[topIndex].down = list.tower[topIndex-1].down
 	return sentinelNode
+}
+
+func (list *SkipList) update(key []byte, value []byte, startingNode *skipListNode) {
+	targetNode := startingNode
+	targetNode.updateValue(value)
+
+	for targetNode != nil {
+		for targetNode.right != nil && targetNode.right.isKeyLessEqualTo(key) {
+			targetNode = targetNode.right
+		}
+		if targetNode.matchesKey(key) {
+			targetNode.updateValue(value)
+		}
+		targetNode = targetNode.down
+	}
 }

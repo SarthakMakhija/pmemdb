@@ -55,3 +55,10 @@ func TestShouldUpdateRightPointerInTheNode(t *testing.T) {
 
 	assert.Equalf(t, right, node.right, "Expected node's right to be %v, received %v", right, node.right)
 }
+
+func TestShouldUpdateTheValueInTheNode(t *testing.T) {
+	node := newNode([]byte("HDD"), []byte("Hard disk drive"))
+	node.updateValue([]byte("Hard disk"))
+
+	assert.Equalf(t, "Hard disk", string(node.value), "Expected node's value to be %v, received %v", "Hard disk", string(node.value))
+}
