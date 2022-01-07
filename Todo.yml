@@ -18,14 +18,22 @@ pending:
     - name: Add skip list engine
     - tasks:
         - task: Provide support for delete
+        - status: pending
         - task: See if []byte can be abstracted from `code & test`
+        - status: pending
         - task: Probably change key from []byte to proto ..
+        - status: pending
         - task: Add test for nodes
+        - status: pending
         - task: Go through skiplist code once again
+        - status: pending
         - task: Refactor put (break it down)
         - status: done
         - task: Remove duplication in for loop (put, get, update)
         - status: done
         - task: Abstract rand.Intn(2)
+        - status: pending
         - task: See if tower which is an array of pointer to node can be changed to *nodes
+        - status: pending
         - task: Verify the signature of put, do we want to return something
+        - status: pending
