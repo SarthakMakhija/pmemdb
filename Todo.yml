@@ -15,19 +15,15 @@ tasks:
 
 pending:
   items:
-    - name: Verify what happens to the badge if build passes but linting fails
     - name: Add skip list engine
+    - tasks:
         - Provide support for delete
         - See if []byte can be abstracted from `code & test`
         - Probably change key from []byte to proto ..
-        -----Today-----
-        - Add test for node and nodes
-        - go through skiplist code once again & video
+        - Add test for nodes
+        - Go through skiplist code once again
         - Refactor put (break it down)
-        - Provide support for update
-        - abstract rand.Intn(2)
-        - better name for addNewNode
-        - see if tower which is an array of pointer to node can be changed to *nodes
-        - verify the signature of put, do we want to return something
-        - handle error in put with nil key and value, same in get
-        - Rename TestCreatesASkipListAndGetsAValueByKey1 (remove 1)
+        - Remove duplication in for loop (put, get, update)
+        - Abstract rand.Intn(2)
+        - See if tower which is an array of pointer to node can be changed to *nodes
+        - Verify the signature of put, do we want to return something
