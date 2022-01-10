@@ -69,3 +69,21 @@ func TestUpdatesTheValueOfAnExistingKey(t *testing.T) {
 
 	assert.Equalf(t, "Hard disk", string(value), "Expected value to be %v, received %v", "Hard disk", string(value))
 }
+
+func TestCreatesASkipListAndAttemptsToGetAValueByNonExistentKey(t *testing.T) {
+	skipList := NewSkipList(5)
+	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
+	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
+
+	value, _ := skipList.GetByKey([]byte("SDD"))
+	assert.Equalf(t, "", string(value), "Expected value to be %v, received %v", "", string(value))
+}
+
+func TestCreatesASkipListAndAttemptsToGetPresenceOfValueByNonExistentKey(t *testing.T) {
+	skipList := NewSkipList(5)
+	skipList.Put([]byte("HDD"), []byte("Hard disk drive"))
+	skipList.Put([]byte("Pmem"), []byte("Persistent memory"))
+
+	_, ok := skipList.GetByKey([]byte("SDD"))
+	assert.Falsef(t, ok, "Expected false while getting a value for non-existent key")
+}
