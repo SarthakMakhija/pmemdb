@@ -16,5 +16,6 @@ TEST(SkipListIntegration, CreateASkipListAndAdd1000KeyValuePairs) {
         
         pair<string, bool> existenceByValue = skipList -> get(key);
         ASSERT_EQ(expectedValue, existenceByValue.first);
+        ASSERT_TRUE(existenceByValue.second);
     }
 }
