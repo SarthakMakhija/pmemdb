@@ -29,6 +29,7 @@ target_sources(pmemdb_tests
 	test/engine/SkipListNodes_unit_test.cpp
 	test/engine/SkipList_unit_test.cpp
 	test/engine/SkipList_exception_unit_test.cpp
+	test/engine/SkipList_integration_test.cpp
 )
 
 target_link_libraries(pmemdb_tests
