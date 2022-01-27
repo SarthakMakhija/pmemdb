@@ -44,7 +44,6 @@ void SkipList::multiLevelPut(string key, string value) {
     }
 }
 
-//TODO: probably move constructor in SkipListNodes??
 SkipListNodes SkipList::collectNodes(string key) {
     SkipListNode *targetNode = this -> tower.back();
     SkipListNodes parents;
