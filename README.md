@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/SarthakMakhija/pmemdb/workflows/GoCI/badge.svg)](https://github.com/SarthakMakhija/pmemdb/actions)
+[![Actions Status](https://github.com/SarthakMakhija/pmemdb/workflows/PmemCI/badge.svg)](https://github.com/SarthakMakhija/pmemdb/actions)
 
 ### pmemdb
 K/V store for persistent memory
