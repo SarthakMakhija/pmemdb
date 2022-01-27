@@ -25,6 +25,7 @@ add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
 	PRIVATE
 	test/engine/SkipListNode_unit_test.cpp
+	test/engine/SkipListNodes_unit_test.cpp
 )
 
 target_link_libraries(pmemdb_tests

@@ -1,1 +1,1 @@
-add_library(SkipList SkipListNode.h SkipListNode.cpp KeyValuePair.h KeyValuePair.cpp)
+add_library(SkipList SkipListNode.h SkipListNode.cpp KeyValuePair.h KeyValuePair.cpp SkipListNodes.h SkipListNodes.cpp)
