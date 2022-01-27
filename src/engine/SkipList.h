@@ -11,6 +11,7 @@ using namespace std;
 class SkipList {
     private:
     vector<SkipListNode *> tower;
+
     pair<SkipListNode*, bool> getByKey(string key);
     void multiLevelPut(string key, string value);
     SkipListNodes collectNodes(string key);
@@ -18,6 +19,7 @@ class SkipList {
 
     public:
     SkipList(int towerSize);
+    
     void put(string key, string value);
     pair<string, bool> get(string key);
 };
