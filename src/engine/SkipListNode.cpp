@@ -1,5 +1,7 @@
 #include "SkipListNode.h"
 
+SkipListNode::SkipListNode() : SkipListNode("", "") {}
+
 SkipListNode::SkipListNode(string  key, string value) {
     this -> key = key;
     this -> value = value;
@@ -7,7 +9,7 @@ SkipListNode::SkipListNode(string  key, string value) {
     this -> down = nullptr;
 }
 
-bool SkipListNode::matchesKey(string key) {
+bool SkipListNode::matchesKey(string key) const {
     return this -> key == key;
 }
 
@@ -50,4 +52,17 @@ KeyValuePair SkipListNode::downKeyValuePair() {
         return KeyValuePair(this -> down -> key, this -> down -> value);
     }
     return  KeyValuePair("", "");
+}
+
+SkipListNode* SkipListNode::traverse(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) {
+    for(SkipListNode *targetNode = this; targetNode != nullptr; targetNode = targetNode -> down) {
+        while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
+			targetNode = targetNode -> right;
+		}
+        pair<SkipListNode*, bool> executionStatus = block(targetNode);
+        if (executionStatus.second) {
+            return executionStatus.first;
+        }
+    }
+    return nullptr;
 }
