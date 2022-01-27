@@ -5,7 +5,7 @@ tasks:
       - tasks:
           - task: Provide support for delete
           - status: pending
-          - task: See if key and value should be string`
+          - task: See if key and value should be string
           - status: pending
           - task: Go through skiplist code once again
           - status: pending
@@ -16,7 +16,7 @@ tasks:
           - task: Does SkipListNodes need a move coonstructor because collectNodes returns SkipListNodes which means copy constructor would be called and because SkipListNodes contains a vector of pointers it could cause issues
           - status: pending
           - task: Add pre-condition checks in public methods, example towerSize > 1
-          - status: pending
+          - status: done
 
 later:
   items:
