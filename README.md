@@ -22,11 +22,12 @@ K/V store for persistent memory
 
 - Execute CMake
     `cmake ../`
+
     `cmake --build . -v`
 
 ### Running tests
 
-- Ehange to build directory
+- Change to build directory
 
     `cd build`
 
