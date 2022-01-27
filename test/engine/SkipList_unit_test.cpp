@@ -52,3 +52,22 @@ TEST(SkipList, CreateASkipListAndUpdateTheValueOfAnExistentingKey) {
     ASSERT_EQ("Hard disk", existenceByValue.first);
 }
 
+TEST(SkipList, ThrowIInvalidArgumentExceptionGivenTowerSizeIsZero) {
+    EXPECT_THROW(new SkipList(0), std::invalid_argument);
+}
+
+TEST(SkipList, ThrowIInvalidArgumentExceptionGivenTowerSizeIsLessThanZero) {
+    EXPECT_THROW(new SkipList(-1), std::invalid_argument);
+}
+
+TEST(SkipList, ThrowIInvalidArgumentExceptionGivenKeyIsBlank) {
+    SkipList* skipList = new SkipList(5);
+    
+    EXPECT_THROW(skipList -> put("", "Hard disk drive"), std::invalid_argument);
+}
+
+TEST(SkipList, ThrowIInvalidArgumentExceptionGivenValueIsBlank) {
+    SkipList* skipList = new SkipList(5);
+    
+    EXPECT_THROW(skipList -> put("HDD", ""), std::invalid_argument);
+}

@@ -2,8 +2,13 @@
 #include "SkipListNode.h"
 #include "SkipListNodes.h"
 #include <stdlib.h>
+#include <stdexcept>
 
 SkipList::SkipList(int towerSize) {
+    if (towerSize < 1) {
+        throw std::invalid_argument("towerSize has to be greater than or equal to one");
+    }
+
     for (int index = 0; index < towerSize; index++){
         SkipListNode *sentinelNode = new SkipListNode();
         this -> tower.push_back(sentinelNode);
@@ -14,6 +19,13 @@ SkipList::SkipList(int towerSize) {
 }
 
 void SkipList::put(string key, string value) {
+    if (key == "") {
+        throw std::invalid_argument("key can not be blank");
+    }
+    if (value == "") {
+        throw std::invalid_argument("value can not be blank");
+    }
+
     pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
 	if (!existenceByNode.second){
         this -> multiLevelPut(key, value);
