@@ -21,6 +21,7 @@ K/V store for persistent memory
     `cd build`
 
 - Execute CMake
+
     `cmake ../`
 
     `cmake --build . -v`
