@@ -15,6 +15,8 @@ tasks:
           - status: pending
           - task: Does SkipListNodes need a move coonstructor because collectNodes returns SkipListNodes which means copy constructor would be called and because SkipListNodes contains a vector of pointers it could cause issues
           - status: pending
+          - task: Add pre-condition checks in public methods, example towerSize > 1
+          - status: pending
 
 later:
   items:
