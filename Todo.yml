@@ -13,6 +13,8 @@ tasks:
           - status: pending
           - task: Verify the signature of put, do we want to return something
           - status: pending
+          - task: Does SkipListNodes need a move coonstructor because collectNodes returns SkipListNodes which means copy constructor would be called and because SkipListNodes contains a vector of pointers it could cause issues
+          - status: pending
 
 later:
   items:
