@@ -19,11 +19,8 @@ SkipList::SkipList(int towerSize) {
 }
 
 void SkipList::put(string key, string value) {
-    if (key == "") {
-        throw std::invalid_argument("key can not be blank");
-    }
-    if (value == "") {
-        throw std::invalid_argument("value can not be blank");
+    if (key == "" || value == "") {
+        throw std::invalid_argument("key and value can not be blank while putting");
     }
 
     pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
