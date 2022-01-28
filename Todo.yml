@@ -29,6 +29,8 @@ tasks:
           - status: pending
           - task: Refactor iterate across
           - status: pending
+          - task: Add an integration test for update
+          - status: pending
 
 later:
   items:
