@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 #include <string>
 #include "../../src/engine/SkipListLeafNode.h"
+#include "../../src/engine/SkipListNodes.h"
 #include "../../src/engine/KeyValuePair.h"
+#include <iostream>
 
 TEST(SkipListLeafNode, AddNewNodeToRight) {
   SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
@@ -84,16 +86,15 @@ TEST(SkipListLeafNode, IterateAndReturnNodeAfterWhichKeyValueWouldBePut1) {
   right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
   
   string key = "Rocks";
+  SkipListNodes parents;  
   SkipListNode* targetNode = node -> iterate(key,
-                  [key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
-                        if (node -> matchesKey(key)) {
-                          return make_pair(node, true);
-                        } else {
-                          return make_pair(nullptr, false);
-                        }  
+                   [&, key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
+                            parents.add(node);
+                            return make_pair(node, false);
                     });
   
-  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), targetNode -> getKeyValuePair());
+  KeyValuePair pair = parents.pop() -> getKeyValuePair();
+  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), pair);
 }
 
 TEST(SkipListLeafNode, IterateAndReturnNodeAfterWhichKeyValueWouldBePut2) {
@@ -104,14 +105,13 @@ TEST(SkipListLeafNode, IterateAndReturnNodeAfterWhichKeyValueWouldBePut2) {
   right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
   
   string key = "Tuff";
+  SkipListNodes parents;  
   SkipListNode* targetNode = node -> iterate(key,
-                  [key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
-                        if (node -> matchesKey(key)) {
-                          return make_pair(node, true);
-                        } else {
-                          return make_pair(nullptr, false);
-                        }  
+                   [&, key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
+                            parents.add(node);
+                            return make_pair(node, false);
                     });
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), targetNode -> getKeyValuePair());
+  KeyValuePair pair = parents.pop() -> getKeyValuePair();
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), pair);
 }
