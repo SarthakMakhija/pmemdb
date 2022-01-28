@@ -8,6 +8,10 @@ SkipListLeafNode::SkipListLeafNode(string key, string value) : SkipListNode(key,
     this -> right = nullptr;
 }
 
+bool SkipListLeafNode::isLeaf() {
+    return true;
+}
+
 SkipListNode* SkipListLeafNode::traverse(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) {
     SkipListLeafNode *targetNode = this;
     while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
@@ -18,10 +22,6 @@ SkipListNode* SkipListLeafNode::traverse(string key, function<pair<SkipListNode*
         return executionStatus.first;
     }
     return nullptr;
-}
-
-bool SkipListLeafNode::isLeaf() {
-    return true;
 }
 
 SkipListNode* SkipListLeafNode::addToRightWith(string key, string value) {

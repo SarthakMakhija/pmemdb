@@ -43,3 +43,21 @@ TEST(SkipListInternalNode, DownKeyValuePairGivenDownPointerIsNull) {
   
   ASSERT_EQ(KeyValuePair("", ""), node -> downKeyValuePair());
 }
+
+TEST(SkipListInternalNode, RightKeyValuePairGivenDownPointerIsNotNull) {
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *right = new SkipListInternalNode("SDD", "Solid state drive");
+  node -> updateRight(right);
+  
+  KeyValuePair pair = node -> rightKeyValuePair();
+  
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> rightKeyValuePair());
+}
+
+TEST(SkipListInternalNode, RightKeyValuePairGivenRightPointerIsNull) {
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
+  
+  KeyValuePair pair = node -> rightKeyValuePair();
+  
+  ASSERT_EQ(KeyValuePair("", ""), node -> rightKeyValuePair());
+}
