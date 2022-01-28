@@ -13,7 +13,7 @@ tasks:
           - status: pending
           - task: Verify the signature of put, do we want to return something
           - status: pending
-          - task: Does SkipListNodes need a move coonstructor because collectNodes returns SkipListNodes which means copy constructor would be called and because SkipListNodes contains a vector of pointers it could cause issues
+          - task: Does SkipListNodes need a move constructor because collectNodes returns SkipListNodes which means copy constructor would be called and because SkipListNodes contains a vector of pointers it could cause issues
           - status: does not look like we need it (check again !!)
           - task: Add pre-condition checks in public methods, example towerSize >= 1
           - status: done
@@ -24,6 +24,8 @@ tasks:
           - task: Move some behaviours from *Node classes to test fixture classes
           - status: pending
           - task: Relook at package structure
+          - status: pending
+          - task: Does SkipListNodeIterator need a move constructor
           - status: pending
 
 later:
