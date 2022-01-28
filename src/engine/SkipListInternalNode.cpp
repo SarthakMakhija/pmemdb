@@ -9,20 +9,12 @@ SkipListInternalNode::SkipListInternalNode(string key, string value) : SkipListN
     this -> down = nullptr;
 }
 
-void SkipListInternalNode::updateDown(SkipListInternalNode* down) {
-    this -> down = down;
-}
-
-KeyValuePair SkipListInternalNode::downKeyValuePair() {
-    if (this -> down != nullptr)  {
-        return KeyValuePair(this -> down -> key, this -> down -> value);
-    }
-    return KeyValuePair("", "");
+bool SkipListInternalNode::isLeaf() {
+    return false;
 }
 
 SkipListNode* SkipListInternalNode::traverse(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) {
     SkipListNode *targetNode = this;
-    
     for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
         while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
 			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
@@ -39,10 +31,6 @@ SkipListNode* SkipListInternalNode::traverse(string key, function<pair<SkipListN
     return nullptr;
 }
 
-bool SkipListInternalNode::isLeaf() {
-    return false;
-}
-
 SkipListNode* SkipListInternalNode::addToRightWith(string key, string value) {
     SkipListInternalNode* newNode = new SkipListInternalNode(key, value);
 	newNode -> updateRight(static_cast<SkipListInternalNode*>(this -> right));
@@ -52,6 +40,17 @@ SkipListNode* SkipListInternalNode::addToRightWith(string key, string value) {
 
 void SkipListInternalNode::updateRight(SkipListInternalNode* right) {
     this -> right = right;
+}
+
+void SkipListInternalNode::updateDown(SkipListInternalNode* down) {
+    this -> down = down;
+}
+
+KeyValuePair SkipListInternalNode::downKeyValuePair() {
+    if (this -> down != nullptr)  {
+        return KeyValuePair(this -> down -> key, this -> down -> value);
+    }
+    return KeyValuePair("", "");
 }
 
 KeyValuePair SkipListInternalNode::rightKeyValuePair() {

@@ -40,29 +40,6 @@ TEST(SkipListNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
-TEST(SkipListNode, AddNewNodeToRight) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
-  node -> addToRightWith("SDD", "Solid state drive");
-
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> rightKeyValuePair());
-}
-
-TEST(SkipListNode, UpdateDownPointer) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
-  SkipListInternalNode *down = new SkipListInternalNode("SDD", "Solid state drive");
-  node -> updateDown(down);
-  
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> downKeyValuePair());
-}
-
-TEST(SkipListNode, UpdateRightPointer) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
-  SkipListInternalNode *right = new SkipListInternalNode("SDD", "Solid state drive");
-  node -> updateRight(right);
-  
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> rightKeyValuePair());
-}
-
 TEST(SkipListNode, UpdateNodeValue) {
   SkipListNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
   node -> updateValue("Hard disk");
