@@ -23,9 +23,11 @@ tasks:
           - status: pending
           - task: Move some behaviours from *Node classes to test fixture classes
           - status: pending
-          - task: Relook at package structure
+          - task: Relook at package structure, probably introduce kv/engine/skiplist/..
           - status: pending
           - task: Does SkipListNodeIterator need a move constructor
+          - status: pending
+          - task: Refactor iterate across
           - status: pending
 
 later:
