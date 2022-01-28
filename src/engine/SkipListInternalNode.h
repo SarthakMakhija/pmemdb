@@ -6,6 +6,8 @@
 
 class SkipListInternalNode : public SkipListNode {
     private:
+    string key;
+    string value;
     SkipListInternalNode* right;
     SkipListNode* down;
 
@@ -17,9 +19,13 @@ class SkipListInternalNode : public SkipListNode {
     SkipListNode* addToRightWith(string key, string value);
     void updateDown(SkipListNode* down);
     void updateRight(SkipListInternalNode* right);
-    KeyValuePair downKeyValuePair();
+    KeyValuePair getKeyValuePair();
     KeyValuePair rightKeyValuePair();
     SkipListNode* iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
+    bool matchesKey(string key) const;
+    bool isKeyLessEqualTo(string key);
+    void updateValue(string value);
+    SkipListNode* getDown();
 };
 
 #endif

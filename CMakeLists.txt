@@ -14,7 +14,7 @@ add_subdirectory(src/engine)
 add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
 	PRIVATE
-	test/engine/SkipListNode_unit_test.cpp
+	test/engine/SkipListNodeUtils.h
 	test/engine/SkipListInternalNode_unit_test.cpp
 	test/engine/SkipListLeafNode_unit_test.cpp
 	test/engine/SkipListNodeIterator_unit_test.cpp

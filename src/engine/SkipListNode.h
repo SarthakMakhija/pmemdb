@@ -9,20 +9,12 @@ using namespace std;
 
 class SkipListNode {
     public:
-    string key;
-    string value;
-
-    public:
-    SkipListNode();
-    SkipListNode(string key, string value);
-
     virtual bool isLeaf() = 0;
     virtual SkipListNode* addToRightWith(string key, string value);
-
-    bool matchesKey(string key) const;
-    bool isKeyLessEqualTo(string key);
-    void updateValue(string value);
-    KeyValuePair getKeyValuePair();
-    KeyValuePair rightKeyValuePair();
+    virtual bool matchesKey(string key) const = 0;
+    virtual bool isKeyLessEqualTo(string key) = 0;
+    virtual void updateValue(string value);
+    virtual KeyValuePair getKeyValuePair();
+    virtual KeyValuePair rightKeyValuePair();    
 };
 #endif

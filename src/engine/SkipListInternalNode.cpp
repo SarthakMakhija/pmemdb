@@ -3,9 +3,11 @@
 
 SkipListInternalNode::SkipListInternalNode() : SkipListInternalNode("", "") {}
 
-SkipListInternalNode::SkipListInternalNode(string key, string value) : SkipListNode(key, value)  {
-    this -> right = nullptr;
-    this -> down = nullptr;
+SkipListInternalNode::SkipListInternalNode(string key, string value) {
+    this -> key     = key;
+    this -> value   = value;
+    this -> right   = nullptr;
+    this -> down    = nullptr;
 }
 
 bool SkipListInternalNode::isLeaf() {
@@ -45,11 +47,8 @@ void SkipListInternalNode::updateDown(SkipListNode* down) {
     this -> down = down;
 }
 
-KeyValuePair SkipListInternalNode::downKeyValuePair() {
-    if (this -> down != nullptr)  {
-        return KeyValuePair(this -> down -> key, this -> down -> value);
-    }
-    return KeyValuePair("", "");
+KeyValuePair SkipListInternalNode::getKeyValuePair() {
+    return KeyValuePair(this -> key, this -> value);
 }
 
 KeyValuePair SkipListInternalNode::rightKeyValuePair() {
@@ -57,4 +56,20 @@ KeyValuePair SkipListInternalNode::rightKeyValuePair() {
         return KeyValuePair(this -> right -> key, this -> right -> value);
     }
     return  KeyValuePair("", "");
+}
+
+bool SkipListInternalNode::matchesKey(string key) const {
+    return this -> key == key;
+}
+
+bool SkipListInternalNode::isKeyLessEqualTo(string key) {
+    return this -> key <= key;
+}
+
+void SkipListInternalNode::updateValue(string value) {
+    this -> value = value;
+}
+
+SkipListNode* SkipListInternalNode::getDown()  {
+    return this -> down;
 }

@@ -37,6 +37,48 @@ TEST(SkipListLeafNode, RightKeyValuePairGivenRightPointerIsNull) {
   ASSERT_EQ(KeyValuePair("", ""), node -> rightKeyValuePair());
 }
 
+TEST(SkipListLeafNode, MatchKeyInSkipListNode) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  bool matches = node -> matchesKey("HDD");
+  
+  ASSERT_TRUE(matches);
+}
+
+TEST(SkipListLeafNode, DoesNotMatchKeyInSkipListNode) {
+  SkipListLeafNode *node = new SkipListLeafNode("SDD", "Solid state drive");
+  bool matches = node -> matchesKey("HDD");
+  
+  ASSERT_FALSE(matches);
+}
+
+TEST(SkipListLeafNode, NodesKeyIsLessThanGivenKeyInSkipListNode) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  bool isKeyLessOrEqual = node -> isKeyLessEqualTo("SDD");
+  
+  ASSERT_TRUE(isKeyLessOrEqual);
+}
+
+TEST(SkipListLeafNode, NodesKeyIsEqualToGivenKeyInSkipListNode) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
+  
+  ASSERT_TRUE(isKeyLessOrEqual);
+}
+
+TEST(SkipListLeafNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
+  SkipListLeafNode *node = new SkipListLeafNode("SDD", "Solid state drive");
+  bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
+  
+  ASSERT_FALSE(isKeyLessOrEqual);
+}
+
+TEST(SkipListLeafNode, UpdateNodeValue) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  node -> updateValue("Hard disk");
+  
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk"), node -> getKeyValuePair());
+}
+
 TEST(SkipListLeafNode, IterateAndReturnNodeWithMatchingKeyValue) {
   SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
   SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");

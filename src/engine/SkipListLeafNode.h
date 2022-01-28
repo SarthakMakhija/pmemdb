@@ -6,6 +6,8 @@
 
 class SkipListLeafNode : public SkipListNode {   
     private:
+    string key;
+    string value;
     SkipListLeafNode* right;
 
     public:
@@ -14,10 +16,13 @@ class SkipListLeafNode : public SkipListNode {
     
     bool isLeaf();
     SkipListNode* addToRightWith(string key, string value);
-    void updateDown(SkipListLeafNode* down);
     void updateRight(SkipListLeafNode* right);
+    KeyValuePair getKeyValuePair();
     KeyValuePair rightKeyValuePair();
     SkipListNode* iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
+    bool matchesKey(string key) const;
+    bool isKeyLessEqualTo(string key);
+    void updateValue(string value);
 };
 
 #endif
