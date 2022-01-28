@@ -21,7 +21,7 @@ SkipList::SkipList(int towerSize) {
         }
         this -> tower.push_back(sentinelNode);
         if (index >  0) {
-            static_cast<SkipListInternalNode*>(sentinelNode) -> updateDown(static_cast<SkipListInternalNode*>(this -> tower.at(index-1)));
+            static_cast<SkipListInternalNode*>(sentinelNode) -> updateDown(this -> tower.at(index-1));
         }
     }
 }
@@ -57,7 +57,7 @@ void SkipList::multiLevelPut(string key, string value) {
         left = parents.pop();
 		SkipListNode* newNode = left -> addToRightWith(key, value);
         if (!newNode -> isLeaf()) {
-		    static_cast<SkipListInternalNode*>(newNode) -> updateDown(static_cast<SkipListInternalNode*>(node));
+		    static_cast<SkipListInternalNode*>(newNode) -> updateDown(node);
         }
 		node = newNode;
     }

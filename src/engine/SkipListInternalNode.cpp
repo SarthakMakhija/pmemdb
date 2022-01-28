@@ -34,7 +34,7 @@ SkipListNode* SkipListInternalNode::iterate(string key, function<pair<SkipListNo
 
 SkipListNode* SkipListInternalNode::addToRightWith(string key, string value) {
     SkipListInternalNode* newNode = new SkipListInternalNode(key, value);
-	newNode -> updateRight(static_cast<SkipListInternalNode*>(this -> right));
+	newNode -> updateRight(this -> right);
 	this -> updateRight(newNode);
 	return newNode;
 }
