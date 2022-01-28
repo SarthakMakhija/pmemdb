@@ -1,7 +1,6 @@
 #include "SkipListNodeIterator.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
-#include <iostream>
 
 SkipListNodeIterator::SkipListNodeIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }

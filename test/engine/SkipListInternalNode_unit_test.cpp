@@ -3,7 +3,6 @@
 #include "../../src/engine/SkipListInternalNode.h"
 #include "../../src/engine/SkipListLeafNode.h"
 #include "../../src/engine/KeyValuePair.h"
-#include <iostream>
 
 TEST(SkipListInternalNode, AddNewNodeToRight) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");

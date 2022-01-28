@@ -1,6 +1,5 @@
 #include "SkipListInternalNode.h"
 #include "KeyValuePair.h"
-#include <iostream>
 
 SkipListInternalNode::SkipListInternalNode() : SkipListInternalNode("", "") {}
 

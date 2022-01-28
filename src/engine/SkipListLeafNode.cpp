@@ -1,6 +1,5 @@
 #include "SkipListLeafNode.h"
 #include "KeyValuePair.h"
-#include <iostream>
 
 SkipListLeafNode::SkipListLeafNode() : SkipListLeafNode("", "") {}
 

@@ -1,5 +1,4 @@
 #include "SkipListNode.h"
-#include <iostream>
 
 SkipListNode::SkipListNode() : SkipListNode("", "") {}
 
