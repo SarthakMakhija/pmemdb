@@ -7,7 +7,7 @@
 class SkipListInternalNode : public SkipListNode {
     private:
     SkipListInternalNode* right;
-    SkipListInternalNode* down;
+    SkipListNode* down;
 
     public:
     SkipListInternalNode(string key, string value);
@@ -15,7 +15,7 @@ class SkipListInternalNode : public SkipListNode {
 
     bool isLeaf();
     SkipListNode* addToRightWith(string key, string value);
-    void updateDown(SkipListInternalNode* down);
+    void updateDown(SkipListNode* down);
     void updateRight(SkipListInternalNode* right);
     KeyValuePair downKeyValuePair();
     KeyValuePair rightKeyValuePair();

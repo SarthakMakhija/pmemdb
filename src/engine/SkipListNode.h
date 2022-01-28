@@ -8,7 +8,7 @@
 using namespace std;
 
 class SkipListNode {
-    protected:
+    public:
     string key;
     string value;
 

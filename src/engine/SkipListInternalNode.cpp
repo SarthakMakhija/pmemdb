@@ -42,7 +42,7 @@ void SkipListInternalNode::updateRight(SkipListInternalNode* right) {
     this -> right = right;
 }
 
-void SkipListInternalNode::updateDown(SkipListInternalNode* down) {
+void SkipListInternalNode::updateDown(SkipListNode* down) {
     this -> down = down;
 }
 
