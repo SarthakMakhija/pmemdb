@@ -1,5 +1,8 @@
 #include "SkipList.h"
 #include "SkipListNode.h"
+#include "SkipListInternalNode.h"
+#include "SkipListLeafNode.h"
+#include "SkipListNodeIterator.h"
 #include "SkipListNodes.h"
 #include <stdlib.h>
 #include <stdexcept>
@@ -9,11 +12,16 @@ SkipList::SkipList(int towerSize) {
         throw std::invalid_argument("towerSize has to be greater than or equal to one");
     }
 
-    for (int index = 0; index < towerSize; index++){
-        SkipListNode *sentinelNode = new SkipListNode();
+    for (int index = 0; index < towerSize; index++) {
+        SkipListNode *sentinelNode = nullptr;
+        if (index == 0) {
+            sentinelNode = new SkipListLeafNode();
+        } else {
+            sentinelNode = new SkipListInternalNode();
+        }
         this -> tower.push_back(sentinelNode);
         if (index >  0) {
-            sentinelNode -> updateDown(this -> tower.at(index-1));
+            static_cast<SkipListInternalNode*>(sentinelNode) -> updateDown(static_cast<SkipListInternalNode*>(this -> tower.at(index-1)));
         }
     }
 }
@@ -48,7 +56,9 @@ void SkipList::multiLevelPut(string key, string value) {
     while (rand() % 2 == 1 && !parents.isEmpty()) {
         left = parents.pop();
 		SkipListNode* newNode = left -> addToRightWith(key, value);
-		newNode -> updateDown(node);
+        if (!newNode -> isLeaf()) {
+		    static_cast<SkipListInternalNode*>(newNode) -> updateDown(static_cast<SkipListInternalNode*>(node));
+        }
 		node = newNode;
     }
 }
@@ -57,7 +67,7 @@ SkipListNodes SkipList::collectNodes(string key) {
     SkipListNode *targetNode = this -> tower.back();
     SkipListNodes parents;
 
-    targetNode -> traverse(
+    SkipListNodeIterator(targetNode).iterate(
         key, 
         [&, key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
             parents.add(node);
@@ -68,7 +78,7 @@ SkipListNodes SkipList::collectNodes(string key) {
 }
 
 void SkipList::update(string key, string value, SkipListNode* startingNode) {
-    startingNode -> traverse(
+    SkipListNodeIterator(startingNode).iterate(
         key, 
         [key, value] (SkipListNode* node) -> pair<SkipListNode*, bool> {
             if (node -> matchesKey(key)) {
@@ -82,7 +92,7 @@ void SkipList::update(string key, string value, SkipListNode* startingNode) {
 pair<SkipListNode*, bool> SkipList::getByKey(string key) {
     SkipListNode *targetNode = this -> tower.back();
 
-    SkipListNode* node = targetNode -> traverse(
+    SkipListNode* node = SkipListNodeIterator(targetNode).iterate(
         key, 
         [key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
         if (node -> matchesKey(key)) {

@@ -2,6 +2,8 @@
 #include <string>
 #include "../../src/engine/SkipList.h"
 
+#include <iostream>
+
 TEST(SkipList, CreateASkipListAndGetAValueByKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
