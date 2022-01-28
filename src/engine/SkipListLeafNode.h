@@ -17,7 +17,7 @@ class SkipListLeafNode : public SkipListNode {
     void updateDown(SkipListLeafNode* down);
     void updateRight(SkipListLeafNode* right);
     KeyValuePair rightKeyValuePair();
-    SkipListNode* traverse(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
+    SkipListNode* iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
 };
 
 #endif

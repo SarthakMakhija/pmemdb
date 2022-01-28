@@ -19,7 +19,7 @@ class SkipListInternalNode : public SkipListNode {
     void updateRight(SkipListInternalNode* right);
     KeyValuePair downKeyValuePair();
     KeyValuePair rightKeyValuePair();
-    SkipListNode* traverse(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
+    SkipListNode* iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
 };
 
 #endif

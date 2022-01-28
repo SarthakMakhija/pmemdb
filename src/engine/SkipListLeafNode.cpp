@@ -12,7 +12,7 @@ bool SkipListLeafNode::isLeaf() {
     return true;
 }
 
-SkipListNode* SkipListLeafNode::traverse(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) {
+SkipListNode* SkipListLeafNode::iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) {
     SkipListLeafNode *targetNode = this;
     while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
         targetNode = static_cast<SkipListLeafNode*>(targetNode -> right);
