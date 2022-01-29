@@ -47,7 +47,6 @@ void SkipList::update(string key, string value) {
     this -> update(key, value, this -> tower.back());
 }
 
-
 pair<string, bool> SkipList::get(string key) {
     pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
     if (existenceByNode.second) {
