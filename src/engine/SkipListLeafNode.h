@@ -11,18 +11,19 @@ class SkipListLeafNode : public SkipListNode {
     SkipListLeafNode* right;
 
     void updateValue(string value);
-    
+
     public:
     SkipListLeafNode(string key, string value);
     SkipListLeafNode();
     
     bool isLeaf();
     SkipListNode* addToRightWith(string key, string value);
-    void updateRight(SkipListLeafNode* right);
-    KeyValuePair getKeyValuePair();
-    KeyValuePair rightKeyValuePair();
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);
+    KeyValuePair getKeyValuePair();
+    KeyValuePair rightKeyValuePair();
+    
+    void updateRight(SkipListLeafNode* right);
     
     pair<SkipListNode*, bool> getBy(string key);
     void update(string key, string value);
