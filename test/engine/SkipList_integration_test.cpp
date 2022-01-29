@@ -40,7 +40,7 @@ TEST(SkipListIntegration, CreateASkipListAndAdd1000KeyValuePairsInSkipListWithTo
 }
 
 TEST(SkipListIntegration, CreateASkipListAndUpdate1000KeyValuePairsUsingPutInSkipListWithTowerSize10) {
-    SkipList* skipList = new SkipList(1);
+    SkipList* skipList = new SkipList(10);
     for (int count = 1; count <= 1000; count++) {
         string key   = "Key-"    + std::to_string(count);
         string value = "Value-"  + std::to_string(count);
@@ -64,7 +64,7 @@ TEST(SkipListIntegration, CreateASkipListAndUpdate1000KeyValuePairsUsingPutInSki
 }
 
 TEST(SkipListIntegration, CreateASkipListAndUpdate1000KeyValuePairsUsingUpdateInSkipListWithTowerSize10) {
-    SkipList* skipList = new SkipList(1);
+    SkipList* skipList = new SkipList(10);
     for (int count = 1; count <= 1000; count++) {
         string key   = "Key-"    + std::to_string(count);
         string value = "Value-"  + std::to_string(count);
