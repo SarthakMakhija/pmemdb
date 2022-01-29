@@ -46,6 +46,14 @@ void SkipListLeafNode::update(string key, string value) {
     }
 }
 
+SkipListNode* SkipListLeafNode::insertPosition(string key) {
+    SkipListLeafNode *targetNode = this;
+    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
+        targetNode = targetNode -> right;
+    }    
+    return targetNode;
+}
+
 SkipListNode* SkipListLeafNode::addToRightWith(string key, string value) {
     SkipListLeafNode* newNode = new SkipListLeafNode(key, value);
 	newNode -> updateRight(static_cast<SkipListLeafNode*>(this -> right));

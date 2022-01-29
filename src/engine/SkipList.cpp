@@ -65,16 +65,7 @@ void SkipList::multiLevelPut(string key, string value) {
 
 SkipListNodes SkipList::collectNodes(string key) {
     SkipListNode *targetNode = this -> tower.back();
-    SkipListNodes parents;
-
-    SkipListNodeIterator(targetNode).iterate(
-        key, 
-        [&, key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
-            parents.add(node);
-            return make_pair(node, false);
-        }
-    );
-    return parents;
+    return SkipListNodeIterator(targetNode).insertPositions(key);
 }
 
 void SkipList::update(string key, string value, SkipListNode* startingNode) {

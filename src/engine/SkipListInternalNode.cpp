@@ -58,6 +58,21 @@ SkipListNode* SkipListInternalNode::update(string key, string value) {
    return targetNode;
 }
 
+pair<vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::insertPositions(string key) {
+    vector<SkipListNode*> nodes;
+    SkipListNode *targetNode = this;
+
+    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
+        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
+			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
+		}        
+        if (targetNode -> matchesKey(key)) {
+            nodes.push_back(targetNode);
+        }
+    }
+   return make_pair(nodes, targetNode);
+}
+
 SkipListNode* SkipListInternalNode::addToRightWith(string key, string value) {
     SkipListInternalNode* newNode = new SkipListInternalNode(key, value);
 	newNode -> updateRight(this -> right);

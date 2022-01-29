@@ -1,6 +1,7 @@
 #include "SkipListNodeIterator.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
+#include "SkipListNodes.h"
 
 SkipListNodeIterator::SkipListNodeIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }
@@ -42,4 +43,19 @@ void SkipListNodeIterator::update(string key, string value) {
     } else {
         static_cast<SkipListLeafNode*>(this -> startingNode) -> update(key, value);
     }
+}
+
+SkipListNodes SkipListNodeIterator::insertPositions(string key) {
+    SkipListNodes nodes;
+
+    if (!this -> startingNode -> isLeaf()) {
+        pair<vector<SkipListNode*>, SkipListNode*> leafNodeByPositionNodes = static_cast<SkipListInternalNode*>(this -> startingNode) -> insertPositions(key);
+        if (leafNodeByPositionNodes.second != nullptr && leafNodeByPositionNodes.second -> isLeaf()) {
+            leafNodeByPositionNodes.first.push_back(static_cast<SkipListLeafNode*>(leafNodeByPositionNodes.second) -> insertPosition(key));
+        }
+        nodes.addAll(leafNodeByPositionNodes.first);        
+    } else {
+        nodes.add(static_cast<SkipListLeafNode*>(this -> startingNode) -> insertPosition(key));
+    }
+    return nodes;
 }

@@ -13,6 +13,7 @@ class SkipListNodes {
 
     public:
     void add(SkipListNode* node);
+    void addAll(vector<SkipListNode*> const &vector);
     SkipListNode* pop();
     bool isEmpty();
 };

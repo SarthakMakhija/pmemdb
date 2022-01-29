@@ -2,6 +2,7 @@
 #define _SkipListInternalNode_
 
 #include <string>
+#include <vector>
 #include "SkipListNode.h"
 
 class SkipListInternalNode : public SkipListNode {
@@ -28,6 +29,7 @@ class SkipListInternalNode : public SkipListNode {
     SkipListNode* getDown();
     pair<SkipListNode*, bool> getBy(string key);
     SkipListNode* update(string key, string value);
+    pair<vector<SkipListNode*>, SkipListNode*> insertPositions(string key);
 };
 
 #endif
