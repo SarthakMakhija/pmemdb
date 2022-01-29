@@ -15,7 +15,6 @@ class SkipListNode {
     virtual bool isKeyLessEqualTo(string key) = 0;
     virtual void updateValue(string value) = 0;
     virtual KeyValuePair getKeyValuePair()  = 0;
-    virtual KeyValuePair rightKeyValuePair() = 0;    
-    virtual SkipListNode* iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) = 0;
+    virtual KeyValuePair rightKeyValuePair() = 0;
 };
 #endif

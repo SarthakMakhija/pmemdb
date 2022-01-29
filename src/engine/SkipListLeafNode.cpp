@@ -13,18 +13,6 @@ bool SkipListLeafNode::isLeaf() {
     return true;
 }
 
-SkipListNode* SkipListLeafNode::iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) {
-    SkipListLeafNode *targetNode = this;
-    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
-        targetNode = targetNode -> right;
-    }
-    pair<SkipListNode*, bool> executionStatus = block(static_cast<SkipListNode*>(targetNode));
-    if (executionStatus.second) {
-        return executionStatus.first;
-    }
-    return nullptr;
-}
-
 pair<SkipListNode*, bool> SkipListLeafNode::getBy(string key) {
     SkipListLeafNode *targetNode = this;
     while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {

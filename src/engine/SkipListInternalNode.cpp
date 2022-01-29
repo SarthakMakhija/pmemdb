@@ -14,24 +14,6 @@ bool SkipListInternalNode::isLeaf() {
     return false;
 }
 
-SkipListNode* SkipListInternalNode::iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block) {
-    SkipListNode *targetNode = this;
-    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
-        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
-			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
-		}
-        
-        pair<SkipListNode*, bool> executionStatus = block(static_cast<SkipListNode*>(targetNode));
-        if (executionStatus.second) {
-            return executionStatus.first;
-        }
-    }
-    if (targetNode -> isLeaf()) {
-        return targetNode;
-    }
-    return nullptr;
-}
-
 pair<SkipListNode*, bool> SkipListInternalNode::getBy(string key) {
     SkipListNode *targetNode = this;
     for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {

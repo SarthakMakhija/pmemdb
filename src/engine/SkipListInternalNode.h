@@ -22,12 +22,11 @@ class SkipListInternalNode : public SkipListNode {
     void updateRight(SkipListInternalNode* right);
     KeyValuePair getKeyValuePair();
     KeyValuePair rightKeyValuePair();
-    SkipListNode* iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);
     void updateValue(string value);
     SkipListNode* getDown();
-    
+
     pair<SkipListNode*, bool> getBy(string key);
     SkipListNode* update(string key, string value);
     pair<vector<SkipListNode*>, SkipListNode*> insertPositions(string key);

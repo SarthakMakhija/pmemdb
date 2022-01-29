@@ -19,7 +19,6 @@ class SkipListLeafNode : public SkipListNode {
     void updateRight(SkipListLeafNode* right);
     KeyValuePair getKeyValuePair();
     KeyValuePair rightKeyValuePair();
-    SkipListNode* iterate(string key, function<pair<SkipListNode*, bool> (SkipListNode*)> block);
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);
     void updateValue(string value);
