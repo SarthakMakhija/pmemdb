@@ -1,8 +1,7 @@
 add_library(SkipList 
-            SkipListNode.h 
-            SkipListNode.cpp 
             KeyValuePair.h 
             KeyValuePair.cpp 
+            SkipListNode.h 
             SkipListNodes.h 
             SkipListNodes.cpp 
             SkipList.h 
