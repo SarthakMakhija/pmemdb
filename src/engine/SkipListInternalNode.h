@@ -20,14 +20,15 @@ class SkipListInternalNode : public SkipListNode {
 
     bool isLeaf();
     SkipListNode* addToRightWith(string key, string value);
-    void updateDown(SkipListNode* down);
-    void updateRight(SkipListInternalNode* right);
-    KeyValuePair getKeyValuePair();
-    KeyValuePair rightKeyValuePair();
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);    
-    SkipListNode* getDown();
+    KeyValuePair getKeyValuePair();
+    KeyValuePair rightKeyValuePair();
 
+    SkipListNode* getDown();
+    void updateDown(SkipListNode* down);
+    void updateRight(SkipListInternalNode* right);    
+    
     pair<SkipListNode*, bool> getBy(string key);
     SkipListNode* update(string key, string value);
     pair<vector<SkipListNode*>, SkipListNode*> insertPositions(string key);
