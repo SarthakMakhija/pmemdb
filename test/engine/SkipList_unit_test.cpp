@@ -50,3 +50,23 @@ TEST(SkipList, CreateASkipListAndUpdateTheValueOfAnExistentingKey) {
     
     ASSERT_EQ("Hard disk", existenceByValue.first);
 }
+
+TEST(SkipList, CreateASkipListAndUpdateAValue) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+
+    skipList -> update("HDD", "Hard disk");
+    pair<string, bool> existenceByValue = skipList -> get("HDD");
+    ASSERT_EQ("Hard disk", existenceByValue.first);
+}
+
+TEST(SkipList, CreateASkipListAndUpdateAValueForNonExistingKey) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+
+    skipList -> update("SDD", "Solid state drive");
+    pair<string, bool> existenceByValue = skipList -> get("SDD");
+    ASSERT_EQ("", existenceByValue.first);
+}

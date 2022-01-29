@@ -10,14 +10,26 @@ TEST(SkipListException, ThrowInvalidArgumentExceptionGivenTowerSizeIsLessThanZer
     ASSERT_THROW(new SkipList(-1), std::invalid_argument);
 }
 
-TEST(SkipListException, ThrowInvalidArgumentExceptionGivenKeyIsBlank) {
+TEST(SkipListException, ThrowInvalidArgumentExceptionGivenKeyIsBlankWhilePutting) {
     SkipList* skipList = new SkipList(5);
     
     ASSERT_THROW(skipList -> put("", "Hard disk drive"), std::invalid_argument);
 }
 
-TEST(SkipListException, ThrowInvalidArgumentExceptionGivenValueIsBlank) {
+TEST(SkipListException, ThrowInvalidArgumentExceptionGivenValueIsBlankWhilePutting) {
     SkipList* skipList = new SkipList(5);
     
     ASSERT_THROW(skipList -> put("HDD", ""), std::invalid_argument);
+}
+
+TEST(SkipListException, ThrowInvalidArgumentExceptionGivenKeyIsBlankWhileUpdating) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> update("", "Hard disk drive"), std::invalid_argument);
+}
+
+TEST(SkipListException, ThrowInvalidArgumentExceptionGivenValueIsBlank) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> update("HDD", ""), std::invalid_argument);
 }

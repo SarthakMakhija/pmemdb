@@ -39,6 +39,15 @@ void SkipList::put(string key, string value) {
     this -> update(key, value, existenceByNode.first);
 }
 
+void SkipList::update(string key, string value) {
+    if (key == "" || value == "") {
+        throw std::invalid_argument("key and value can not be blank while updating");
+    }
+
+    this -> update(key, value, this -> tower.back());
+}
+
+
 pair<string, bool> SkipList::get(string key) {
     pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
     if (existenceByNode.second) {
