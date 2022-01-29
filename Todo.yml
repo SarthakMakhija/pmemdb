@@ -28,9 +28,13 @@ tasks:
           - task: Does SkipListNodeIterator need a move constructor
           - status: pending
           - task: Refactor iterate across
-          - status: pending
+          - status: done
           - task: Add an integration test for update
           - status: done
+          - task: Probably make update and getBy virtual
+          - status: pending
+          - task: Duplication in SkipListInternalNode, duplication in SkipListLeafNode
+          - status: pending
 
 later:
   items:
