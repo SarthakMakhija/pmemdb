@@ -1,11 +1,11 @@
-#include "SkipListNodeIterator.h"
+#include "SkipListIterator.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
 
-SkipListNodeIterator::SkipListNodeIterator(SkipListNode* startingNode) : startingNode{startingNode} {
+SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }
 
-pair<SkipListNode*, bool> SkipListNodeIterator::getBy(string key) {
+pair<SkipListNode*, bool> SkipListIterator::getBy(string key) {
     if (!this -> startingNode -> isLeaf()) {
         pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
         if (existenceByNode.second) {
@@ -17,7 +17,7 @@ pair<SkipListNode*, bool> SkipListNodeIterator::getBy(string key) {
     }
 }
 
-void SkipListNodeIterator::update(string key, string value) {
+void SkipListIterator::update(string key, string value) {
     SkipListNode* node = nullptr;
 
     if (!this -> startingNode -> isLeaf()) {
@@ -30,7 +30,7 @@ void SkipListNodeIterator::update(string key, string value) {
     }
 }
 
-SkipListNodes SkipListNodeIterator::insertPositions(string key) {
+SkipListNodes SkipListIterator::insertPositions(string key) {
     SkipListNodes nodes;
 
     if (!this -> startingNode -> isLeaf()) {

@@ -3,7 +3,7 @@
 #include "../../src/engine/SkipListInternalNode.h"
 #include "../../src/engine/SkipListLeafNode.h"
 #include "../../src/engine/KeyValuePair.h"
-#include "../../src/engine/SkipListNodeIterator.h"
+#include "../../src/engine/SkipListIterator.h"
 #include "../../src/engine/SkipListNodes.h"
 
 TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInInternalNode) {
@@ -23,7 +23,7 @@ TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInInternalNode) {
   internalSecond -> updateDown(leafThird);
   
   string key = "SDD";
-  pair<SkipListNode*, bool> existenceByNode = SkipListNodeIterator(internalFirst).getBy(key);
+  pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
   
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> getKeyValuePair());
 }
@@ -45,7 +45,7 @@ TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInLeafNode) {
   internalSecond -> updateDown(leafThird);
   
   string key = "Pmem";
-  pair<SkipListNode*, bool> existenceByNode = SkipListNodeIterator(internalFirst).getBy(key);
+  pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
   
   ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), existenceByNode.first -> getKeyValuePair());
 }
@@ -67,7 +67,7 @@ TEST(SkipListNodeIterator, GetByKeyForANonExistingKey) {
   internalSecond -> updateDown(leafThird);
   
   string key = "Tuff";
-  pair<SkipListNode*, bool> existenceByNode = SkipListNodeIterator(internalFirst).getBy(key);
+  pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
   
   ASSERT_EQ(nullptr, existenceByNode.first);
 }
@@ -89,7 +89,7 @@ TEST(SkipListNodeIterator, InsertPositionAfterWhichKeyValueWouldBePut) {
   internalSecond -> updateDown(leafThird);
   
   string key = "Tuff";
-  SkipListNodes nodes = SkipListNodeIterator(internalFirst).insertPositions(key);
+  SkipListNodes nodes = SkipListIterator(internalFirst).insertPositions(key);
   
   SkipListNode* leafNode = nodes.pop();
   ASSERT_TRUE(leafNode -> isLeaf());
@@ -117,7 +117,7 @@ TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInInternalNode) {
   internalSecond -> updateDown(leafThird);
   
   string key = "SDD";
-  SkipListNodeIterator(internalFirst).update(key, "Solid Drive");
+  SkipListIterator(internalFirst).update(key, "Solid Drive");
   
   pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
   ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> getKeyValuePair());
@@ -140,7 +140,7 @@ TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInLeafNode) {
   internalSecond -> updateDown(leafThird);
   
   string key = "SDD";
-  SkipListNodeIterator(internalFirst).update(key, "Solid Drive");
+  SkipListIterator(internalFirst).update(key, "Solid Drive");
   
   pair<SkipListNode*, bool> existenceByNode = leafFirst -> getBy(key);
   ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> getKeyValuePair());

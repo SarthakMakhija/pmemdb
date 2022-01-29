@@ -1,16 +1,16 @@
-#ifndef _SkipListNodeIterator_
-#define _SkipListNodeIterator_
+#ifndef _SkipListIterator_
+#define _SkipListIterator_
 
 #include <string>
 #include "SkipListNode.h"
 #include "SkipListNodes.h"
 
-class SkipListNodeIterator {   
+class SkipListIterator {   
     private:
     SkipListNode* startingNode;
 
     public:
-    SkipListNodeIterator(SkipListNode* startingNode);
+    SkipListIterator(SkipListNode* startingNode);
 
     pair<SkipListNode*, bool> getBy(string key);
     void update(string key, string value);

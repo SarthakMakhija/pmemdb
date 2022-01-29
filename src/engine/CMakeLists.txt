@@ -10,7 +10,7 @@ add_library(SkipList
             SkipListInternalNode.cpp
             SkipListLeafNode.h 
             SkipListLeafNode.cpp
-            SkipListNodeIterator.h 
-            SkipListNodeIterator.cpp)
+            SkipListIterator.h 
+            SkipListIterator.cpp)
 
 target_link_libraries(SkipList glog::glog)

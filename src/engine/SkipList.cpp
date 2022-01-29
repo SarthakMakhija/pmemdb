@@ -2,7 +2,7 @@
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
-#include "SkipListNodeIterator.h"
+#include "SkipListIterator.h"
 #include "SkipListNodes.h"
 #include <stdlib.h>
 #include <stdexcept>
@@ -65,14 +65,14 @@ void SkipList::multiLevelPut(string key, string value) {
 
 SkipListNodes SkipList::collectNodes(string key) {
     SkipListNode *targetNode = this -> tower.back();
-    return SkipListNodeIterator(targetNode).insertPositions(key);
+    return SkipListIterator(targetNode).insertPositions(key);
 }
 
 void SkipList::update(string key, string value, SkipListNode* startingNode) {
-    SkipListNodeIterator(startingNode).update(key, value);
+    SkipListIterator(startingNode).update(key, value);
 }
 
 pair<SkipListNode*, bool> SkipList::getByKey(string key) {
     SkipListNode *targetNode = this -> tower.back();
-    return SkipListNodeIterator(targetNode).getBy(key);
+    return SkipListIterator(targetNode).getBy(key);
 }
