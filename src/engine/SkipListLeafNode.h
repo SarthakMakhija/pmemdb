@@ -24,6 +24,7 @@ class SkipListLeafNode : public SkipListNode {
     bool isKeyLessEqualTo(string key);
     void updateValue(string value);
     pair<SkipListNode*, bool> getBy(string key);
+    void update(string key, string value);
 };
 
 #endif

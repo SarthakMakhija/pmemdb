@@ -36,6 +36,16 @@ pair<SkipListNode*, bool> SkipListLeafNode::getBy(string key) {
     return make_pair(nullptr, false);
 }
 
+void SkipListLeafNode::update(string key, string value) {
+    SkipListLeafNode *targetNode = this;
+    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
+        targetNode = targetNode -> right;
+    }
+    if (targetNode -> matchesKey(key)) {
+        targetNode -> updateValue(value);
+    }
+}
+
 SkipListNode* SkipListLeafNode::addToRightWith(string key, string value) {
     SkipListLeafNode* newNode = new SkipListLeafNode(key, value);
 	newNode -> updateRight(static_cast<SkipListLeafNode*>(this -> right));

@@ -27,6 +27,7 @@ class SkipListInternalNode : public SkipListNode {
     void updateValue(string value);
     SkipListNode* getDown();
     pair<SkipListNode*, bool> getBy(string key);
+    SkipListNode* update(string key, string value);
 };
 
 #endif

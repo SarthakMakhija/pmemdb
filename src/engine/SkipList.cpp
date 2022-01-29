@@ -78,15 +78,7 @@ SkipListNodes SkipList::collectNodes(string key) {
 }
 
 void SkipList::update(string key, string value, SkipListNode* startingNode) {
-    SkipListNodeIterator(startingNode).iterate(
-        key, 
-        [key, value] (SkipListNode* node) -> pair<SkipListNode*, bool> {
-            if (node -> matchesKey(key)) {
-			    node -> updateValue(value);
-		    }
-            return make_pair(node, false);
-        }
-    );
+    SkipListNodeIterator(startingNode).update(key, value);
 }
 
 pair<SkipListNode*, bool> SkipList::getByKey(string key) {

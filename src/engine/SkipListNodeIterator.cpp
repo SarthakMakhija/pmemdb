@@ -20,8 +20,6 @@ SkipListNode* SkipListNodeIterator::iterate(string key, function<pair<SkipListNo
 }
 
 pair<SkipListNode*, bool> SkipListNodeIterator::getBy(string key) {
-    SkipListNode* node = nullptr;
-
     if (!this -> startingNode -> isLeaf()) {
         pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
         if (existenceByNode.second) {
@@ -30,5 +28,18 @@ pair<SkipListNode*, bool> SkipListNodeIterator::getBy(string key) {
         return static_cast<SkipListLeafNode*>(existenceByNode.first) -> getBy(key);
     } else {
         return static_cast<SkipListLeafNode*>(this -> startingNode) -> getBy(key);
+    }
+}
+
+void SkipListNodeIterator::update(string key, string value) {
+    SkipListNode* node = nullptr;
+
+    if (!this -> startingNode -> isLeaf()) {
+        node = static_cast<SkipListInternalNode*>(this -> startingNode) -> update(key, value);
+        if (node != nullptr && node -> isLeaf()) {
+            static_cast<SkipListLeafNode*>(node) -> update(key, value);
+        }
+    } else {
+        static_cast<SkipListLeafNode*>(this -> startingNode) -> update(key, value);
     }
 }
