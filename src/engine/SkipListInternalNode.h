@@ -26,6 +26,7 @@ class SkipListInternalNode : public SkipListNode {
     bool isKeyLessEqualTo(string key);
     void updateValue(string value);
     SkipListNode* getDown();
+    pair<SkipListNode*, bool> getBy(string key);
 };
 
 #endif

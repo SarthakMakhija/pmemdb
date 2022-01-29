@@ -91,23 +91,5 @@ void SkipList::update(string key, string value, SkipListNode* startingNode) {
 
 pair<SkipListNode*, bool> SkipList::getByKey(string key) {
     SkipListNode *targetNode = this -> tower.back();
-
-    SkipListNode* node = SkipListNodeIterator(targetNode).iterate(
-        key, 
-        [key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
-        if (node -> matchesKey(key)) {
-			return make_pair(node, true);
-		} else {
-			return make_pair(nullptr, false);
-		}
-    });
-
-    if (node != nullptr) {
-        return make_pair(node, true);
-    }
-    return make_pair(nullptr, false);
+    return SkipListNodeIterator(targetNode).getBy(key);
 }
-
-
-
-

@@ -18,3 +18,17 @@ SkipListNode* SkipListNodeIterator::iterate(string key, function<pair<SkipListNo
         return this -> startingNode -> iterate(key, block);
     }
 }
+
+pair<SkipListNode*, bool> SkipListNodeIterator::getBy(string key) {
+    SkipListNode* node = nullptr;
+
+    if (!this -> startingNode -> isLeaf()) {
+        pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
+        if (existenceByNode.second) {
+            return existenceByNode;
+        }
+        return static_cast<SkipListLeafNode*>(existenceByNode.first) -> getBy(key);
+    } else {
+        return static_cast<SkipListLeafNode*>(this -> startingNode) -> getBy(key);
+    }
+}

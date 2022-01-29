@@ -25,6 +25,17 @@ SkipListNode* SkipListLeafNode::iterate(string key, function<pair<SkipListNode*,
     return nullptr;
 }
 
+pair<SkipListNode*, bool> SkipListLeafNode::getBy(string key) {
+    SkipListLeafNode *targetNode = this;
+    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
+        targetNode = targetNode -> right;
+    }
+    if (targetNode -> matchesKey(key)) {
+        return make_pair(targetNode, true);
+    }
+    return make_pair(nullptr, false);
+}
+
 SkipListNode* SkipListLeafNode::addToRightWith(string key, string value) {
     SkipListLeafNode* newNode = new SkipListLeafNode(key, value);
 	newNode -> updateRight(static_cast<SkipListLeafNode*>(this -> right));

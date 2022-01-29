@@ -23,6 +23,7 @@ class SkipListLeafNode : public SkipListNode {
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);
     void updateValue(string value);
+    pair<SkipListNode*, bool> getBy(string key);
 };
 
 #endif

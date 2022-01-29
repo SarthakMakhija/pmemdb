@@ -32,6 +32,19 @@ SkipListNode* SkipListInternalNode::iterate(string key, function<pair<SkipListNo
     return nullptr;
 }
 
+pair<SkipListNode*, bool> SkipListInternalNode::getBy(string key) {
+    SkipListNode *targetNode = this;
+    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
+        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
+			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
+		}        
+        if (targetNode -> matchesKey(key)) {
+            return make_pair(targetNode, true);
+        }
+    }
+   return make_pair(targetNode, false);
+}
+
 SkipListNode* SkipListInternalNode::addToRightWith(string key, string value) {
     SkipListInternalNode* newNode = new SkipListInternalNode(key, value);
 	newNode -> updateRight(this -> right);
