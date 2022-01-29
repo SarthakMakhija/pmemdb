@@ -9,13 +9,12 @@ SkipListNode* SkipListNodeIterator::iterate(string key, function<pair<SkipListNo
     SkipListNode* node = nullptr;
 
     if (!this -> startingNode -> isLeaf()) {
-        node = static_cast<SkipListInternalNode*>(this -> startingNode) -> iterate(key, block);
+        node = this -> startingNode -> iterate(key, block);
         if (node != nullptr && node -> isLeaf()) {
             return static_cast<SkipListLeafNode*>(node) -> iterate(key, block);
         }
         return node;
     } else {
-        return static_cast<SkipListLeafNode*>(this -> startingNode) -> iterate(key, block);
+        return this -> startingNode -> iterate(key, block);
     }
-    return nullptr;
 }
