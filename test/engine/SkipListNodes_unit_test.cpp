@@ -8,7 +8,7 @@ TEST(SkipListNodes, AddANodeToSkipListNodes) {
   SkipListNodes skipListNodes;
   skipListNodes.add(node);
   
-  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), skipListNodes.pop() -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), skipListNodes.pop() -> keyValuePair());
 }
 
 TEST(SkipListNodes, Add2NodesToSkipListNodes) {  
@@ -16,8 +16,8 @@ TEST(SkipListNodes, Add2NodesToSkipListNodes) {
   skipListNodes.add(new SkipListInternalNode("HDD", "Hard disk drive"));
   skipListNodes.add(new SkipListInternalNode("SDD", "Solid state drive"));
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), skipListNodes.pop() -> getKeyValuePair());
-  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), skipListNodes.pop() -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), skipListNodes.pop() -> keyValuePair());
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), skipListNodes.pop() -> keyValuePair());
 }
 
 TEST(SkipListNodes, IsNotEmpty) {  

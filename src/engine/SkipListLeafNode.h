@@ -20,7 +20,7 @@ class SkipListLeafNode : public SkipListNode {
     SkipListNode* addToRightWith(string key, string value);
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);
-    KeyValuePair getKeyValuePair();
+    KeyValuePair keyValuePair();
     KeyValuePair rightKeyValuePair();
     
     void updateRight(SkipListLeafNode* right);

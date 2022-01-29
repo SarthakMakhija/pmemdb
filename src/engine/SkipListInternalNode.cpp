@@ -29,7 +29,7 @@ bool SkipListInternalNode::isKeyLessEqualTo(string key) {
     return this -> key <= key;
 }
 
-KeyValuePair SkipListInternalNode::getKeyValuePair() {
+KeyValuePair SkipListInternalNode::keyValuePair() {
     return KeyValuePair(this -> key, this -> value);
 }
 

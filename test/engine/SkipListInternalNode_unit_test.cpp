@@ -100,7 +100,7 @@ TEST(SkipListInternalNode, GetByKeyForAnExistingKey) {
   string key = "SDD";
   pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> keyValuePair());
 }
 
 TEST(SkipListInternalNode, GetByKeyForANonExistingKeyInInternalNode) {
@@ -144,7 +144,7 @@ TEST(SkipListInternalNode, GetByKeyForANonExistingKeyInInternalNodeAndReturnTheL
   string key = "Pmem";
   pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
   
-  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), existenceByNode.first -> keyValuePair());
 }
 
 TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut1) {
@@ -168,7 +168,7 @@ TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBe
 
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
 
-  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), internalNode -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), internalNode -> keyValuePair());
 }
 
 TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut2) {
@@ -191,7 +191,7 @@ TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBe
   pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositions(key);
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
 
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> keyValuePair());
 }
 
 TEST(SkipListInternalNode, UpdateValueOfAMatchingKey) {
@@ -214,6 +214,6 @@ TEST(SkipListInternalNode, UpdateValueOfAMatchingKey) {
   SkipListNode* leafNode = internalFirst -> update(key, "Solid Drive");
   pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
 
-  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }
 

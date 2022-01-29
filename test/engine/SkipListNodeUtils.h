@@ -5,9 +5,9 @@
 KeyValuePair downKeyValuePairOf(SkipListInternalNode* node) {
     if (node != nullptr)  {
         if (!node -> getDown() -> isLeaf()) {
-            return static_cast<SkipListInternalNode*>(node -> getDown()) -> getKeyValuePair();
+            return static_cast<SkipListInternalNode*>(node -> getDown()) -> keyValuePair();
         } else {
-            return static_cast<SkipListLeafNode*>(node -> getDown()) -> getKeyValuePair();
+            return static_cast<SkipListLeafNode*>(node -> getDown()) -> keyValuePair();
         }
     }
     return KeyValuePair("", "");

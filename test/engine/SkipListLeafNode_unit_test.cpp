@@ -82,7 +82,7 @@ TEST(SkipListLeafNode, GetByKeyForAnExistingKey) {
   string key = "SDD";
   pair<SkipListNode*, bool> existenceByNode = node -> getBy(key);
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> keyValuePair());
 }
 
 TEST(SkipListLeafNode, GetByKeyForANonExistingKey) {
@@ -109,7 +109,7 @@ TEST(SkipListLeafNode, InsertPositionAfterWhichKeyValueWouldBePut1) {
   string key = "Rocks";
   SkipListNode* targetNode = node -> insertPosition(key);
   
-  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), targetNode -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), targetNode -> keyValuePair());
 }
 
 TEST(SkipListLeafNode, InsertPositionAfterWhichKeyValueWouldBePut2) {
@@ -122,7 +122,7 @@ TEST(SkipListLeafNode, InsertPositionAfterWhichKeyValueWouldBePut2) {
   string key = "Tuff";
   SkipListNode* targetNode = node -> insertPosition(key);
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), targetNode -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), targetNode -> keyValuePair());
 }
 
 TEST(SkipListLeafNode, UpdateValueOfAMatchingKey) {
@@ -135,6 +135,6 @@ TEST(SkipListLeafNode, UpdateValueOfAMatchingKey) {
   string key = "Pmem";
   node -> update(key, "Persistent Memory");
 
-  KeyValuePair pair = node -> getBy(key).first -> getKeyValuePair();
+  KeyValuePair pair = node -> getBy(key).first -> keyValuePair();
   ASSERT_EQ(KeyValuePair("Pmem", "Persistent Memory"), pair);
 }

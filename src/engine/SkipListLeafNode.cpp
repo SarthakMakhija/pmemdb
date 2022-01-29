@@ -28,7 +28,7 @@ bool SkipListLeafNode::isKeyLessEqualTo(string key) {
     return this -> key <= key;
 }
 
-KeyValuePair SkipListLeafNode::getKeyValuePair() {
+KeyValuePair SkipListLeafNode::keyValuePair() {
     return KeyValuePair(this -> key, this -> value);
 }
 

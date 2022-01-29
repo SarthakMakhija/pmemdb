@@ -42,7 +42,7 @@ void SkipList::put(string key, string value) {
 pair<string, bool> SkipList::get(string key) {
     pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
     if (existenceByNode.second) {
-        return make_pair(existenceByNode.first -> getKeyValuePair().getValue(), true);
+        return make_pair(existenceByNode.first -> keyValuePair().getValue(), true);
     }
     return make_pair("", false);
 }

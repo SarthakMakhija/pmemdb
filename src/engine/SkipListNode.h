@@ -13,7 +13,7 @@ class SkipListNode {
     virtual SkipListNode* addToRightWith(string key, string value) = 0;
     virtual bool matchesKey(string key) const = 0;
     virtual bool isKeyLessEqualTo(string key) = 0;
-    virtual KeyValuePair getKeyValuePair()  = 0;
+    virtual KeyValuePair keyValuePair()  = 0;
     virtual KeyValuePair rightKeyValuePair() = 0;
 };
 #endif

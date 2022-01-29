@@ -25,7 +25,7 @@ TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInInternalNode) {
   string key = "SDD";
   pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> keyValuePair());
 }
 
 TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInLeafNode) {
@@ -47,7 +47,7 @@ TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInLeafNode) {
   string key = "Pmem";
   pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
   
-  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), existenceByNode.first -> keyValuePair());
 }
 
 TEST(SkipListNodeIterator, GetByKeyForANonExistingKey) {
@@ -93,11 +93,11 @@ TEST(SkipListNodeIterator, InsertPositionAfterWhichKeyValueWouldBePut) {
   
   SkipListNode* leafNode = nodes.pop();
   ASSERT_TRUE(leafNode -> isLeaf());
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), leafNode -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), leafNode -> keyValuePair());
 
   SkipListNode* internalNode = nodes.pop();
   ASSERT_FALSE(internalNode -> isLeaf());
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> keyValuePair());
 }
 
 TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInInternalNode) {
@@ -120,7 +120,7 @@ TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInInternalNode) {
   SkipListIterator(internalFirst).update(key, "Solid Drive");
   
   pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
-  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }
 
 TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInLeafNode) {
@@ -143,5 +143,5 @@ TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInLeafNode) {
   SkipListIterator(internalFirst).update(key, "Solid Drive");
   
   pair<SkipListNode*, bool> existenceByNode = leafFirst -> getBy(key);
-  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }
