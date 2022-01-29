@@ -10,6 +10,8 @@ class SkipListLeafNode : public SkipListNode {
     string value;
     SkipListLeafNode* right;
 
+    void updateValue(string value);
+    
     public:
     SkipListLeafNode(string key, string value);
     SkipListLeafNode();
@@ -21,7 +23,7 @@ class SkipListLeafNode : public SkipListNode {
     KeyValuePair rightKeyValuePair();
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);
-    void updateValue(string value);
+    
     pair<SkipListNode*, bool> getBy(string key);
     void update(string key, string value);
     SkipListNode* insertPosition(string key);

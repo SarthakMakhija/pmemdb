@@ -34,7 +34,7 @@ SkipListNode* SkipListInternalNode::update(string key, string value) {
 			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
 		}        
         if (targetNode -> matchesKey(key)) {
-            targetNode -> updateValue(value);
+            static_cast<SkipListInternalNode*>(targetNode) -> updateValue(value);
         }
     }
    return targetNode;

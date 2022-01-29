@@ -81,13 +81,6 @@ TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
-TEST(SkipListInternalNode, UpdateNodeValue) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
-  node -> updateValue("Hard disk");
-  
-  ASSERT_EQ(KeyValuePair("HDD", "Hard disk"), node -> getKeyValuePair());
-}
-
 TEST(SkipListInternalNode, GetByKeyForAnExistingKey) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");

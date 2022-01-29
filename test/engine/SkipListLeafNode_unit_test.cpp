@@ -72,13 +72,6 @@ TEST(SkipListLeafNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
-TEST(SkipListLeafNode, UpdateNodeValue) {
-  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
-  node -> updateValue("Hard disk");
-  
-  ASSERT_EQ(KeyValuePair("HDD", "Hard disk"), node -> getKeyValuePair());
-}
-
 TEST(SkipListLeafNode, GetByKeyForAnExistingKey) {
   SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
   SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");

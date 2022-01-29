@@ -12,6 +12,8 @@ class SkipListInternalNode : public SkipListNode {
     SkipListInternalNode* right;
     SkipListNode* down;
 
+    void updateValue(string value);
+
     public:
     SkipListInternalNode(string key, string value);
     SkipListInternalNode();
@@ -23,8 +25,7 @@ class SkipListInternalNode : public SkipListNode {
     KeyValuePair getKeyValuePair();
     KeyValuePair rightKeyValuePair();
     bool matchesKey(string key) const;
-    bool isKeyLessEqualTo(string key);
-    void updateValue(string value);
+    bool isKeyLessEqualTo(string key);    
     SkipListNode* getDown();
 
     pair<SkipListNode*, bool> getBy(string key);
