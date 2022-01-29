@@ -30,7 +30,7 @@ tasks:
           - task: Refactor iterate across
           - status: pending
           - task: Add an integration test for update
-          - status: pending
+          - status: done
 
 later:
   items:
