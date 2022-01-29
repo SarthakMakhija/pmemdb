@@ -88,7 +88,7 @@ TEST(SkipListInternalNode, UpdateNodeValue) {
   ASSERT_EQ(KeyValuePair("HDD", "Hard disk"), node -> getKeyValuePair());
 }
 
-TEST(SkipListInternalNode, IterateAndReturnNodeWithMatchingKeyValue) {
+TEST(SkipListInternalNode, GetByKeyForAnExistingKey) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
@@ -105,19 +105,80 @@ TEST(SkipListInternalNode, IterateAndReturnNodeWithMatchingKeyValue) {
   internalSecond -> updateDown(leafThird);
   
   string key = "SDD";
-  SkipListNode* targetNode = internalFirst -> iterate(key,
-                  [key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
-                        if (node -> matchesKey(key)) {
-                          return make_pair(node, true);
-                        } else {
-                          return make_pair(nullptr, false);
-                        }  
-                    });
+  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), targetNode -> getKeyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> getKeyValuePair());
 }
 
-TEST(SkipListInternalNode, IterateAndReturnTheLastLeafNodeGivenKeyDesNotExist) {
+TEST(SkipListInternalNode, GetByKeyForANonExistingKeyInInternalNode) {
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
+  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  
+  leafFirst  -> updateRight(leafSecond);
+  leafSecond -> updateRight(leafThird);
+
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  
+  string key = "Pmem";
+  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
+  
+  ASSERT_FALSE(existenceByNode.second);
+}
+
+TEST(SkipListInternalNode, GetByKeyForANonExistingKeyInInternalNodeAndReturnTheLeafNodeToBeginTheGetOperation) {
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
+  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  
+  leafFirst  -> updateRight(leafSecond);
+  leafSecond -> updateRight(leafThird);
+
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  
+  string key = "Pmem";
+  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
+  
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), existenceByNode.first -> getKeyValuePair());
+}
+
+TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut1) {
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
+  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  
+  leafFirst  -> updateRight(leafSecond);
+  leafSecond -> updateRight(leafThird);
+
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  
+  string key = "Ignite";
+  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositions(key);
+
+  SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
+
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), internalNode -> getKeyValuePair());
+}
+
+TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut2) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
@@ -134,16 +195,32 @@ TEST(SkipListInternalNode, IterateAndReturnTheLastLeafNodeGivenKeyDesNotExist) {
   internalSecond -> updateDown(leafThird);
   
   string key = "Tuff";
-  SkipListNode* targetNode = internalFirst -> iterate(key,
-                  [key] (SkipListNode* node) -> pair<SkipListNode*, bool> {
-                        if (node -> matchesKey(key)) {
-                          return make_pair(node, true);
-                        } else {
-                          return make_pair(nullptr, false);
-                        }  
-                    });
+  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositions(key);
+  SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
+
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> getKeyValuePair());
+}
+
+TEST(SkipListInternalNode, UpdateValueOfAMatchingKey) {
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), targetNode -> getKeyValuePair());
-  ASSERT_TRUE(targetNode -> isLeaf());
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
+  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  
+  leafFirst  -> updateRight(leafSecond);
+  leafSecond -> updateRight(leafThird);
+
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  
+  string key = "SDD";
+  SkipListNode* leafNode = internalFirst -> update(key, "Solid Drive");
+  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
+
+  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> getKeyValuePair());
 }
 

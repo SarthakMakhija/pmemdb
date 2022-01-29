@@ -66,9 +66,7 @@ pair<vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::insertPositions
         while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
 			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
 		}        
-        if (targetNode -> matchesKey(key)) {
-            nodes.push_back(targetNode);
-        }
+        nodes.push_back(targetNode);
     }
    return make_pair(nodes, targetNode);
 }
