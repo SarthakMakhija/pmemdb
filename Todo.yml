@@ -35,6 +35,10 @@ tasks:
           - status: pending
           - task: Duplication in SkipListInternalNode, duplication in SkipListLeafNode
           - status: pending
+          - task: Do we need to increase towersize?
+          - status: pending
+          - task: Change parameter of private methods to const reference to string instead of string 
+          - status: pending
 
 later:
   items:
