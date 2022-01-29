@@ -107,7 +107,7 @@ TEST(SkipListLeafNode, InsertPositionAfterWhichKeyValueWouldBePut1) {
   right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
   
   string key = "Rocks";
-  SkipListNode* targetNode = node -> insertPosition(key);
+  SkipListNode* targetNode = node -> insertPositionFor(key);
   
   ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), targetNode -> keyValuePair());
 }
@@ -120,7 +120,7 @@ TEST(SkipListLeafNode, InsertPositionAfterWhichKeyValueWouldBePut2) {
   right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
   
   string key = "Tuff";
-  SkipListNode* targetNode = node -> insertPosition(key);
+  SkipListNode* targetNode = node -> insertPositionFor(key);
   
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), targetNode -> keyValuePair());
 }

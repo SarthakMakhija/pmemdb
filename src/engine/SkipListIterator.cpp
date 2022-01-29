@@ -34,13 +34,13 @@ SkipListNodes SkipListIterator::insertPositions(string key) {
     SkipListNodes nodes;
 
     if (!this -> startingNode -> isLeaf()) {
-        pair<vector<SkipListNode*>, SkipListNode*> leafNodeByPositionNodes = static_cast<SkipListInternalNode*>(this -> startingNode) -> insertPositions(key);
+        pair<vector<SkipListNode*>, SkipListNode*> leafNodeByPositionNodes = static_cast<SkipListInternalNode*>(this -> startingNode) -> insertPositionsFor(key);
         if (leafNodeByPositionNodes.second != nullptr && leafNodeByPositionNodes.second -> isLeaf()) {
-            leafNodeByPositionNodes.first.push_back(static_cast<SkipListLeafNode*>(leafNodeByPositionNodes.second) -> insertPosition(key));
+            leafNodeByPositionNodes.first.push_back(static_cast<SkipListLeafNode*>(leafNodeByPositionNodes.second) -> insertPositionFor(key));
         }
         nodes.addAll(leafNodeByPositionNodes.first);        
     } else {
-        nodes.add(static_cast<SkipListLeafNode*>(this -> startingNode) -> insertPosition(key));
+        nodes.add(static_cast<SkipListLeafNode*>(this -> startingNode) -> insertPositionFor(key));
     }
     return nodes;
 }

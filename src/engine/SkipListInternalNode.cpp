@@ -78,7 +78,7 @@ SkipListNode* SkipListInternalNode::update(string key, string value) {
    return targetNode;
 }
 
-pair<vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::insertPositions(string key) {
+pair<vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::insertPositionsFor(string key) {
     vector<SkipListNode*> nodes;
     SkipListNode *targetNode = this;
 

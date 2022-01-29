@@ -27,7 +27,7 @@ class SkipListLeafNode : public SkipListNode {
     
     pair<SkipListNode*, bool> getBy(string key);
     void update(string key, string value);
-    SkipListNode* insertPosition(string key);
+    SkipListNode* insertPositionFor(string key);
 };
 
 #endif

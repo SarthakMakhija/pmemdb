@@ -164,7 +164,7 @@ TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBe
   internalSecond -> updateDown(leafThird);
   
   string key = "Ignite";
-  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositions(key);
+  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositionsFor(key);
 
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
 
@@ -188,7 +188,7 @@ TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBe
   internalSecond -> updateDown(leafThird);
   
   string key = "Tuff";
-  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositions(key);
+  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositionsFor(key);
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
 
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> keyValuePair());
