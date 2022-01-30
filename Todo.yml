@@ -4,7 +4,7 @@ tasks:
       - name: Add skip list engine
       - tasks:
           - task: Provide support for delete
-          - status: pending
+          - status: done
           - task: See if key and value should be string
           - status: pending
           - task: Go through skiplist code once again
