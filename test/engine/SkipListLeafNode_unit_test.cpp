@@ -138,3 +138,29 @@ TEST(SkipListLeafNode, UpdateValueOfAMatchingKey) {
   KeyValuePair pair = node -> getBy(key).first -> keyValuePair();
   ASSERT_EQ(KeyValuePair("Pmem", "Persistent Memory"), pair);
 }
+
+TEST(SkipListLeafNode, DeleteValueOfAMatchingKeyInBetween) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
+  
+  node  -> updateRight(right);
+  right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
+  
+  string key = "Pmem";
+  node -> deleteBy(key);
+
+  ASSERT_FALSE(node -> getBy(key).second);
+}
+
+TEST(SkipListLeafNode, DeleteValueOfAMatchingKeyInEnd) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
+  
+  node  -> updateRight(right);
+  right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
+  
+  string key = "SDD";
+  node -> deleteBy(key);
+
+  ASSERT_FALSE(node -> getBy(key).second);
+}
