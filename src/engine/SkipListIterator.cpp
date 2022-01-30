@@ -30,6 +30,19 @@ void SkipListIterator::update(string key, string value) {
     }
 }
 
+void SkipListIterator::deleteBy(string key) {
+    SkipListNode* node = nullptr;
+
+    if (!this -> startingNode -> isLeaf()) {
+        node = static_cast<SkipListInternalNode*>(this -> startingNode) -> deleteBy(key);
+        if (node != nullptr && node -> isLeaf()) {
+            static_cast<SkipListLeafNode*>(node) -> deleteBy(key);
+        }
+    } else {
+        static_cast<SkipListLeafNode*>(this -> startingNode) -> deleteBy(key);
+    }
+}
+
 SkipListNodes SkipListIterator::insertPositions(string key) {
     SkipListNodes nodes;
 

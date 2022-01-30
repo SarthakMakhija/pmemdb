@@ -1,6 +1,5 @@
 #include "SkipListLeafNode.h"
 #include "KeyValuePair.h"
-#include <iostream>
 
 SkipListLeafNode::SkipListLeafNode() : SkipListLeafNode("", "") {}
 
@@ -73,8 +72,6 @@ void SkipListLeafNode::deleteBy(string key) {
         previusNode = targetNode;
         targetNode  = targetNode -> right;
     }
-    cout << targetNode;
-    cout << previusNode;
     if (targetNode -> matchesKey(key)) {
         previusNode -> right = targetNode -> right;
         targetNode  -> right = nullptr;

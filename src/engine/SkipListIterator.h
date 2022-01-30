@@ -14,6 +14,7 @@ class SkipListIterator {
 
     pair<SkipListNode*, bool> getBy(string key);
     void update(string key, string value);
+    void deleteBy(string key);
     SkipListNodes insertPositions(string key);
 };
 

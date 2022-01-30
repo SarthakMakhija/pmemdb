@@ -31,6 +31,7 @@ class SkipListInternalNode : public SkipListNode {
     
     pair<SkipListNode*, bool> getBy(string key);
     SkipListNode* update(string key, string value);
+    SkipListNode* deleteBy(string key);
     pair<vector<SkipListNode*>, SkipListNode*> insertPositionsFor(string key);
 };
 

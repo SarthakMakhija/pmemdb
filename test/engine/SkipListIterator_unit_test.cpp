@@ -145,3 +145,51 @@ TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInLeafNode) {
   pair<SkipListNode*, bool> existenceByNode = leafFirst -> getBy(key);
   ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }
+
+TEST(SkipListNodeIterator, DeleteValueOfAMatchingKeyInBetween) {
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
+  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  
+  leafFirst  -> updateRight(leafSecond);
+  leafSecond -> updateRight(leafThird);
+
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  
+  string key = "Pmem";
+  SkipListIterator iterator = SkipListIterator(internalFirst);
+  iterator.deleteBy(key);
+  
+  pair<SkipListNode*, bool> existenceByNode = iterator.getBy(key);
+  ASSERT_FALSE(existenceByNode.second);
+}
+
+TEST(SkipListNodeIterator, DeleteValueOfAMatchingKeyInEnd) {
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
+  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  
+  leafFirst  -> updateRight(leafSecond);
+  leafSecond -> updateRight(leafThird);
+
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  
+  string key = "SDD";
+  SkipListIterator iterator = SkipListIterator(internalFirst);
+  iterator.deleteBy(key);
+  
+  pair<SkipListNode*, bool> existenceByNode = iterator.getBy(key);
+  ASSERT_FALSE(existenceByNode.second);
+}

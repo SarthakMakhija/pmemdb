@@ -78,6 +78,28 @@ SkipListNode* SkipListInternalNode::update(string key, string value) {
    return targetNode;
 }
 
+SkipListNode* SkipListInternalNode::deleteBy(string key) {
+    SkipListNode *previousNode  = nullptr;
+    SkipListNode *targetNode    = this;
+
+    for(; !targetNode -> isLeaf(); ) {
+        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
+			previousNode = targetNode;
+            targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
+		}        
+        if (targetNode -> matchesKey(key)) {
+            static_cast<SkipListInternalNode*>(previousNode) -> right = static_cast<SkipListInternalNode*>(targetNode) -> right;
+            static_cast<SkipListInternalNode*>(targetNode) -> down    = nullptr;
+            static_cast<SkipListInternalNode*>(targetNode) -> right   = nullptr;
+            delete targetNode; //warning?
+            targetNode = static_cast<SkipListInternalNode*>(previousNode) -> down;
+        } else {
+            targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down;
+        }
+    }
+   return targetNode;
+}
+
 pair<vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::insertPositionsFor(string key) {
     vector<SkipListNode*> nodes;
     SkipListNode *targetNode = this;
