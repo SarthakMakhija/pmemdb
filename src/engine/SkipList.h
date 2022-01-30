@@ -22,6 +22,7 @@ class SkipList {
     
     void put(string key, string value);
     void update(string key, string value);
+    void deleteBy(string key);
     pair<string, bool> get(string key);
 };
 #endif

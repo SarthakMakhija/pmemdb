@@ -70,3 +70,34 @@ TEST(SkipList, CreateASkipListAndUpdateAValueForNonExistingKey) {
     pair<string, bool> existenceByValue = skipList -> get("SDD");
     ASSERT_EQ("", existenceByValue.first);
 }
+
+TEST(SkipList, CreateASkipListAndDeleteByAKeyInTheBeginning) {
+    SkipList* skipList = new SkipList(1);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+
+    skipList -> deleteBy("HDD");
+    pair<string, bool> existenceByValue = skipList -> get("HDD");
+    ASSERT_EQ("", existenceByValue.first);
+}
+
+TEST(SkipList, CreateASkipListAndDeleteByAKeyInBetween) {
+    SkipList* skipList = new SkipList(1);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+    skipList -> put("SDD", "Solid state drive");
+
+    skipList -> deleteBy("Pmem");
+    pair<string, bool> existenceByValue = skipList -> get("Pmem");
+    ASSERT_EQ("", existenceByValue.first);
+}
+
+TEST(SkipList, CreateASkipListAndDeleteByAKeyInTheEnd) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+
+    skipList -> deleteBy("Pmem");
+    pair<string, bool> existenceByValue = skipList -> get("Pmem");
+    ASSERT_EQ("", existenceByValue.first);
+}

@@ -47,6 +47,14 @@ void SkipList::update(string key, string value) {
     this -> update(key, value, this -> tower.back());
 }
 
+void SkipList::deleteBy(string key) {
+    if (key == "") {
+        throw std::invalid_argument("key can not be blank while deleting the corresponding value");
+    }
+
+    SkipListIterator(this -> tower.back()).deleteBy(key);
+}
+
 pair<string, bool> SkipList::get(string key) {
     pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
     if (existenceByNode.second) {
