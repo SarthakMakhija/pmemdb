@@ -10,8 +10,6 @@ class SkipListLeafNode : public SkipListNode {
     string value;
     SkipListLeafNode* right;
 
-    void updateValue(string value);
-
     public:
     SkipListLeafNode(string key, string value);
     SkipListLeafNode();

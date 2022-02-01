@@ -65,7 +65,7 @@ void SkipListLeafNode::update(string key, string value) {
         targetNode = targetNode -> right;
     }
     if (targetNode -> matchesKey(key)) {
-        targetNode -> updateValue(value);
+        targetNode -> value = value;
     }
 }
 
@@ -82,8 +82,4 @@ void SkipListLeafNode::deleteBy(string key) {
         targetNode  -> right = nullptr;
         delete targetNode;
     }
-}
-
-void SkipListLeafNode::updateValue(string value) {
-    this -> value = value;
 }
