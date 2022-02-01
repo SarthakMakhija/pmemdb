@@ -40,15 +40,12 @@ TEST(SkipList, CreateASkipListAndGetTheExistenceOfNonExistentKey) {
     ASSERT_FALSE(existenceByValue.second);
 }
 
-TEST(SkipList, CreateASkipListAndUpdateTheValueOfAnExistentingKey) {
+TEST(SkipList, CreateASkipAndThrowAnExceptionWhilePuttingAnExistingKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
 
-    skipList -> put("HDD", "Hard disk");
-    pair<string, bool> existenceByValue = skipList -> get("HDD");
-    
-    ASSERT_EQ("Hard disk", existenceByValue.first);
+    ASSERT_THROW(skipList -> put("HDD", "Hard disk"), std::invalid_argument);
 }
 
 TEST(SkipList, CreateASkipListAndUpdateAValue) {

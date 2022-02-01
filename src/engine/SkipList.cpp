@@ -36,7 +36,7 @@ void SkipList::put(string key, string value) {
         this -> multiLevelPut(key, value);
         return;
     }
-    this -> update(key, value, existenceByNode.first);
+    throw std::invalid_argument("key already exists");
 }
 
 void SkipList::update(string key, string value) {
