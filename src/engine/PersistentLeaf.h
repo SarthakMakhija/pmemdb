@@ -20,8 +20,8 @@ struct PersistentLeaf {
     persistent_ptr<char[]>         keyValue; 
 
     void setKeySizeDirect(char *p, uint32_t v) {
-		    *((uint32_t *)(p)) = v;
-	  }
+		*((uint32_t *)(p)) = v;
+	}
 
     void setValueSizeDirect(char *p, uint32_t v) {
         *((uint32_t *)((char *)(p) + sizeof(uint32_t))) = v;
