@@ -13,13 +13,6 @@ bool SkipListLeafNode::isLeaf() {
     return true;
 }
 
-SkipListNode* SkipListLeafNode::addToRightWith(string key, string value) {
-    SkipListLeafNode* newNode = new SkipListLeafNode(key, value);
-	newNode -> updateRight(static_cast<SkipListLeafNode*>(this -> right));
-	this -> updateRight(newNode);
-	return newNode;
-}
-
 bool SkipListLeafNode::matchesKey(string key) const {
     return this -> key == key;
 }

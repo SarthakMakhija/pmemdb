@@ -17,7 +17,6 @@ class SkipListLeafNode : public SkipListNode {
     SkipListLeafNode();
     
     bool isLeaf();
-    SkipListNode* addToRightWith(string key, string value);
     bool matchesKey(string key) const;
     bool isKeyLessEqualTo(string key);
     KeyValuePair keyValuePair();

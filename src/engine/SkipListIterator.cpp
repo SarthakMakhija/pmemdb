@@ -18,7 +18,7 @@ void SkipListIterator::put(string key, string value) {
 
     while (rand() % 2 == 1 && !parents.isEmpty()) {
         left = parents.pop();
-		SkipListNode* newNode = left -> addToRightWith(key, value);
+		SkipListNode* newNode = static_cast<SkipListInternalNode*>(left) -> addToRightWith(key, value);
         if (!newNode -> isLeaf()) {
 		    static_cast<SkipListInternalNode*>(newNode) -> updateDown(node);
         }
