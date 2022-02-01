@@ -3,40 +3,39 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
-TEST_F(PersistentMemoryPoolFixture, ThrowInvalidArgumentExceptionGivenTowerSizeIsZero) {
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenTowerSizeIsZero) {
     ASSERT_THROW(new SkipList(0), std::invalid_argument);
 }
 
-TEST_F(PersistentMemoryPoolFixture, ThrowInvalidArgumentExceptionGivenTowerSizeIsLessThanZero) {
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenTowerSizeIsLessThanZero) {
     ASSERT_THROW(new SkipList(-1), std::invalid_argument);
 }
 
-TEST_F(PersistentMemoryPoolFixture, ThrowInvalidArgumentExceptionGivenKeyIsBlankWhilePutting) {
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenKeyIsBlankWhilePutting) {
     SkipList* skipList = new SkipList(5);
     
     ASSERT_THROW(skipList -> put("", "Hard disk drive"), std::invalid_argument);
 }
 
-TEST_F(PersistentMemoryPoolFixture, ThrowInvalidArgumentExceptionGivenValueIsBlankWhilePutting) {
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenValueIsBlankWhilePutting) {
     SkipList* skipList = new SkipList(5);
     
     ASSERT_THROW(skipList -> put("HDD", ""), std::invalid_argument);
 }
 
-TEST_F(PersistentMemoryPoolFixture, ThrowInvalidArgumentExceptionGivenKeyIsBlankWhileUpdating) {
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenKeyIsBlankWhileUpdating) {
     SkipList* skipList = new SkipList(5);
     
     ASSERT_THROW(skipList -> update("", "Hard disk drive"), std::invalid_argument);
 }
 
-TEST_F(PersistentMemoryPoolFixture, ThrowInvalidArgumentExceptionGivenValueIsBlank) {
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenValueIsBlank) {
     SkipList* skipList = new SkipList(5);
     
     ASSERT_THROW(skipList -> update("HDD", ""), std::invalid_argument);
 }
 
-
-TEST_F(PersistentMemoryPoolFixture, ThrowAnExceptionWhilePuttingAnExistingKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowAnExceptionWhilePuttingAnExistingKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
