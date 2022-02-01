@@ -82,7 +82,7 @@ TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
-TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInInternalNodeViaIntenalNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListInternal_GetByKeyForAnExistingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
 
