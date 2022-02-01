@@ -2,9 +2,9 @@ name: PmemCI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main_ ]
   pull_request:
-    branches: [ main ]
+    branches: [ main_ ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
