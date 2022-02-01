@@ -16,7 +16,7 @@ TEST(SkipListLeafNode, UpdateRightPointer) {
 }
 */
 
-TEST_F(PersistentMemoryPoolFixture, RightKeyValuePairGivenDownPointerIsNotNull) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenDownPointerIsNotNull) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
   SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
@@ -26,7 +26,7 @@ TEST_F(PersistentMemoryPoolFixture, RightKeyValuePairGivenDownPointerIsNotNull) 
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> rightKeyValuePair());
 }
 
-TEST_F(PersistentMemoryPoolFixture, RightKeyValuePairGivenRightPointerIsNull) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenRightPointerIsNull) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
 
@@ -35,7 +35,7 @@ TEST_F(PersistentMemoryPoolFixture, RightKeyValuePairGivenRightPointerIsNull) {
 }
 
 
-TEST_F(PersistentMemoryPoolFixture, MatchKeyInSkipListNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_MatchKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
   SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
@@ -45,7 +45,7 @@ TEST_F(PersistentMemoryPoolFixture, MatchKeyInSkipListNode) {
 }
 
 
-TEST_F(PersistentMemoryPoolFixture, DoesNotMatchKeyInSkipListNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DoesNotMatchKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   
   SkipListLeafNode *node = sentinel -> put("SDD", "Solid state drive");
@@ -54,7 +54,7 @@ TEST_F(PersistentMemoryPoolFixture, DoesNotMatchKeyInSkipListNode) {
   ASSERT_FALSE(matches);
 }
 
-TEST_F(PersistentMemoryPoolFixture, NodesKeyIsLessThanGivenKeyInSkipListNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsLessThanGivenKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
   SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
@@ -63,7 +63,7 @@ TEST_F(PersistentMemoryPoolFixture, NodesKeyIsLessThanGivenKeyInSkipListNode) {
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
-TEST_F(PersistentMemoryPoolFixture, NodesKeyIsEqualToGivenKeyInSkipListNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsEqualToGivenKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
   SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
@@ -72,7 +72,7 @@ TEST_F(PersistentMemoryPoolFixture, NodesKeyIsEqualToGivenKeyInSkipListNode) {
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
-TEST_F(PersistentMemoryPoolFixture, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
   SkipListLeafNode *node = sentinel -> put("SDD", "Solid state drive");
@@ -81,7 +81,7 @@ TEST_F(PersistentMemoryPoolFixture, NodesKeyIsGreaterThanGivenKeyInSkipListNode)
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
-TEST_F(PersistentMemoryPoolFixture, PutAKeyValuePair1) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_PutAKeyValuePair1) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   sentinel -> put("SDD", "Solid state drive");
 
@@ -91,7 +91,7 @@ TEST_F(PersistentMemoryPoolFixture, PutAKeyValuePair1) {
   ASSERT_EQ("Solid state drive", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, PutAKeyValuePair2) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_PutAKeyValuePair2) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   sentinel -> put("HDD", "Hard disk drive");
   sentinel -> put("SDD", "Solid state drive");
@@ -103,7 +103,7 @@ TEST_F(PersistentMemoryPoolFixture, PutAKeyValuePair2) {
   ASSERT_EQ("Persistent Storage", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForAnExistingKey) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   sentinel -> put("HDD", "Hard disk drive");
   sentinel -> put("Pmem", "Persistent Storage");
@@ -114,7 +114,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKey) {
   ASSERT_EQ("Persistent Storage", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, GetByKeyForANonExistingKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForANonExistingKey) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   sentinel -> put("HDD", "Hard disk drive");
   sentinel -> put("Pmem", "Persistent Storage");
@@ -125,7 +125,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForANonExistingKey) {
   ASSERT_EQ("", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, UpdateValueOfAMatchingKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_UpdateValueOfAMatchingKey) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   sentinel -> put("HDD", "Hard disk drive");
   sentinel -> put("Pmem", "Persistent Storage");
@@ -137,8 +137,9 @@ TEST_F(PersistentMemoryPoolFixture, UpdateValueOfAMatchingKey) {
   
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
+
 /*
-TEST(SkipListLeafNode, DeleteValueOfAMatchingKeyInBetween) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInBetween) {
   SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
   SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
   
@@ -151,7 +152,7 @@ TEST(SkipListLeafNode, DeleteValueOfAMatchingKeyInBetween) {
   ASSERT_FALSE(node -> getBy(key).second);
 }
 
-TEST(SkipListLeafNode, DeleteValueOfAMatchingKeyInEnd) {
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInEnd) {
   SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
   SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
   
