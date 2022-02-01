@@ -4,6 +4,7 @@
 #include "../../src/engine/SkipListLeafNode.h"
 #include "../../src/engine/KeyValuePair.h"
 #include "SkipListNodeTestUtils.h"
+#include  "PersistentMemoryPoolFixture.h"
 
 TEST(SkipListInternalNode, AddNewNodeToRight) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
@@ -81,138 +82,148 @@ TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
-TEST(SkipListInternalNode, GetByKeyForAnExistingKey) {
+TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInInternalNodeViaIntenalNode) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
-  internalSecond -> updateDown(leafThird);
-  
+  internalSecond -> updateDown(leafSecond);
+
   string key = "SDD";
-  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
+  pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
   
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> keyValuePair());
 }
 
-TEST(SkipListInternalNode, GetByKeyForANonExistingKeyInInternalNode) {
+TEST_F(PersistentMemoryPoolFixture, GetByKeyForANonExistingKeyInInternalNode) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
-  
+
   string key = "Pmem";
-  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
+  pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
   
   ASSERT_FALSE(existenceByNode.second);
 }
 
-TEST(SkipListInternalNode, GetByKeyForANonExistingKeyInInternalNodeAndReturnTheLeafNodeToBeginTheGetOperation) {
+TEST_F(PersistentMemoryPoolFixture, GetByKeyForANonExistingKeyInInternalNodeAndReturnTheLeafNodeToBeginTheGetOperation) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
-  
+
   string key = "Pmem";
-  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
+  pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
   
   ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), existenceByNode.first -> keyValuePair());
 }
 
-TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut1) {
+TEST_F(PersistentMemoryPoolFixture, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut1) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
-  
+
   string key = "Ignite";
-  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositionsFor(key);
+  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = sentinelInternal -> insertPositionsFor(key);
 
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
-
   ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), internalNode -> keyValuePair());
 }
 
-TEST(SkipListInternalNode, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut2) {
+TEST_F(PersistentMemoryPoolFixture, InsertPositionInInternalNodeAfterWhichKeyValueWouldBePut2) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
-  
+
   string key = "Tuff";
-  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = internalFirst -> insertPositionsFor(key);
+  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = sentinelInternal -> insertPositionsFor(key);
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
 
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> keyValuePair());
 }
 
-TEST(SkipListInternalNode, UpdateValueOfAMatchingKey) {
+TEST_F(PersistentMemoryPoolFixture, UpdateValueOfAMatchingKeyInInternalNodeAndReturnThePositionToStartLeafNodeUpdate) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
-  
+
   string key = "SDD";
-  SkipListNode* leafNode = internalFirst -> update(key, "Solid Drive");
-  pair<SkipListNode*, bool> existenceByNode = internalFirst -> getBy(key);
+  SkipListNode* leafNode = sentinelInternal -> update(key, "Solid Drive");
+  pair<SkipListNode*, bool> existenceByNode = sentinelInternal-> getBy(key);
 
   ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }

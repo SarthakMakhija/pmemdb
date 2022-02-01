@@ -25,6 +25,7 @@ TEST_F(PersistentMemoryPoolFixture, PutInASkipListInHierarchy) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
   SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
@@ -48,6 +49,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInInternalNode) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
   SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
@@ -71,6 +73,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInLeafNode) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
   SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
@@ -94,6 +97,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForANonExistingKeyViaIterator) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
   SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
@@ -116,6 +120,7 @@ TEST_F(PersistentMemoryPoolFixture, UpdateTheValueOfAMatchingKeyViaIterator) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
   SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
@@ -139,6 +144,7 @@ TEST_F(PersistentMemoryPoolFixture, UpdateTheValueOfAMatchingKeyInLeafNode) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
   SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
