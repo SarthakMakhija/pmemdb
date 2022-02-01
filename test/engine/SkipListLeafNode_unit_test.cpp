@@ -6,16 +6,6 @@
 #include "./PersistentMemoryPoolFixture.h"
 #include "./SkipListNodeTestUtils.h"
 
-/*
-TEST(SkipListLeafNode, UpdateRightPointer) {
-  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *right = new SkipListLeafNode("SDD", "Solid state drive");
-  node -> updateRight(right);
-  
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> rightKeyValuePair());
-}
-*/
-
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenDownPointerIsNotNull) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 

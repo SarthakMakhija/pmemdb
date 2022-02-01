@@ -23,8 +23,6 @@ class SkipListLeafNode : public SkipListNode {
     KeyValuePair keyValuePair();
     KeyValuePair rightKeyValuePair();
     
-    void updateRight(SkipListLeafNode* right);
-    
     SkipListLeafNode* put(string key, string value);
     pair<string, bool> getBy(string key);
     void update(string key, string value);

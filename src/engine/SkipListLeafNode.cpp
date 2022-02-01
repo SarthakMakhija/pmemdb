@@ -47,10 +47,6 @@ KeyValuePair SkipListLeafNode::rightKeyValuePair() {
     return KeyValuePair("", "");
 }
 
-void SkipListLeafNode::updateRight(SkipListLeafNode* right) {
-    this -> right = right;
-}
-
 SkipListLeafNode* SkipListLeafNode::put(string key, string value) {
     PersistentLeaf* targetNode = this -> leaf.get();
     while(targetNode -> right.get() && string(targetNode -> right.get() -> key()) <= key) {
