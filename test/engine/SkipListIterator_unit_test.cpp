@@ -8,7 +8,7 @@
 #include "./PersistentMemoryPoolFixture.h"
 #include "./SkipListNodeTestUtils.h"
 
-TEST_F(PersistentMemoryPoolFixture, PutInASkipListLeafNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutInASkipListLeafNode) {
     SkipListNode* sentinel    = newSentinelLeafNode();
     SkipListIterator iterator = SkipListIterator(sentinel);
 
@@ -18,7 +18,7 @@ TEST_F(PersistentMemoryPoolFixture, PutInASkipListLeafNode) {
     ASSERT_EQ("Hard disk drive", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, PutInASkipListInHierarchy) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutInASkipListInHierarchy) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
 
@@ -42,7 +42,7 @@ TEST_F(PersistentMemoryPoolFixture, PutInASkipListInHierarchy) {
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInInternalNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForAnExistingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
 
@@ -66,7 +66,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInInternalNode) {
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInLeafNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForAnExistingKeyInLeafNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
 
@@ -90,7 +90,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForAnExistingKeyInLeafNode) {
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, GetByKeyForANonExistingKeyViaIterator) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForANonExistingKey) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
 
@@ -113,7 +113,7 @@ TEST_F(PersistentMemoryPoolFixture, GetByKeyForANonExistingKeyViaIterator) {
   ASSERT_EQ("", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, UpdateTheValueOfAMatchingKeyViaIterator) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKey) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
 
@@ -137,7 +137,7 @@ TEST_F(PersistentMemoryPoolFixture, UpdateTheValueOfAMatchingKeyViaIterator) {
   ASSERT_EQ("Hard drive", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, UpdateTheValueOfAMatchingKeyInLeafNode) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKeyInLeafNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
 
@@ -163,7 +163,7 @@ TEST_F(PersistentMemoryPoolFixture, UpdateTheValueOfAMatchingKeyInLeafNode) {
 }
 
 /*
-TEST_F(PersistentMemoryPoolFixture, DeleteValueOfAMatchingKeyInBetween) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInBetween) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
@@ -187,7 +187,7 @@ TEST_F(PersistentMemoryPoolFixture, DeleteValueOfAMatchingKeyInBetween) {
   ASSERT_FALSE(valueByExistence.second);
 }
 
-TEST_F(PersistentMemoryPoolFixture, DeleteValueOfAMatchingKeyInEnd) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInEnd) {
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
