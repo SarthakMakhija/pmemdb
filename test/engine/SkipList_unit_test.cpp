@@ -3,7 +3,7 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetAValueByKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndGetAValueByKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -12,7 +12,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetAValueByKey) {
     ASSERT_EQ("Hard disk drive", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetExistenceOfKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndGetExistenceOfKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -21,7 +21,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetExistenceOfKey) {
     ASSERT_TRUE(existenceByValue.second);
 }
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetAValueByNonExistentKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndGetAValueByNonExistentKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -31,7 +31,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetAValueByNonExistentKey)
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetTheExistenceOfNonExistentKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndGetTheExistenceOfNonExistentKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -41,7 +41,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetTheExistenceOfNonExiste
     ASSERT_FALSE(existenceByValue.second);
 }
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndUpdateAValue) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndUpdateAValue) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -51,7 +51,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndUpdateAValue) {
     ASSERT_EQ("Hard disk", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndUpdateAValueForNonExistingKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndUpdateAValueForNonExistingKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -62,7 +62,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndUpdateAValueForNonExisting
 }
 
 /*
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInTheBeginning) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteByAKeyInTheBeginning) {
     SkipList* skipList = new SkipList(1);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -72,7 +72,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInTheBeginning
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInBetween) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteByAKeyInBetween) {
     SkipList* skipList = new SkipList(1);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -83,7 +83,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInBetween) {
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInTheEnd) {
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteByAKeyInTheEnd) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
