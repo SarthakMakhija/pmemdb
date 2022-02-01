@@ -31,8 +31,8 @@ void SkipList::put(string key, string value) {
         throw std::invalid_argument("key and value can not be blank while putting");
     }
 
-    pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
-	if (!existenceByNode.second){
+    pair<string, bool> valueByExistence = this -> get(key);
+	if (!valueByExistence.second){
         this -> multiLevelPut(key, value);
         return;
     }
@@ -56,11 +56,8 @@ void SkipList::deleteBy(string key) {
 }
 
 pair<string, bool> SkipList::get(string key) {
-    pair<SkipListNode*, bool> existenceByNode = this -> getByKey(key);
-    if (existenceByNode.second) {
-        return make_pair(existenceByNode.first -> keyValuePair().getValue(), true);
-    }
-    return make_pair("", false);
+    SkipListNode *targetNode = this -> tower.back();
+    return SkipListIterator(targetNode).getBy(key);
 }
 
 void SkipList::multiLevelPut(string key, string value) {
@@ -86,9 +83,4 @@ SkipListNodes SkipList::collectNodes(string key) {
 
 void SkipList::update(string key, string value, SkipListNode* startingNode) {
     SkipListIterator(startingNode).update(key, value);
-}
-
-pair<SkipListNode*, bool> SkipList::getByKey(string key) {
-    SkipListNode *targetNode = this -> tower.back();
-    return SkipListIterator(targetNode).getBy(key);
 }

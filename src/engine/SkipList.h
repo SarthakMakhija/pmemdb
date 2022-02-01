@@ -13,7 +13,6 @@ class SkipList {
     vector<SkipListNode *> tower;
 
     void multiLevelPut(string key, string value);
-    pair<SkipListNode*, bool> getByKey(string key);    
     SkipListNodes collectNodes(string key);
     void update(string key, string value, SkipListNode* startingNode);
 

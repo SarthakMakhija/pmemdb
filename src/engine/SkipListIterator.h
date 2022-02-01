@@ -12,7 +12,7 @@ class SkipListIterator {
     public:
     SkipListIterator(SkipListNode* startingNode);
 
-    pair<SkipListNode*, bool> getBy(string key);
+    pair<string, bool> getBy(string key);
     void update(string key, string value);
     void deleteBy(string key);
     SkipListNodes insertPositions(string key);

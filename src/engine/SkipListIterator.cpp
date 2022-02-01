@@ -5,11 +5,11 @@
 SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }
 
-pair<SkipListNode*, bool> SkipListIterator::getBy(string key) {
+pair<string, bool> SkipListIterator::getBy(string key) {
     if (!this -> startingNode -> isLeaf()) {
         pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
         if (existenceByNode.second) {
-            return existenceByNode;
+            return make_pair(existenceByNode.first -> keyValuePair().getValue(), true);
         }
         return static_cast<SkipListLeafNode*>(existenceByNode.first) -> getBy(key);
     } else {

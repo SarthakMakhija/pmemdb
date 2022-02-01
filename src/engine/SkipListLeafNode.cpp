@@ -43,15 +43,15 @@ void SkipListLeafNode::updateRight(SkipListLeafNode* right) {
     this -> right = right;
 }
 
-pair<SkipListNode*, bool> SkipListLeafNode::getBy(string key) {
+pair<string, bool>  SkipListLeafNode::getBy(string key) {
     SkipListLeafNode *targetNode = this;
     while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
         targetNode = targetNode -> right;
     }
     if (targetNode -> matchesKey(key)) {
-        return make_pair(targetNode, true);
+        return make_pair(targetNode -> value, true);
     }
-    return make_pair(nullptr, false);
+    return make_pair("", false);
 }
 
 void SkipListLeafNode::update(string key, string value) {

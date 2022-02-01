@@ -23,9 +23,9 @@ TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInInternalNode) {
   internalSecond -> updateDown(leafThird);
   
   string key = "SDD";
-  pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
+  pair<string, bool> valueByExistence = SkipListIterator(internalFirst).getBy(key);
   
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> keyValuePair());
+  ASSERT_EQ("Solid state drive", valueByExistence.first);
 }
 
 TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInLeafNode) {
@@ -45,9 +45,9 @@ TEST(SkipListNodeIterator, GetByKeyForAnExistingKeyInLeafNode) {
   internalSecond -> updateDown(leafThird);
   
   string key = "Pmem";
-  pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
+  pair<string, bool> valueByExistence = SkipListIterator(internalFirst).getBy(key);
   
-  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), existenceByNode.first -> keyValuePair());
+  ASSERT_EQ("Persistent Storage", valueByExistence.first);
 }
 
 TEST(SkipListNodeIterator, GetByKeyForANonExistingKey) {
@@ -67,9 +67,9 @@ TEST(SkipListNodeIterator, GetByKeyForANonExistingKey) {
   internalSecond -> updateDown(leafThird);
   
   string key = "Tuff";
-  pair<SkipListNode*, bool> existenceByNode = SkipListIterator(internalFirst).getBy(key);
+  pair<string, bool> valueByExistence = SkipListIterator(internalFirst).getBy(key);
   
-  ASSERT_EQ(nullptr, existenceByNode.first);
+  ASSERT_EQ("", valueByExistence.first);
 }
 
 TEST(SkipListNodeIterator, InsertPositionAfterWhichKeyValueWouldBePut) {
@@ -142,8 +142,8 @@ TEST(SkipListNodeIterator, UpdateValueOfAMatchingKeyInLeafNode) {
   string key = "SDD";
   SkipListIterator(internalFirst).update(key, "Solid Drive");
   
-  pair<SkipListNode*, bool> existenceByNode = leafFirst -> getBy(key);
-  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
+  pair<string, bool> valueByExistence = leafFirst -> getBy(key);
+  ASSERT_EQ("Solid Drive", valueByExistence.first);
 }
 
 TEST(SkipListNodeIterator, DeleteValueOfAMatchingKeyInBetween) {
@@ -166,8 +166,8 @@ TEST(SkipListNodeIterator, DeleteValueOfAMatchingKeyInBetween) {
   SkipListIterator iterator = SkipListIterator(internalFirst);
   iterator.deleteBy(key);
   
-  pair<SkipListNode*, bool> existenceByNode = iterator.getBy(key);
-  ASSERT_FALSE(existenceByNode.second);
+  pair<string, bool> valueByExistence = iterator.getBy(key);
+  ASSERT_FALSE(valueByExistence.second);
 }
 
 TEST(SkipListNodeIterator, DeleteValueOfAMatchingKeyInEnd) {
@@ -190,6 +190,6 @@ TEST(SkipListNodeIterator, DeleteValueOfAMatchingKeyInEnd) {
   SkipListIterator iterator = SkipListIterator(internalFirst);
   iterator.deleteBy(key);
   
-  pair<SkipListNode*, bool> existenceByNode = iterator.getBy(key);
-  ASSERT_FALSE(existenceByNode.second);
+  pair<string, bool> valueByExistence = iterator.getBy(key);
+  ASSERT_FALSE(valueByExistence.second);
 }
