@@ -125,32 +125,6 @@ TEST(SkipListLeafNode, GetByKeyForANonExistingKey) {
   ASSERT_FALSE(valueByExistence.second);
 }
 
-TEST(SkipListLeafNode, InsertPositionAfterWhichKeyValueWouldBePut1) {
-  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
-  
-  node  -> updateRight(right);
-  right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
-  
-  string key = "Rocks";
-  SkipListNode* targetNode = node -> insertPositionFor(key);
-  
-  ASSERT_EQ(KeyValuePair("Pmem", "Persistent Storage"), targetNode -> keyValuePair());
-}
-
-TEST(SkipListLeafNode, InsertPositionAfterWhichKeyValueWouldBePut2) {
-  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
-  
-  node  -> updateRight(right);
-  right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
-  
-  string key = "Tuff";
-  SkipListNode* targetNode = node -> insertPositionFor(key);
-  
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), targetNode -> keyValuePair());
-}
-
 TEST(SkipListLeafNode, UpdateValueOfAMatchingKey) {
   SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
   SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");

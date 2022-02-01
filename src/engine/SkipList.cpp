@@ -33,7 +33,7 @@ void SkipList::put(string key, string value) {
 
     pair<string, bool> valueByExistence = this -> get(key);
 	if (!valueByExistence.second){
-        this -> multiLevelPut(key, value);
+        SkipListIterator(this -> tower.back()).put(key, value);
         return;
     }
     throw std::invalid_argument("key already exists");
@@ -58,27 +58,6 @@ void SkipList::deleteBy(string key) {
 pair<string, bool> SkipList::get(string key) {
     SkipListNode *targetNode = this -> tower.back();
     return SkipListIterator(targetNode).getBy(key);
-}
-
-void SkipList::multiLevelPut(string key, string value) {
-    SkipListNodes parents = this -> collectNodes(key);
-    
-    SkipListNode* left = parents.pop();
-    SkipListNode* node = left -> addToRightWith(key, value);
-
-    while (rand() % 2 == 1 && !parents.isEmpty()) {
-        left = parents.pop();
-		SkipListNode* newNode = left -> addToRightWith(key, value);
-        if (!newNode -> isLeaf()) {
-		    static_cast<SkipListInternalNode*>(newNode) -> updateDown(node);
-        }
-		node = newNode;
-    }
-}
-
-SkipListNodes SkipList::collectNodes(string key) {
-    SkipListNode *targetNode = this -> tower.back();
-    return SkipListIterator(targetNode).insertPositions(key);
 }
 
 void SkipList::update(string key, string value, SkipListNode* startingNode) {

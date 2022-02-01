@@ -91,14 +91,6 @@ void SkipListLeafNode::deleteBy(string key) {
     }
 }
 
-SkipListNode* SkipListLeafNode::insertPositionFor(string key) {
-    SkipListLeafNode *targetNode = this;
-    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
-        targetNode = targetNode -> right;
-    }    
-    return targetNode;
-}
-
 void SkipListLeafNode::updateValue(string value) {
     this -> value = value;
 }

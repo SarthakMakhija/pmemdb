@@ -5,6 +5,27 @@
 SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }
 
+void SkipListIterator::put(string key, string value) {
+    if (this -> startingNode -> isLeaf()) {
+         static_cast<SkipListLeafNode*>(this -> startingNode) -> put(key, value);
+         return;
+    }
+    
+    pair<SkipListNodes, SkipListNode*> leafNodeByInternalNodes  = this -> insertPositionsFor(key);
+    SkipListNode* node = static_cast<SkipListLeafNode*>(leafNodeByInternalNodes.second) -> put(key, value);
+    SkipListNodes parents = leafNodeByInternalNodes.first;
+    SkipListNode* left = nullptr;
+
+    while (rand() % 2 == 1 && !parents.isEmpty()) {
+        left = parents.pop();
+		SkipListNode* newNode = left -> addToRightWith(key, value);
+        if (!newNode -> isLeaf()) {
+		    static_cast<SkipListInternalNode*>(newNode) -> updateDown(node);
+        }
+		node = newNode;
+    }
+}
+
 pair<string, bool> SkipListIterator::getBy(string key) {
     if (!this -> startingNode -> isLeaf()) {
         pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
@@ -43,17 +64,12 @@ void SkipListIterator::deleteBy(string key) {
     }
 }
 
-SkipListNodes SkipListIterator::insertPositions(string key) {
+pair<SkipListNodes, SkipListNode*> SkipListIterator::insertPositionsFor(string key) {
     SkipListNodes nodes;
-
-    if (!this -> startingNode -> isLeaf()) {
-        pair<vector<SkipListNode*>, SkipListNode*> leafNodeByPositionNodes = static_cast<SkipListInternalNode*>(this -> startingNode) -> insertPositionsFor(key);
-        if (leafNodeByPositionNodes.second != nullptr && leafNodeByPositionNodes.second -> isLeaf()) {
-            leafNodeByPositionNodes.first.push_back(static_cast<SkipListLeafNode*>(leafNodeByPositionNodes.second) -> insertPositionFor(key));
-        }
-        nodes.addAll(leafNodeByPositionNodes.first);        
-    } else {
-        nodes.add(static_cast<SkipListLeafNode*>(this -> startingNode) -> insertPositionFor(key));
-    }
-    return nodes;
+    
+    pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodes 
+            = static_cast<SkipListInternalNode*>(this -> startingNode) -> insertPositionsFor(key);
+    
+    nodes.addAll(leafNodeByInternalNodes.first);        
+    return make_pair(nodes,  leafNodeByInternalNodes.second);
 }

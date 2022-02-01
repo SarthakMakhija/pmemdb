@@ -12,8 +12,6 @@ class SkipList {
     private:
     vector<SkipListNode *> tower;
 
-    void multiLevelPut(string key, string value);
-    SkipListNodes collectNodes(string key);
     void update(string key, string value, SkipListNode* startingNode);
 
     public:
