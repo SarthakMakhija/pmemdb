@@ -5,22 +5,8 @@
 #include "../../src/engine/SkipListLeafNode.h"
 #include "../../src/engine/KeyValuePair.h"
 
-KeyValuePair downKeyValuePairOf(SkipListInternalNode* node) {
-    if (node != nullptr)  {
-        if (!node -> getDown() -> isLeaf()) {
-            return static_cast<SkipListInternalNode*>(node -> getDown()) -> keyValuePair();
-        } else {
-            return static_cast<SkipListLeafNode*>(node -> getDown()) -> keyValuePair();
-        }
-    }
-    return KeyValuePair("", "");
-}
-
-SkipListLeafNode* newSentinelLeafNode() {
-    SkipListLeafNode* sentinel = new SkipListLeafNode();
-    sentinel -> persist();
-
-    return sentinel;
-}
+KeyValuePair downKeyValuePairOf(SkipListInternalNode* node);
+SkipListLeafNode* newSentinelLeafNode();
+SkipListInternalNode* newSentinelInternalNode();
 
 #endif

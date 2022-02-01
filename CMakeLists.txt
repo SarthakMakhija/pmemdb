@@ -15,9 +15,10 @@ add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
 	PRIVATE
 	test/engine/SkipListNodeTestUtils.h
+	test/engine/SkipListNodeTestUtils.cpp
 	#test/engine/SkipListInternalNode_unit_test.cpp
 	test/engine/SkipListLeafNode_unit_test.cpp
-	#test/engine/SkipListIterator_unit_test.cpp
+	test/engine/SkipListIterator_unit_test.cpp
 	test/engine/SkipListNodes_unit_test.cpp
 	test/engine/SkipList_unit_test.cpp
 	test/engine/SkipList_exception_unit_test.cpp
