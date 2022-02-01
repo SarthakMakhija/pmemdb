@@ -7,8 +7,7 @@
 
 class PersistentMemoryPool {
 
-public:
-
+    public:
     PersistentMemoryPool(PersistentMemoryPool &other) = delete;
 
     void operator=(const PersistentMemoryPool &) = delete;
@@ -25,7 +24,7 @@ public:
         }
 	}
 
-protected:
+    protected:
 	struct Root {
 		pmem::obj::persistent_ptr<PersistentLeaf> ptr;
 	};
@@ -33,8 +32,7 @@ protected:
 	pmem::obj::pool_base pmpool;
 	PMEMoid *root_oid;
 
-private:
-
+    private:
 	static PersistentMemoryPool* instance;
 
 	PersistentMemoryPool(const char* filePath, uint64_t size = 8  * 1024 * 1024) {
