@@ -43,6 +43,18 @@ void SkipListLeafNode::updateRight(SkipListLeafNode* right) {
     this -> right = right;
 }
 
+SkipListLeafNode* SkipListLeafNode::put(string key, string value) {
+    SkipListLeafNode *targetNode = this;
+    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
+        targetNode = targetNode -> right;
+    }
+    SkipListLeafNode* newNode = new SkipListLeafNode(key, value);
+	newNode     -> updateRight(targetNode -> right);
+	targetNode  -> updateRight(newNode);
+	
+    return newNode;
+}
+
 pair<string, bool>  SkipListLeafNode::getBy(string key) {
     SkipListLeafNode *targetNode = this;
     while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {

@@ -72,6 +72,32 @@ TEST(SkipListLeafNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
+TEST(SkipListLeafNode, PutAKeyValuePair1) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");  
+  node  -> updateRight(right);
+  
+  node -> put("SDD", "Solid state drive");
+
+  string key = "SDD";
+  pair<string, bool> valueByExistence = node -> getBy(key);
+  
+  ASSERT_EQ("Solid state drive", valueByExistence.first);
+}
+
+TEST(SkipListLeafNode, PutAKeyValuePair2) {
+  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
+  SkipListLeafNode *right = new SkipListLeafNode("SDD", "Solid state drive");  
+  node  -> updateRight(right);
+  
+  node -> put("Pmem", "Persistent Storage");
+
+  string key = "Pmem";
+  pair<string, bool> valueByExistence = node -> getBy(key);
+  
+  ASSERT_EQ("Persistent Storage", valueByExistence.first);
+}
+
 TEST(SkipListLeafNode, GetByKeyForAnExistingKey) {
   SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
   SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
