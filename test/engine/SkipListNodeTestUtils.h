@@ -1,3 +1,6 @@
+#ifndef _SkipListNodeTestUtils_
+#define _SkipListNodeTestUtils_
+
 #include "../../src/engine/SkipListInternalNode.h"
 #include "../../src/engine/SkipListLeafNode.h"
 #include "../../src/engine/KeyValuePair.h"
@@ -12,3 +15,12 @@ KeyValuePair downKeyValuePairOf(SkipListInternalNode* node) {
     }
     return KeyValuePair("", "");
 }
+
+SkipListLeafNode* newSentinelLeafNode() {
+    SkipListLeafNode* sentinel = new SkipListLeafNode();
+    sentinel -> persist();
+
+    return sentinel;
+}
+
+#endif

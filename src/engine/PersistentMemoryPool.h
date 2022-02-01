@@ -1,5 +1,5 @@
-#ifndef LIBPMEMKV_PMEMOBJ_ENGINE_H
-#define LIBPMEMKV_PMEMOBJ_ENGINE_H
+#ifndef _PersistentMemoryPool_
+#define _PersistentMemoryPool_
 
 #include <libpmemobj++/pool.hpp>
 #include <string>
@@ -16,8 +16,11 @@ class PersistentMemoryPool {
 
     static PersistentMemoryPool* getInstance();
 
+    pmem::obj::pool_base getPmpool();
+
 	~PersistentMemoryPool() {
         try {
+            instance = nullptr;
             pmpool.close();
         } catch (const std::logic_error &e) {
             std::terminate();
@@ -59,21 +62,5 @@ class PersistentMemoryPool {
 		}
 	}
 };
-
-PersistentMemoryPool* PersistentMemoryPool::instance = nullptr;
-
-PersistentMemoryPool* PersistentMemoryPool::initialize(const char* filePath, uint64_t size = 8  * 1024 * 1024) {
-    if(instance == nullptr) {
-        instance = new PersistentMemoryPool(filePath, size);
-    }
-    return instance;
-}
-
-PersistentMemoryPool* PersistentMemoryPool::getInstance() { 
-    if(instance == nullptr) {
-        throw std::logic_error("Can not invoke getInstance without initializing PersistentMemoryPool");
-    }
-    return instance;
-}
 
 #endif

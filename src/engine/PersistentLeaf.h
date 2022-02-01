@@ -14,6 +14,7 @@ using pmem::obj::make_persistent;
 using pmem::obj::persistent_ptr;
 using pmem::obj::pool;
 using pmem::obj::transaction;
+using namespace std;
 
 struct PersistentLeaf {
     persistent_ptr<PersistentLeaf> right;

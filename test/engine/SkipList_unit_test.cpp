@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 #include <string>
 #include "../../src/engine/SkipList.h"
+#include "./PersistentMemoryPoolFixture.h"
 
-TEST(SkipList, CreateASkipListAndGetAValueByKey) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetAValueByKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -11,7 +12,7 @@ TEST(SkipList, CreateASkipListAndGetAValueByKey) {
     ASSERT_EQ("Hard disk drive", existenceByValue.first);
 }
 
-TEST(SkipList, CreateASkipListAndGetExistenceOfKey) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetExistenceOfKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -20,7 +21,7 @@ TEST(SkipList, CreateASkipListAndGetExistenceOfKey) {
     ASSERT_TRUE(existenceByValue.second);
 }
 
-TEST(SkipList, CreateASkipListAndGetAValueByNonExistentKey) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetAValueByNonExistentKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -30,7 +31,7 @@ TEST(SkipList, CreateASkipListAndGetAValueByNonExistentKey) {
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST(SkipList, CreateASkipListAndGetTheExistenceOfNonExistentKey) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndGetTheExistenceOfNonExistentKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -40,15 +41,7 @@ TEST(SkipList, CreateASkipListAndGetTheExistenceOfNonExistentKey) {
     ASSERT_FALSE(existenceByValue.second);
 }
 
-TEST(SkipList, CreateASkipAndThrowAnExceptionWhilePuttingAnExistingKey) {
-    SkipList* skipList = new SkipList(5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
-
-    ASSERT_THROW(skipList -> put("HDD", "Hard disk"), std::invalid_argument);
-}
-
-TEST(SkipList, CreateASkipListAndUpdateAValue) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndUpdateAValue) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -58,7 +51,7 @@ TEST(SkipList, CreateASkipListAndUpdateAValue) {
     ASSERT_EQ("Hard disk", existenceByValue.first);
 }
 
-TEST(SkipList, CreateASkipListAndUpdateAValueForNonExistingKey) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndUpdateAValueForNonExistingKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -68,7 +61,8 @@ TEST(SkipList, CreateASkipListAndUpdateAValueForNonExistingKey) {
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST(SkipList, CreateASkipListAndDeleteByAKeyInTheBeginning) {
+/*
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInTheBeginning) {
     SkipList* skipList = new SkipList(1);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -78,7 +72,7 @@ TEST(SkipList, CreateASkipListAndDeleteByAKeyInTheBeginning) {
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST(SkipList, CreateASkipListAndDeleteByAKeyInBetween) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInBetween) {
     SkipList* skipList = new SkipList(1);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -89,7 +83,7 @@ TEST(SkipList, CreateASkipListAndDeleteByAKeyInBetween) {
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST(SkipList, CreateASkipListAndDeleteByAKeyInTheEnd) {
+TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteByAKeyInTheEnd) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
@@ -98,3 +92,4 @@ TEST(SkipList, CreateASkipListAndDeleteByAKeyInTheEnd) {
     pair<string, bool> existenceByValue = skipList -> get("Pmem");
     ASSERT_EQ("", existenceByValue.first);
 }
+*/

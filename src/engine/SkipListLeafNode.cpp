@@ -1,5 +1,6 @@
 #include "SkipListLeafNode.h"
 #include "KeyValuePair.h"
+#include "PersistentMemoryPool.h"
 
 SkipListLeafNode::SkipListLeafNode() : SkipListLeafNode("", "") {}
 
@@ -9,27 +10,41 @@ SkipListLeafNode::SkipListLeafNode(string key, string value) {
     this -> right   = nullptr;
 }
 
+void SkipListLeafNode::persist() {
+    pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
+    
+    transaction::run(pmpool, [&] {
+        persistent_ptr<PersistentLeaf> newLeaf = make_persistent<PersistentLeaf>();
+        this -> leaf = newLeaf;
+        this -> leaf.get() -> put("", "");
+    });
+}
+
 bool SkipListLeafNode::isLeaf() {
     return true;
 }
 
 bool SkipListLeafNode::matchesKey(string key) const {
-    return this -> key == key;
+    PersistentLeaf* leaf = this -> leaf.get();
+    return string(leaf -> key()) == key;
 }
 
 bool SkipListLeafNode::isKeyLessEqualTo(string key) {
-    return this -> key <= key;
+    PersistentLeaf* leaf = this -> leaf.get();
+    return string(leaf -> key()) <= key;
 }
 
 KeyValuePair SkipListLeafNode::keyValuePair() {
-    return KeyValuePair(this -> key, this -> value);
+    PersistentLeaf* leaf = this -> leaf.get();
+    return KeyValuePair(string(leaf -> key()), string(leaf -> value()));
 }
 
 KeyValuePair SkipListLeafNode::rightKeyValuePair() {
-    if (this -> right != nullptr)  {
-        return KeyValuePair(this -> right -> key, this -> right -> value);
+    PersistentLeaf* right = this -> leaf -> right.get();
+    if (right) {
+        return KeyValuePair(string(right -> key()), string(right -> value()));
     }
-    return  KeyValuePair("", "");
+    return KeyValuePair("", "");
 }
 
 void SkipListLeafNode::updateRight(SkipListLeafNode* right) {
@@ -37,35 +52,47 @@ void SkipListLeafNode::updateRight(SkipListLeafNode* right) {
 }
 
 SkipListLeafNode* SkipListLeafNode::put(string key, string value) {
-    SkipListLeafNode *targetNode = this;
-    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
-        targetNode = targetNode -> right;
+    PersistentLeaf* targetNode = this -> leaf.get();
+    while(targetNode -> right.get() && string(targetNode -> right.get() -> key()) <= key) {
+        targetNode = targetNode -> right.get();
     }
-    SkipListLeafNode* newNode = new SkipListLeafNode(key, value);
-	newNode     -> updateRight(targetNode -> right);
-	targetNode  -> updateRight(newNode);
-	
+    pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
+    SkipListLeafNode* newNode   = new SkipListLeafNode("", "");
+    
+    transaction::run(pmpool, [&] {
+        persistent_ptr<PersistentLeaf> newLeaf = make_persistent<PersistentLeaf>();
+        newNode -> leaf = newLeaf;                
+        newNode -> leaf.get() -> put(key, value); 
+        
+        newNode -> leaf.get() -> right = targetNode -> right;
+        targetNode -> right = newLeaf;
+    });
+
     return newNode;
 }
 
 pair<string, bool>  SkipListLeafNode::getBy(string key) {
-    SkipListLeafNode *targetNode = this;
-    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
-        targetNode = targetNode -> right;
+    PersistentLeaf* targetNode = this -> leaf.get();
+    while(targetNode -> right.get() && string(targetNode -> right.get() -> key()) <= key) {
+        targetNode = targetNode -> right.get();
     }
-    if (targetNode -> matchesKey(key)) {
-        return make_pair(targetNode -> value, true);
+    if (string(targetNode -> key()) == key) {
+        return make_pair(string(targetNode -> value()), true);
     }
     return make_pair("", false);
 }
 
 void SkipListLeafNode::update(string key, string value) {
-    SkipListLeafNode *targetNode = this;
-    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {
-        targetNode = targetNode -> right;
+    PersistentLeaf* targetNode = this -> leaf.get();
+    while(targetNode -> right.get() && string(targetNode -> right.get() -> key()) <= key) {
+        targetNode = targetNode -> right.get();
     }
-    if (targetNode -> matchesKey(key)) {
-        targetNode -> value = value;
+
+    pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
+    if (string(targetNode -> key()) == key) {
+        transaction::run(pmpool, [&] {
+            targetNode -> put(key, value);
+        });
     }
 }
 

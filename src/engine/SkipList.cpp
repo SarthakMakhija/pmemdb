@@ -16,6 +16,7 @@ SkipList::SkipList(int towerSize) {
         SkipListNode *sentinelNode = nullptr;
         if (index == 0) {
             sentinelNode = new SkipListLeafNode();
+            static_cast<SkipListLeafNode*>(sentinelNode) -> persist();
         } else {
             sentinelNode = new SkipListInternalNode();
         }
