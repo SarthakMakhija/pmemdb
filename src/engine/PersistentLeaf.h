@@ -23,9 +23,9 @@ struct PersistentLeaf {
 		    *((uint32_t *)(p)) = v;
 	  }
 
-	  void setValueSizeDirect(char *p, uint32_t v) {
-		    *((uint32_t *)((char *)(p) + sizeof(uint32_t))) = v;
-	  }
+    void setValueSizeDirect(char *p, uint32_t v) {
+        *((uint32_t *)((char *)(p) + sizeof(uint32_t))) = v;
+    }
 
     void put(const string &key, const string &value) {
         if (keyValue) {
@@ -65,12 +65,12 @@ struct PersistentLeaf {
     }
 
     uint32_t keySizeDirect(char *p) {
-		    return *((uint32_t *)(p));
-	  }
+		return *((uint32_t *)(p));
+	}
     
-	  uint32_t valueSizeDirect(char *p) {
-		   return *((uint32_t *)((char *)(p) + sizeof(uint32_t)));
-	  }
+	uint32_t valueSizeDirect(char *p) {
+		return *((uint32_t *)((char *)(p) + sizeof(uint32_t)));
+	}
 };
 
 #endif
