@@ -49,6 +49,16 @@ struct PersistentLeaf {
         memcpy(kvptr, value.data(), vsize); 
     }
 
+    void clear() {
+        if (keyValue) {
+            char *p = keyValue.get();
+            setKeySizeDirect(p, 0);
+            setValueSizeDirect(p, 0);
+            delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) + valueSizeDirect(p) + 2);
+            keyValue = nullptr;
+	    }
+    }
+
     const char *key() const {
         return ((char *)(keyValue.get()) + sizeof(uint32_t) + sizeof(uint32_t));
     }

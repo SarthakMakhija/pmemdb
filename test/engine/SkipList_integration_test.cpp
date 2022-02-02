@@ -63,8 +63,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndUpdate
     }
 }
 
-/*
-TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteKeys) {
+TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteKeys) {
     SkipList* skipList = new SkipList(10);
     for (int count = 1; count <= 500; count++) {
         string key   = "Key-"    + std::to_string(count);
@@ -85,6 +84,7 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteKeys) {
         string expectedValue = "Value-" + std::to_string(count);
         
         pair<string, bool> existenceByValue = skipList -> get(key);
+
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
@@ -94,7 +94,8 @@ TEST_F(PersistentMemoryPoolFixture, CreateASkipListAndDeleteKeys) {
         string key           = "Key-"   + std::to_string(count);
         
         pair<string, bool> existenceByValue = skipList -> get(key);
+
+        ASSERT_EQ("", existenceByValue.first);
         ASSERT_FALSE(existenceByValue.second);
     }
 }
-*/

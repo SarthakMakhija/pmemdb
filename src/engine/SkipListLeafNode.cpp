@@ -48,12 +48,18 @@ KeyValuePair SkipListLeafNode::rightKeyValuePair() {
 }
 
 SkipListLeafNode* SkipListLeafNode::put(string key, string value) {
-    PersistentLeaf* targetNode = this -> leaf.get();
+    PersistentLeaf* targetNode   = this -> leaf.get();
+    SkipListLeafNode* targetLeaf = this; 
+
     while(targetNode -> right.get() && string(targetNode -> right.get() -> key()) <= key) {
         targetNode = targetNode -> right.get();
+        targetLeaf = targetLeaf -> right;
     }
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
+   
     SkipListLeafNode* newNode   = new SkipListLeafNode("", "");
+    newNode -> right            = targetLeaf -> right;
+    targetLeaf -> right         = newNode;
     
     transaction::run(pmpool, [&] {
         persistent_ptr<PersistentLeaf> newLeaf = make_persistent<PersistentLeaf>();
@@ -93,16 +99,32 @@ void SkipListLeafNode::update(string key, string value) {
 }
 
 void SkipListLeafNode::deleteBy(string key) {
-    SkipListLeafNode *previusNode = nullptr;
-    SkipListLeafNode *targetNode  = this;
+    PersistentLeaf* previousNode = nullptr;
+    PersistentLeaf* targetNode   = this -> leaf.get();
 
-    while(targetNode -> right != nullptr && targetNode -> right -> isKeyLessEqualTo(key)) {        
-        previusNode = targetNode;
-        targetNode  = targetNode -> right;
+    SkipListLeafNode* previousLeaf = nullptr;
+    SkipListLeafNode* targetLeaf   = this;
+
+    while(targetNode -> right.get() && string(targetNode -> right.get() -> key()) <= key) {
+        previousLeaf = targetLeaf;
+        targetLeaf   = targetLeaf -> right;
+
+        previousNode = targetNode;
+        targetNode   = targetNode -> right.get();
     }
-    if (targetNode -> matchesKey(key)) {
-        previusNode -> right = targetNode -> right;
-        targetNode  -> right = nullptr;
-        delete targetNode;
-    }
+
+    pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
+    if (string(targetNode -> key()) == key) {
+        previousLeaf -> right = targetLeaf -> right;
+        targetLeaf -> right   = nullptr;
+
+        transaction::run(pmpool, [&] {
+            targetNode -> clear();
+            previousNode -> right = targetNode -> right;
+            targetNode -> right   = nullptr;
+            
+            delete_persistent<PersistentLeaf>(targetLeaf -> leaf);
+            targetLeaf -> leaf = nullptr;
+        });
+    }   
 }

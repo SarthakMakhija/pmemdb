@@ -5,6 +5,7 @@
 #include "../../src/engine/KeyValuePair.h"
 #include "SkipListNodeTestUtils.h"
 #include  "PersistentMemoryPoolFixture.h"
+#include <iostream>
 
 TEST(SkipListInternalNode, AddNewNodeToRight) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
@@ -223,8 +224,29 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingK
 
   string key = "SDD";
   SkipListNode* leafNode = sentinelInternal -> update(key, "Solid Drive");
-  pair<SkipListNode*, bool> existenceByNode = sentinelInternal-> getBy(key);
-
-  ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), leafNode -> keyValuePair());
 }
 
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInInternalNodeAndReturnThePositionToStartLeafNodeDelete) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateRight(internalFirst);
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateDown(sentinelLeaf);
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+
+  string key = "SDD";
+  SkipListNode* leafNode = sentinelInternal -> deleteBy(key);
+
+  ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), leafNode -> keyValuePair());
+}

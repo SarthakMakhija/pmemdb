@@ -128,30 +128,44 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_UpdateValueOfAMatchingKey) 
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
 
-/*
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInTheBeginning) {
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("HDD", "Hard disk drive");
+  sentinel -> put("Pmem", "Persistent Storage");
+  sentinel -> put("SDD", "Solid State drive");
+
+  sentinel -> deleteBy("HDD");
+
+  string key = "HDD";
+  pair<string, bool> valueByExistence = sentinel -> getBy(key);
+
+  ASSERT_EQ("", valueByExistence.first);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInBetween) {
-  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
-  
-  node  -> updateRight(right);
-  right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
-  
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("HDD", "Hard disk drive");
+  sentinel -> put("Pmem", "Persistent Storage");
+  sentinel -> put("SDD", "Solid State drive");
+
+  sentinel -> deleteBy("Pmem");
+
   string key = "Pmem";
-  node -> deleteBy(key);
+  pair<string, bool> valueByExistence = sentinel -> getBy(key);
 
-  ASSERT_FALSE(node -> getBy(key).second);
+  ASSERT_EQ("", valueByExistence.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInEnd) {
-  SkipListLeafNode *node = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *right = new SkipListLeafNode("Pmem", "Persistent Storage");
-  
-  node  -> updateRight(right);
-  right -> updateRight(new SkipListLeafNode("SDD", "Solid state drive"));
-  
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInTheEnd) {
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("HDD", "Hard disk drive");
+  sentinel -> put("Pmem", "Persistent Storage");
+  sentinel -> put("SDD", "Solid State drive");
+
+  sentinel -> deleteBy("SDD");
+
   string key = "SDD";
-  node -> deleteBy(key);
+  pair<string, bool> valueByExistence = sentinel -> getBy(key);
 
-  ASSERT_FALSE(node -> getBy(key).second);
+  ASSERT_EQ("", valueByExistence.first);
 }
-*/

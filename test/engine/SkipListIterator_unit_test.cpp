@@ -162,52 +162,52 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKe
   ASSERT_EQ("Persistent Storage", valueByExistence.first);
 }
 
-/*
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInBetween) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
-  
-  string key = "Pmem";
-  SkipListIterator iterator = SkipListIterator(internalFirst);
-  iterator.deleteBy(key);
-  
-  pair<string, bool> valueByExistence = iterator.getBy(key);
-  ASSERT_FALSE(valueByExistence.second);
+
+  SkipListIterator iterator = SkipListIterator(sentinelInternal);
+  iterator.deleteBy("Pmem");
+
+  pair<string, bool> valueByExistence = iterator.getBy("Pmem");
+  ASSERT_EQ("", valueByExistence.first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInEnd) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
   SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
   SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
   
+  sentinelInternal -> updateRight(internalFirst);
   internalFirst -> updateRight(internalSecond);
 
-  SkipListLeafNode *leafFirst = new SkipListLeafNode("HDD", "Hard disk drive");
-  SkipListLeafNode *leafSecond = new SkipListLeafNode("Pmem", "Persistent Storage");
-  SkipListLeafNode *leafThird = new SkipListLeafNode("SDD", "Solid state drive");
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
   
-  leafFirst  -> updateRight(leafSecond);
-  leafSecond -> updateRight(leafThird);
-
+  sentinelInternal -> updateDown(sentinelLeaf);
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
-  
-  string key = "SDD";
-  SkipListIterator iterator = SkipListIterator(internalFirst);
-  iterator.deleteBy(key);
-  
-  pair<string, bool> valueByExistence = iterator.getBy(key);
-  ASSERT_FALSE(valueByExistence.second);
+
+  SkipListIterator iterator = SkipListIterator(sentinelInternal);
+  iterator.deleteBy("SDD");
+
+  pair<string, bool> valueByExistence = iterator.getBy("SDD");
+  ASSERT_EQ("", valueByExistence.first);
 }
-*/

@@ -61,7 +61,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndUpdateAValueF
     ASSERT_EQ("", existenceByValue.first);
 }
 
-/*
 TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteByAKeyInTheBeginning) {
     SkipList* skipList = new SkipList(1);
     skipList -> put("HDD", "Hard disk drive");
@@ -92,4 +91,3 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteByAKeyI
     pair<string, bool> existenceByValue = skipList -> get("Pmem");
     ASSERT_EQ("", existenceByValue.first);
 }
-*/
