@@ -39,6 +39,10 @@ tasks:
           - status: pending
           - task: Change parameter of private methods to const reference to string instead of string 
           - status: pending
+          - task: Optimize delete, currently it returns a previous down pointer to leaf which could be a long chain
+          - status: pending
+          - task: See if we can get rid of right pointer to SkipListLeafNode
+          - status: pending
 
 later:
   items:
