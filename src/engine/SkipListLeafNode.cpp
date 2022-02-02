@@ -2,12 +2,8 @@
 #include "KeyValuePair.h"
 #include "PersistentMemoryPool.h"
 
-SkipListLeafNode::SkipListLeafNode() : SkipListLeafNode("", "") {}
-
-SkipListLeafNode::SkipListLeafNode(string key, string value) {
-    this -> key     = key;
-    this -> value   = value;
-    this -> right   = nullptr;
+SkipListLeafNode::SkipListLeafNode(){
+     this -> right = nullptr;
 }
 
 void SkipListLeafNode::persist() {
@@ -57,7 +53,7 @@ SkipListLeafNode* SkipListLeafNode::put(string key, string value) {
     }
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
    
-    SkipListLeafNode* newNode   = new SkipListLeafNode("", "");
+    SkipListLeafNode* newNode   = new SkipListLeafNode();
     newNode -> right            = targetLeaf -> right;
     targetLeaf -> right         = newNode;
     

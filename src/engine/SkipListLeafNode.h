@@ -7,13 +7,10 @@
 
 class SkipListLeafNode : public SkipListNode {   
     private:
-    string key;
-    string value;
     SkipListLeafNode* right;
     persistent_ptr<PersistentLeaf> leaf;
 
     public:
-    SkipListLeafNode(string key, string value);
     SkipListLeafNode();
     
     void persist();
