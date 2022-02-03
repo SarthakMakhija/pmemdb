@@ -56,7 +56,7 @@ class PersistentMemoryPool {
 
 	pmem::obj::pool<Root> createOrFail(const char *path, const std::size_t size, const std::string &layout) {
 		try {
-			return pmem::obj::pool<Root>::create(path, layout, size, S_IRWXU);
+			return pmem::obj::pool<Root>::create(path, layout, size);
 		} catch (pmem::pool_invalid_argument &e) {
 			throw std::invalid_argument(e.what());
 		}
