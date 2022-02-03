@@ -1,4 +1,4 @@
-name: PmemCOI
+name: PmemCI
 on: [push, workflow_dispatch]
 
 jobs:
