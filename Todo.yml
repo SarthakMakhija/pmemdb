@@ -37,7 +37,7 @@ tasks:
           - status: pending
           - task: Do we need to increase towersize?
           - status: pending
-          - task: Change parameter of private methods to const reference to string instead of string 
+          - task: Change parameter of private methods to const reference to std::string instead of std::string 
           - status: pending
           - task: Optimize delete, currently it returns a previous down pointer to leaf which could be a long chain
           - status: pending

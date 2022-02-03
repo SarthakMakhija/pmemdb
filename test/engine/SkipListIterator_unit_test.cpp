@@ -14,7 +14,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutInASkipListLeafNode) {
 
     iterator.put("HDD", "Hard disk drive");
 
-    pair<string, bool> valueByExistence = iterator.getBy("HDD");
+    std::pair<std::string, bool> valueByExistence = iterator.getBy("HDD");
     ASSERT_EQ("Hard disk drive", valueByExistence.first);
 }
 
@@ -38,7 +38,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutInASkipListInHierarchy) 
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
   iterator.put("Pmem", "Persistent Memory");
 
-  pair<string, bool> valueByExistence = iterator.getBy("Pmem");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("Pmem");
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
 
@@ -62,7 +62,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForAnExistingKeyInI
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
   iterator.put("Pmem", "Persistent Memory");
 
-  pair<string, bool> valueByExistence = iterator.getBy("Pmem");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("Pmem");
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
 
@@ -86,7 +86,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForAnExistingKeyInL
 
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
 
-  pair<string, bool> valueByExistence = iterator.getBy("Pmem");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("Pmem");
   ASSERT_EQ("Persistent Memory", valueByExistence.first);
 }
 
@@ -109,7 +109,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForANonExistingKey)
 
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
 
-  pair<string, bool> valueByExistence = iterator.getBy("Pmem");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("Pmem");
   ASSERT_EQ("", valueByExistence.first);
 }
 
@@ -133,7 +133,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKe
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
   iterator.update("HDD", "Hard drive");
 
-  pair<string, bool> valueByExistence = iterator.getBy("HDD");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("HDD");
   ASSERT_EQ("Hard drive", valueByExistence.first);
 }
 
@@ -158,7 +158,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKe
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
   iterator.update("Pmem", "Persistent Storage");
 
-  pair<string, bool> valueByExistence = iterator.getBy("Pmem");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("Pmem");
   ASSERT_EQ("Persistent Storage", valueByExistence.first);
 }
 
@@ -183,7 +183,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
   iterator.deleteBy("Pmem");
 
-  pair<string, bool> valueByExistence = iterator.getBy("Pmem");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("Pmem");
   ASSERT_EQ("", valueByExistence.first);
 }
 
@@ -208,6 +208,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
   iterator.deleteBy("SDD");
 
-  pair<string, bool> valueByExistence = iterator.getBy("SDD");
+  std::pair<std::string, bool> valueByExistence = iterator.getBy("SDD");
   ASSERT_EQ("", valueByExistence.first);
 }

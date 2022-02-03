@@ -5,13 +5,13 @@
 SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }
 
-void SkipListIterator::put(string key, string value) {
+void SkipListIterator::put(std::string key, std::string value) {
     if (this -> startingNode -> isLeaf()) {
          static_cast<SkipListLeafNode*>(this -> startingNode) -> put(key, value);
          return;
     }
     
-    pair<SkipListNodes, SkipListNode*> leafNodeByInternalNodes  = this -> insertPositionsFor(key);
+    std::pair<SkipListNodes, SkipListNode*> leafNodeByInternalNodes  = this -> insertPositionsFor(key);
     SkipListNode* node = static_cast<SkipListLeafNode*>(leafNodeByInternalNodes.second) -> put(key, value);
     SkipListNodes parents = leafNodeByInternalNodes.first;
     SkipListNode* left = nullptr;
@@ -26,11 +26,11 @@ void SkipListIterator::put(string key, string value) {
     }
 }
 
-pair<string, bool> SkipListIterator::getBy(string key) {
+std::pair<std::string, bool> SkipListIterator::getBy(std::string key) {
     if (!this -> startingNode -> isLeaf()) {
-        pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
+        std::pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
         if (existenceByNode.second) {
-            return make_pair(existenceByNode.first -> keyValuePair().getValue(), true);
+            return std::make_pair(existenceByNode.first -> keyValuePair().getValue(), true);
         }
         return static_cast<SkipListLeafNode*>(existenceByNode.first) -> getBy(key);
     } else {
@@ -38,7 +38,7 @@ pair<string, bool> SkipListIterator::getBy(string key) {
     }
 }
 
-void SkipListIterator::update(string key, string value) {
+void SkipListIterator::update(std::string key, std::string value) {
     SkipListNode* node = nullptr;
 
     if (!this -> startingNode -> isLeaf()) {
@@ -51,7 +51,7 @@ void SkipListIterator::update(string key, string value) {
     }
 }
 
-void SkipListIterator::deleteBy(string key) {
+void SkipListIterator::deleteBy(std::string key) {
     SkipListNode* node = nullptr;
 
     if (!this -> startingNode -> isLeaf()) {
@@ -64,12 +64,12 @@ void SkipListIterator::deleteBy(string key) {
     }
 }
 
-pair<SkipListNodes, SkipListNode*> SkipListIterator::insertPositionsFor(string key) {
+std::pair<SkipListNodes, SkipListNode*> SkipListIterator::insertPositionsFor(std::string key) {
     SkipListNodes nodes;
     
-    pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodes 
+    std::pair<std::vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodes 
             = static_cast<SkipListInternalNode*>(this -> startingNode) -> insertPositionsFor(key);
     
     nodes.addAll(leafNodeByInternalNodes.first);        
-    return make_pair(nodes,  leafNodeByInternalNodes.second);
+    return std::make_pair(nodes,  leafNodeByInternalNodes.second);
 }

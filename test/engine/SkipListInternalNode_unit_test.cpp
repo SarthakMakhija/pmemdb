@@ -100,8 +100,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForAnExistingKe
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafSecond);
 
-  string key = "SDD";
-  pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
+  std::string key = "SDD";
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
   
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> keyValuePair());
 }
@@ -124,8 +124,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExisting
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
 
-  string key = "Pmem";
-  pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
+  std::string key = "Pmem";
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
   
   ASSERT_FALSE(existenceByNode.second);
 }
@@ -148,8 +148,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExisting
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
 
-  string key = "Pmem";
-  pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
+  std::string key = "Pmem";
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
   
   ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), existenceByNode.first -> keyValuePair());
 }
@@ -172,8 +172,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_InsertPositionInInterna
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
 
-  string key = "Ignite";
-  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = sentinelInternal -> insertPositionsFor(key);
+  std::string key = "Ignite";
+  std::pair<std::vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = sentinelInternal -> insertPositionsFor(key);
 
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
   ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), internalNode -> keyValuePair());
@@ -197,8 +197,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_InsertPositionInInterna
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
 
-  string key = "Tuff";
-  pair<vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = sentinelInternal -> insertPositionsFor(key);
+  std::string key = "Tuff";
+  std::pair<std::vector<SkipListNode*>, SkipListNode*> leafNodeByInternalNodePositions = sentinelInternal -> insertPositionsFor(key);
   SkipListNode* internalNode = leafNodeByInternalNodePositions.first.back();
 
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), internalNode -> keyValuePair());
@@ -222,7 +222,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingK
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
 
-  string key = "SDD";
+  std::string key = "SDD";
   SkipListNode* leafNode = sentinelInternal -> update(key, "Solid Drive");
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), leafNode -> keyValuePair());
 }
@@ -245,7 +245,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingK
   internalFirst  -> updateDown(leafFirst);
   internalSecond -> updateDown(leafThird);
 
-  string key = "SDD";
+  std::string key = "SDD";
   SkipListNode* leafNode = sentinelInternal -> deleteBy(key);
 
   ASSERT_EQ(KeyValuePair("HDD", "Hard disk drive"), leafNode -> keyValuePair());

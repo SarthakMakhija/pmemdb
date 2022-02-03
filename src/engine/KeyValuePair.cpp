@@ -1,13 +1,13 @@
 #include "KeyValuePair.h"
 
-KeyValuePair::KeyValuePair(string key, string value) : key(key),  value(value) {
+KeyValuePair::KeyValuePair(std::string key, std::string value) : key(key),  value(value) {
 }
 
-string KeyValuePair::getKey() const {
+std::string KeyValuePair::getKey() const {
     return key;
 }
 
-string KeyValuePair::getValue() const {
+std::string KeyValuePair::getValue() const {
     return value;
 }
 

@@ -4,7 +4,7 @@ void SkipListNodes::add(SkipListNode* node) {
     nodes.push_back(node);
 }
 
-void SkipListNodes::addAll(vector<SkipListNode*> const &vector) {
+void SkipListNodes::addAll(std::vector<SkipListNode*> const &vector) {
     nodes.insert(nodes.end(), vector.begin(), vector.end());
 }
 

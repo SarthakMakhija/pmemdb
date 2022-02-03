@@ -5,15 +5,15 @@
 #include <string>
 #include <vector>
 
-using namespace std;
+
 
 class SkipListNodes {
     private:
-    vector<SkipListNode *> nodes;
+    std::vector<SkipListNode *> nodes;
 
     public:
     void add(SkipListNode* node);
-    void addAll(vector<SkipListNode*> const &vector);
+    void addAll(std::vector<SkipListNode*> const &vector);
     SkipListNode* pop();
     bool isEmpty();
 };

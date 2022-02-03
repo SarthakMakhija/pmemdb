@@ -27,12 +27,12 @@ SkipList::SkipList(int towerSize) {
     }
 }
 
-void SkipList::put(string key, string value) {
+void SkipList::put(std::string key, std::string value) {
     if (key == "" || value == "") {
         throw std::invalid_argument("key and value can not be blank while putting");
     }
 
-    pair<string, bool> valueByExistence = this -> get(key);
+    std::pair<std::string, bool> valueByExistence = this -> get(key);
 	if (!valueByExistence.second){
         SkipListIterator(this -> tower.back()).put(key, value);
         return;
@@ -40,7 +40,7 @@ void SkipList::put(string key, string value) {
     throw std::invalid_argument("key already exists");
 }
 
-void SkipList::update(string key, string value) {
+void SkipList::update(std::string key, std::string value) {
     if (key == "" || value == "") {
         throw std::invalid_argument("key and value can not be blank while updating");
     }
@@ -48,7 +48,7 @@ void SkipList::update(string key, string value) {
     this -> update(key, value, this -> tower.back());
 }
 
-void SkipList::deleteBy(string key) {
+void SkipList::deleteBy(std::string key) {
     if (key == "") {
         throw std::invalid_argument("key can not be blank while deleting the corresponding value");
     }
@@ -56,11 +56,11 @@ void SkipList::deleteBy(string key) {
     SkipListIterator(this -> tower.back()).deleteBy(key);
 }
 
-pair<string, bool> SkipList::get(string key) {
+std::pair<std::string, bool> SkipList::get(std::string key) {
     SkipListNode *targetNode = this -> tower.back();
     return SkipListIterator(targetNode).getBy(key);
 }
 
-void SkipList::update(string key, string value, SkipListNode* startingNode) {
+void SkipList::update(std::string key, std::string value, SkipListNode* startingNode) {
     SkipListIterator(startingNode).update(key, value);
 }

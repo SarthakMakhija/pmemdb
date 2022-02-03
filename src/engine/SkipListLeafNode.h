@@ -15,15 +15,15 @@ class SkipListLeafNode : public SkipListNode {
     
     void persist();
     bool isLeaf();
-    bool matchesKey(string key) const;
-    bool isKeyLessEqualTo(string key);
+    bool matchesKey(std::string key) const;
+    bool isKeyLessEqualTo(std::string key);
     KeyValuePair keyValuePair();
     KeyValuePair rightKeyValuePair();
     
-    SkipListLeafNode* put(string key, string value);
-    pair<string, bool> getBy(string key);
-    void update(string key, string value);
-    void deleteBy(string key);
+    SkipListLeafNode* put(std::string key, std::string value);
+    std::pair<std::string, bool> getBy(std::string key);
+    void update(std::string key, std::string value);
+    void deleteBy(std::string key);
 };
 
 #endif

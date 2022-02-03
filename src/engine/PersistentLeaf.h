@@ -14,7 +14,7 @@ using pmem::obj::make_persistent;
 using pmem::obj::persistent_ptr;
 using pmem::obj::pool;
 using pmem::obj::transaction;
-using namespace std;
+
 
 struct PersistentLeaf {
     persistent_ptr<PersistentLeaf> right;
@@ -28,7 +28,7 @@ struct PersistentLeaf {
         *((uint32_t *)((char *)(p) + sizeof(uint32_t))) = v;
     }
 
-    void put(const string &key, const string &value) {
+    void put(const std::string &key, const std::string &value) {
         if (keyValue) {
           char* p = keyValue.get();
           delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) + valueSizeDirect(p) + 2);

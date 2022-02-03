@@ -6,20 +6,20 @@
 #include "SkipListNode.h"
 #include "SkipListNodes.h"
 
-using namespace std;
+
 
 class SkipList {
     private:
-    vector<SkipListNode *> tower;
+    std::vector<SkipListNode *> tower;
 
-    void update(string key, string value, SkipListNode* startingNode);
+    void update(std::string key, std::string value, SkipListNode* startingNode);
 
     public:
     SkipList(int towerSize);
     
-    void put(string key, string value);
-    void update(string key, string value);
-    void deleteBy(string key);
-    pair<string, bool> get(string key);
+    void put(std::string key, std::string value);
+    void update(std::string key, std::string value);
+    void deleteBy(std::string key);
+    std::pair<std::string, bool> get(std::string key);
 };
 #endif

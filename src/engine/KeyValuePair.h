@@ -3,18 +3,18 @@
 
 #include <string>
 
-using namespace std;
+
 
 class KeyValuePair {
     private:
-    string key;
-    string value;
+    std::string key;
+    std::string value;
 
     public:
-    KeyValuePair(string key, string value);
+    KeyValuePair(std::string key, std::string value);
     bool operator == (const KeyValuePair &other) const;
     
-    string getKey() const ;
-    string getValue() const;
+    std::string getKey() const ;
+    std::string getValue() const;
 };
 #endif
