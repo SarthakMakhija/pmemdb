@@ -3,8 +3,6 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
-#include <iostream>
-
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndAdd500KeyValuePairsInSkipListWithTowerSize10) {
     SkipList* skipList = new SkipList(10);
     for (int count = 1; count <= 500; count++) {

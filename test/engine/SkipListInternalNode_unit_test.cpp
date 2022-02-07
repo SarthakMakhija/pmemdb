@@ -5,7 +5,6 @@
 #include "../../src/engine/KeyValuePair.h"
 #include "SkipListNodeTestUtils.h"
 #include  "PersistentMemoryPoolFixture.h"
-#include <iostream>
 
 TEST(SkipListInternalNode, AddNewNodeToRight) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive");
