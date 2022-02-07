@@ -134,6 +134,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
   SkipListIterator iterator = SkipListIterator(sentinelInternal);
   std::vector<std::string> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
   std::vector<std::pair<std::string, bool>> result = iterator.multiGet(keys);
+  
   std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("Hard disk drive", true), 
                             std::make_pair("Solid state drive", true),

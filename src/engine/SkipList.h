@@ -21,5 +21,7 @@ class SkipList {
     void update(std::string key, std::string value);
     void deleteBy(std::string key);
     std::pair<std::string, bool> get(std::string key);
+    std::vector<std::pair<std::string, bool>> multiGet(const std::vector<std::string> &keys);
+
 };
 #endif

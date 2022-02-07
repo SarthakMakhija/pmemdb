@@ -26,7 +26,7 @@ void SkipListIterator::put(std::string key, std::string value) {
     }
 }
 
-std::vector<std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector<std::string> keys) {
+std::vector<std::pair<std::string, bool>> SkipListIterator::multiGet(const std::vector<std::string> &keys) {
     std::vector<std::pair<std::string, bool>> result;   
    
     for (auto key : keys) {

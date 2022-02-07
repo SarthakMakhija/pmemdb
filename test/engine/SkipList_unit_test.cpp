@@ -41,6 +41,25 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndGetTheExisten
     ASSERT_FALSE(existenceByValue.second);
 }
 
+
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDoesMultiGet) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+    skipList -> put("SDD", "Solid state drive");
+
+    std::vector<std::string> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
+    std::vector<std::pair<std::string, bool>> result = skipList -> multiGet(keys);
+    std::vector<std::pair<std::string, bool>> expected = {
+                            std::make_pair("Hard disk drive", true), 
+                            std::make_pair("Solid state drive", true),
+                            std::make_pair("Persistent Memory", true),
+                            std::make_pair("", false)
+    };
+    
+    ASSERT_EQ(expected, result);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndUpdateAValue) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");

@@ -61,6 +61,11 @@ std::pair<std::string, bool> SkipList::get(std::string key) {
     return SkipListIterator(targetNode).getBy(key);
 }
 
+std::vector<std::pair<std::string, bool>> SkipList::multiGet(const std::vector<std::string> &keys) {
+    SkipListNode *targetNode = this -> tower.back();
+    return SkipListIterator(targetNode).multiGet(keys);
+}
+
 void SkipList::update(std::string key, std::string value, SkipListNode* startingNode) {
     SkipListIterator(startingNode).update(key, value);
 }
