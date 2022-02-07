@@ -43,6 +43,10 @@ tasks:
           - status: pending
           - task: See if we can get rid of right pointer to SkipListLeafNode
           - status: pending
+          - task: Snapshot while running code in transaction
+          - status: pending
+          - task: Probably separate iterator and writer interface
+          - status: pending
 
 later:
   items:
