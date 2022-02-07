@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-
-
 class SkipListNodes {
     private:
     std::vector<SkipListNode *> nodes;

@@ -80,6 +80,22 @@ std::pair<std::string, bool>  SkipListLeafNode::getBy(std::string key) {
     return std::make_pair("", false);
 }
 
+std::vector<KeyValuePair> SkipListLeafNode::scan(std::string beginKey, std::string endKey) {
+    PersistentLeaf* targetNode = this -> leaf.get();
+    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= beginKey) {
+        targetNode = targetNode -> right.get();
+    }
+    if (std::string(targetNode -> key()) < beginKey) {
+        targetNode = targetNode -> right.get();
+    }
+    std::vector<KeyValuePair> keyValuePairs;
+    while(targetNode && std::string(targetNode -> key()) < endKey) {
+        keyValuePairs.push_back(KeyValuePair(targetNode -> key(), targetNode -> value()));
+        targetNode = targetNode -> right.get();
+    }
+    return keyValuePairs;
+}
+
 void SkipListLeafNode::update(std::string key, std::string value) {
     PersistentLeaf* targetNode = this -> leaf.get();
     while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= key) {

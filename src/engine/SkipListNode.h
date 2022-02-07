@@ -5,8 +5,6 @@
 #include <functional>
 #include "KeyValuePair.h"
 
-
-
 class SkipListNode {
     public:
     virtual bool isLeaf() = 0;
