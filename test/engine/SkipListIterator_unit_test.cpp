@@ -113,6 +113,37 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForANonExistingKey)
   ASSERT_EQ("", valueByExistence.first);
 }
 
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateRight(internalFirst);
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateDown(sentinelLeaf);
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+
+  SkipListIterator iterator = SkipListIterator(sentinelInternal);
+  std::vector<std::string> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
+  std::vector<std::pair<std::string, bool>> result = iterator.multiGet(keys);
+  std::vector<std::pair<std::string, bool>> expected = {
+                            std::make_pair("Hard disk drive", true), 
+                            std::make_pair("Solid state drive", true),
+                            std::make_pair("Persistent Memory", true),
+                            std::make_pair("", false)
+  };
+
+  ASSERT_EQ(expected, result);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKey) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();

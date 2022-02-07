@@ -26,6 +26,15 @@ void SkipListIterator::put(std::string key, std::string value) {
     }
 }
 
+std::vector<std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector<std::string> keys) {
+    std::vector<std::pair<std::string, bool>> result;   
+   
+    for (auto key : keys) {
+        result.push_back(getBy(key));
+    }
+    return result;
+}
+
 std::pair<std::string, bool> SkipListIterator::getBy(std::string key) {
     if (!this -> startingNode -> isLeaf()) {
         std::pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> getBy(key);
