@@ -41,7 +41,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndGetTheExisten
     ASSERT_FALSE(existenceByValue.second);
 }
 
-
 TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDoesMultiGet) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
@@ -58,6 +57,37 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDoesMultiGet)
     };
     
     ASSERT_EQ(expected, result);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_ScanWithBeginKeyPresent) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+    skipList -> put("SDD", "Solid state drive");
+    skipList -> put("RAM", "Random access memory");
+
+    std::string beginKey = "Pmem";
+    std::string endKey = "SDD";
+
+    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey);
+    std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Memory"), KeyValuePair("RAM", "Random access memory")};
+    
+    ASSERT_EQ(expected, pairs);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_ScanWithBeginKeyNotPresent) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("SDD", "Solid state drive");
+    skipList -> put("RAM", "Random access memory");
+
+    std::string beginKey = "Pmem";
+    std::string endKey = "SDD";
+
+    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey);
+    std::vector<KeyValuePair> expected = {KeyValuePair("RAM", "Random access memory")};
+    
+  ASSERT_EQ(expected, pairs);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndUpdateAValue) {

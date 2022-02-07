@@ -3,6 +3,8 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
+#include <iostream>
+
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndAdd500KeyValuePairsInSkipListWithTowerSize10) {
     SkipList* skipList = new SkipList(10);
     for (int count = 1; count <= 500; count++) {
@@ -37,6 +39,27 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndAdd500
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDoesAScan) {
+    SkipList* skipList = new SkipList(10);
+    for (int count = 1; count <= 500; count+=2) {
+        std::string key   =  std::to_string(count);
+        std::string value =  std::to_string(count);
+
+        skipList -> put(key, value);
+    }    
+    std::string beginKey = "50";
+    std::string endKey   = "70";
+
+    std::vector<KeyValuePair> expected;
+    for (int count = 51; count < 70; count+=2) {
+        expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
+    }
+    expected.push_back(KeyValuePair("7", "7"));
+
+    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey);
+    ASSERT_EQ(expected, pairs);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndUpdate500KeyValuePairsUsingUpdateInSkipListWithTowerSize10) {

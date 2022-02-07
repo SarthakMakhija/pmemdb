@@ -66,6 +66,11 @@ std::vector<std::pair<std::string, bool>> SkipList::multiGet(const std::vector<s
     return SkipListIterator(targetNode).multiGet(keys);
 }
 
+std::vector<KeyValuePair> SkipList::scan(std::string beginKey, std::string endKey) {
+    SkipListNode *targetNode = this -> tower.back();
+    return SkipListIterator(targetNode).scan(beginKey, endKey);
+}
+
 void SkipList::update(std::string key, std::string value, SkipListNode* startingNode) {
     SkipListIterator(startingNode).update(key, value);
 }
