@@ -125,7 +125,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_ScanWithBeginKeyPresent) {
   std::string beginKey = "Pmem";
   std::string endKey = "SDD";
 
-  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey);
+  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Storage"), KeyValuePair("RAM", "Random Access Memory")};
   
   ASSERT_EQ(expected, pairs);
@@ -140,8 +140,24 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_ScanWithBeginKeyNotPresent)
   std::string beginKey = "Pmem";
   std::string endKey = "SDD";
 
-  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey);
+  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("RAM", "Random Access Memory")};
+  
+  ASSERT_EQ(expected, pairs);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_ScanWithMaxPairsAs1) {
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("HDD", "Hard disk drive");
+  sentinel -> put("Pmem", "Persistent Storage");
+  sentinel -> put("RAM", "Random Access Memory");
+  sentinel -> put("SDD", "Solid state drive");
+
+  std::string beginKey = "Pmem";
+  std::string endKey = "SDD";
+
+  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey, 1);
+  std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Storage")};
   
   ASSERT_EQ(expected, pairs);
 }

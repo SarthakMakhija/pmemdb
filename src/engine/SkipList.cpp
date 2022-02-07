@@ -66,9 +66,12 @@ std::vector<std::pair<std::string, bool>> SkipList::multiGet(const std::vector<s
     return SkipListIterator(targetNode).multiGet(keys);
 }
 
-std::vector<KeyValuePair> SkipList::scan(std::string beginKey, std::string endKey) {
+std::vector<KeyValuePair> SkipList::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
+    if (maxPairs <= 0) {
+        throw std::invalid_argument("maxPairs must be greater than 0");
+    }
     SkipListNode *targetNode = this -> tower.back();
-    return SkipListIterator(targetNode).scan(beginKey, endKey);
+    return SkipListIterator(targetNode).scan(beginKey, endKey, maxPairs);
 }
 
 void SkipList::update(std::string key, std::string value, SkipListNode* startingNode) {

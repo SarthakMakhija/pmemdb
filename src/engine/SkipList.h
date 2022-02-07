@@ -22,7 +22,7 @@ class SkipList {
     void deleteBy(std::string key);
     std::pair<std::string, bool> get(std::string key);
     std::vector<std::pair<std::string, bool>> multiGet(const std::vector<std::string> &keys);
-    std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey);
+    std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
 
 };
 #endif

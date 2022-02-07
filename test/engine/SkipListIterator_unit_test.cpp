@@ -167,7 +167,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyPresent) {
   std::string beginKey = "Pmem";
   std::string endKey = "SDD";
 
-  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey);
+  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Memory")};
   
   ASSERT_EQ(expected, pairs);
@@ -195,7 +195,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyNotPresent)
   std::string beginKey = "RAM";
   std::string endKey = "Tuff";
 
-  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey);
+  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("SDD", "Solid state drive")};
   
   ASSERT_EQ(expected, pairs);

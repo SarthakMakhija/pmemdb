@@ -69,7 +69,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_ScanWithBeginKeyPresent) {
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
 
-    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey);
+    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Memory"), KeyValuePair("RAM", "Random access memory")};
     
     ASSERT_EQ(expected, pairs);
@@ -84,7 +84,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_ScanWithBeginKeyNotPresent) {
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
 
-    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey);
+    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("RAM", "Random access memory")};
     
   ASSERT_EQ(expected, pairs);

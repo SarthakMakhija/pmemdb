@@ -42,3 +42,15 @@ TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowAnExceptionWhilePutti
 
     ASSERT_THROW(skipList -> put("HDD", "Hard disk"), std::invalid_argument);
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenMaxPairsIs0) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> scan("HDD", "RAM", 0), std::invalid_argument);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenMaxPairsIsLessThan0) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> scan("HDD", "RAM", -5), std::invalid_argument);
+}

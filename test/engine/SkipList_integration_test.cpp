@@ -58,7 +58,27 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDoesAS
     }
     expected.push_back(KeyValuePair("7", "7"));
 
-    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey);
+    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 50);
+    ASSERT_EQ(expected, pairs);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDoesAScanWithMaxPairsAs5) {
+    SkipList* skipList = new SkipList(10);
+    for (int count = 1; count <= 500; count+=2) {
+        std::string key   =  std::to_string(count);
+        std::string value =  std::to_string(count);
+
+        skipList -> put(key, value);
+    }    
+    std::string beginKey = "50";
+    std::string endKey   = "70";
+
+    std::vector<KeyValuePair> expected;
+    for (int count = 51; count <= 59; count+=2) {
+        expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
+    }
+
+    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 5);
     ASSERT_EQ(expected, pairs);
 }
 
