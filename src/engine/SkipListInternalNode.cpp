@@ -62,7 +62,17 @@ std::pair<SkipListNode*, bool> SkipListInternalNode::getBy(std::string key) {
             return std::make_pair(targetNode, true);
         }
     }
-   return std::make_pair(targetNode, false);
+    return std::make_pair(targetNode, false);
+}
+
+SkipListNode* SkipListInternalNode::scan(std::string beginKey) {
+    SkipListNode *targetNode = this;
+    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
+        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(beginKey)) {
+			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
+		}
+    }
+    return targetNode;
 }
 
 SkipListNode* SkipListInternalNode::update(std::string key, std::string value) {
@@ -75,7 +85,7 @@ SkipListNode* SkipListInternalNode::update(std::string key, std::string value) {
             static_cast<SkipListInternalNode*>(targetNode) -> updateValue(value);
         }
     }
-   return targetNode;
+    return targetNode;
 }
 
 SkipListNode* SkipListInternalNode::deleteBy(std::string key) {
@@ -97,7 +107,7 @@ SkipListNode* SkipListInternalNode::deleteBy(std::string key) {
             targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down;
         }
     }
-   return targetNode;
+    return targetNode;
 }
 
 std::pair<std::vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::insertPositionsFor(std::string key) {
@@ -110,7 +120,7 @@ std::pair<std::vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::inser
 		}        
         nodes.push_back(targetNode);
     }
-   return std::make_pair(nodes, targetNode);
+    return std::make_pair(nodes, targetNode);
 }
 
 void SkipListInternalNode::updateValue(std::string value) {

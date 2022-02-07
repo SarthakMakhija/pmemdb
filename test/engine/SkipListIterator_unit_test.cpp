@@ -145,6 +145,62 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
   ASSERT_EQ(expected, result);
 }
 
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyPresent) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateRight(internalFirst);
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateDown(sentinelLeaf);
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+
+  SkipListIterator iterator = SkipListIterator(sentinelInternal);
+  std::string beginKey = "Pmem";
+  std::string endKey = "SDD";
+
+  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey);
+  std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Memory")};
+  
+  ASSERT_EQ(expected, pairs);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyNotPresent) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("HDD", "Hard disk drive");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateRight(internalFirst);
+  internalFirst -> updateRight(internalSecond);
+
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("Pmem", "Persistent Memory");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("SDD", "Solid state drive");
+  
+  sentinelInternal -> updateDown(sentinelLeaf);
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+
+  SkipListIterator iterator = SkipListIterator(sentinelInternal);
+  std::string beginKey = "RAM";
+  std::string endKey = "Tuff";
+
+  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey);
+  std::vector<KeyValuePair> expected = {KeyValuePair("SDD", "Solid state drive")};
+  
+  ASSERT_EQ(expected, pairs);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKey) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
   SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();

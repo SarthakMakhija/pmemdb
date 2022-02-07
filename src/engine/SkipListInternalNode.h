@@ -30,6 +30,7 @@ class SkipListInternalNode : public SkipListNode {
     void updateRight(SkipListInternalNode* right);    
     
     std::pair<SkipListNode*, bool> getBy(std::string key);
+    SkipListNode* scan(std::string beginKey);
     SkipListNode* update(std::string key, std::string value);
     SkipListNode* deleteBy(std::string key);
     std::pair<std::vector<SkipListNode*>, SkipListNode*> insertPositionsFor(std::string key);

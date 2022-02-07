@@ -17,6 +17,7 @@ class SkipListIterator {
     void put(std::string key, std::string value);
     std::pair<std::string, bool> getBy(std::string key);
     std::vector<std::pair<std::string, bool>> multiGet(const std::vector<std::string> &keys);
+    std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey);
     void update(std::string key, std::string value);
     void deleteBy(std::string key);        
 };

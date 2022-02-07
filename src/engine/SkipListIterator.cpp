@@ -47,6 +47,15 @@ std::pair<std::string, bool> SkipListIterator::getBy(std::string key) {
     }
 }
 
+std::vector<KeyValuePair> SkipListIterator::scan(std::string beginKey, std::string endKey) {
+    if (!this -> startingNode -> isLeaf()) {
+        SkipListNode* leafNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> scan(beginKey);
+        return static_cast<SkipListLeafNode*>(leafNode) -> scan(beginKey, endKey);
+    } else {
+        return static_cast<SkipListLeafNode*>(this -> startingNode) -> scan(beginKey, endKey);
+    }
+}
+
 void SkipListIterator::update(std::string key, std::string value) {
     SkipListNode* node = nullptr;
 
