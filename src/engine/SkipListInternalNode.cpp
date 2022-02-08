@@ -29,6 +29,10 @@ bool SkipListInternalNode::isKeyLessEqualTo(std::string key) {
     return this -> key <= key;
 }
 
+bool SkipListInternalNode::isKeyGreaterEqualTo(std::string key) {
+    return this -> key >= key;
+}
+
 KeyValuePair SkipListInternalNode::keyValuePair() {
     return KeyValuePair(this -> key, this -> value);
 }
@@ -106,6 +110,30 @@ SkipListNode* SkipListInternalNode::deleteBy(std::string key) {
         } else {
             targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down;
         }
+    }
+    return targetNode;
+}
+
+SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::string endKey) {
+    SkipListNode *previousNode  = nullptr;
+    SkipListNode *targetNode    = this;
+
+    for(; !targetNode -> isLeaf(); ) {
+        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(endKey)) {            
+            if (static_cast<SkipListInternalNode*>(targetNode) -> isKeyGreaterEqualTo(beginKey)) {
+                static_cast<SkipListInternalNode*>(targetNode) -> down    = nullptr;
+                SkipListNode *p                                           = targetNode;
+                targetNode                                                = static_cast<SkipListInternalNode*>(targetNode) -> right;
+                static_cast<SkipListInternalNode*>(p) -> right            = nullptr;
+                static_cast<SkipListInternalNode*>(previousNode) -> right = static_cast<SkipListInternalNode*>(targetNode);
+                delete p; //warning?
+            } else  {
+                previousNode                                              = targetNode;
+                targetNode                                                = static_cast<SkipListInternalNode*>(targetNode) -> right;
+            }
+		}
+        targetNode                                                        = static_cast<SkipListInternalNode*>(previousNode) -> down;
+        previousNode                                                      = targetNode;      
     }
     return targetNode;
 }

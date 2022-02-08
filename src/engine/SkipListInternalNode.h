@@ -21,7 +21,9 @@ class SkipListInternalNode : public SkipListNode {
     bool isLeaf();
     SkipListNode* addToRightWith(std::string key, std::string value);
     bool matchesKey(std::string key) const;
-    bool isKeyLessEqualTo(std::string key);    
+    bool isKeyLessEqualTo(std::string key);
+    bool isKeyGreaterEqualTo(std::string key);
+
     KeyValuePair keyValuePair();
     KeyValuePair rightKeyValuePair();
 
@@ -33,6 +35,7 @@ class SkipListInternalNode : public SkipListNode {
     SkipListNode* scan(std::string beginKey);
     SkipListNode* update(std::string key, std::string value);
     SkipListNode* deleteBy(std::string key);
+    SkipListNode* deleteRange(std::string beginKey, std::string endKey);
     std::pair<std::vector<SkipListNode*>, SkipListNode*> insertPositionsFor(std::string key);
 };
 
