@@ -57,6 +57,9 @@ void SkipList::deleteBy(std::string key) {
 }
 
 void SkipList::deleteRange(std::string beginKey, std::string endKey) {
+    if (beginKey == endKey || endKey < beginKey) {
+        throw std::invalid_argument("beginKey and endKey must be different and endKey must be greater than beginKey");
+    }
     SkipListIterator(this -> tower.back()).deleteRange(beginKey, endKey);
 }
 
@@ -73,6 +76,9 @@ std::vector<std::pair<std::string, bool>> SkipList::multiGet(const std::vector<s
 std::vector<KeyValuePair> SkipList::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
     if (maxPairs <= 0) {
         throw std::invalid_argument("maxPairs must be greater than 0");
+    }
+    if (beginKey == endKey || endKey < beginKey) {
+        throw std::invalid_argument("beginKey and endKey must be different and endKey must be greater than beginKey");
     }
     SkipListNode *targetNode = this -> tower.back();
     return SkipListIterator(targetNode).scan(beginKey, endKey, maxPairs);

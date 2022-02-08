@@ -54,3 +54,27 @@ TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExcept
     
     ASSERT_THROW(skipList -> scan("HDD", "RAM", -5), std::invalid_argument);
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenBeginAndEndKeyIsSameInScan) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> scan("A", "A", 10), std::invalid_argument);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenBeginKeyIsLessThanEndKeyInScan) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> scan("B", "A", 10), std::invalid_argument);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenBeginAndEndKeyIsSameInDeleteRange) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> deleteRange("A", "A"), std::invalid_argument);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenBeginKeyIsLessThanEndKeyInDeleteRange) {
+    SkipList* skipList = new SkipList(5);
+    
+    ASSERT_THROW(skipList -> deleteRange("B", "A"), std::invalid_argument);
+}
