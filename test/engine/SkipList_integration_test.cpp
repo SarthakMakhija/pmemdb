@@ -182,3 +182,60 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDelete
         ASSERT_EQ(presentKey, skipList -> get(presentKey).first);
     }
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteRangeWithEndKeyNotPresent) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("A", "A");
+    skipList -> put("B", "B");
+    skipList -> put("C", "C");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    skipList -> deleteRange("B", "F");
+    
+    std::vector<std::string> missingKeys = {"B", "C", "D", "E"};
+    for (auto missingKey: missingKeys) {
+        ASSERT_EQ("",  skipList -> get(missingKey).first);
+    }
+
+    std::vector<std::string> presentKeys = {"A"};
+    for (auto presentKey: presentKeys) {
+        ASSERT_EQ(presentKey, skipList -> get(presentKey).first);
+    }
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteRangeWithBeginAndEndKeyNotPresent) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("A", "A");
+    skipList -> put("C", "C");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    skipList -> deleteRange("B", "F");
+    
+    std::vector<std::string> missingKeys = {"C", "D", "E"};
+    for (auto missingKey: missingKeys) {
+        ASSERT_EQ("",  skipList -> get(missingKey).first);
+    }
+
+    std::vector<std::string> presentKeys = {"A"};
+    for (auto presentKey: presentKeys) {
+        ASSERT_EQ(presentKey, skipList -> get(presentKey).first);
+    }
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteRangeAll) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("A", "A");
+    skipList -> put("B", "B");
+    skipList -> put("C", "C");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    skipList -> deleteRange("A", "F");
+    
+    std::vector<std::string> missingKeys = {"A", "B", "C", "D", "E"};
+    for (auto missingKey: missingKeys) {
+        ASSERT_EQ("",  skipList -> get(missingKey).first);
+    }
+}
