@@ -293,3 +293,24 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteRangeWithEndKeyNotPre
     ASSERT_EQ(presentKey,  sentinel -> getBy(presentKey).first);
   }
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteRangeFromBeginingToEnd) {
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("A", "A");
+  sentinel -> put("B", "B");
+  sentinel -> put("C", "C");
+  sentinel -> put("D", "D");
+  sentinel -> put("E", "E");
+  sentinel -> put("F", "F");
+  sentinel -> put("G", "G");
+
+  std::string beginKey = "A";
+  std::string endKey   = "I";
+
+  sentinel -> deleteRange(beginKey, endKey);
+
+  std::vector<std::string> missingKeys = {"A", "B", "C", "D", "E", "F", "G"};
+  for (auto missingKey: missingKeys) {
+    ASSERT_EQ("",  sentinel -> getBy(missingKey).first);
+  }
+}
