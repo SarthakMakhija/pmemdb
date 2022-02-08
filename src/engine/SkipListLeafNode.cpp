@@ -148,3 +148,47 @@ void SkipListLeafNode::deleteBy(std::string key) {
         });
     }   
 }
+
+void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey) {
+    PersistentLeaf* previousNode = nullptr;
+    PersistentLeaf* targetNode   = this -> leaf.get();
+
+    SkipListLeafNode* previousLeaf = nullptr;
+    SkipListLeafNode* targetLeaf   = this;
+    
+    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= beginKey) {
+        previousLeaf = targetLeaf;
+        targetLeaf   = targetLeaf -> right;
+
+        previousNode = targetNode;
+        targetNode   = targetNode -> right.get();
+    }
+    if (std::string(targetNode -> key()) < beginKey) {
+        previousLeaf = targetLeaf;
+        targetLeaf   = targetLeaf -> right;
+
+        previousNode = targetNode;
+        targetNode   = targetNode -> right.get();
+    }
+
+    pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
+    transaction::run(pmpool, [&] {
+        PersistentLeaf* previous = targetNode;
+        SkipListLeafNode* p      = targetLeaf;
+
+        while(targetNode && std::string(targetNode -> key()) < endKey) {
+            targetNode -> clear();
+            targetNode = targetNode -> right.get();
+            previous -> right = nullptr;
+            previous = targetNode;
+
+            delete_persistent<PersistentLeaf>(targetLeaf -> leaf);
+            targetLeaf -> leaf = nullptr;
+            targetLeaf = targetLeaf -> right;
+            p -> right = nullptr;
+            p = targetLeaf;
+        }
+        previousNode -> right = targetNode;
+        previousLeaf -> right = targetLeaf;
+    });
+}

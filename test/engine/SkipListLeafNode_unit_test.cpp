@@ -216,3 +216,54 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyIn
 
   ASSERT_EQ("", valueByExistence.first);
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteRangeWithBeginKeyPresent) {
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("A", "A");
+  sentinel -> put("B", "B");
+  sentinel -> put("C", "C");
+  sentinel -> put("D", "D");
+  sentinel -> put("E", "E");
+  sentinel -> put("F", "F");
+  sentinel -> put("G", "G");
+
+  std::string beginKey = "B";
+  std::string endKey   = "G";
+
+  sentinel -> deleteRange(beginKey, endKey);
+
+  std::vector<std::string> missingKeys = {"B", "C", "D", "E", "F"};
+  for (auto missingKey: missingKeys) {
+    ASSERT_EQ("",  sentinel -> getBy(missingKey).first);
+  }
+
+  std::vector<std::string> presentKeys = {"A", "G"};
+  for (auto presentKey: presentKeys) {
+    ASSERT_EQ(presentKey,  sentinel -> getBy(presentKey).first);
+  }
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteRangeWithBeginKeyNotPresent) {
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("A", "A");
+  sentinel -> put("C", "C");
+  sentinel -> put("D", "D");
+  sentinel -> put("E", "E");
+  sentinel -> put("F", "F");
+  sentinel -> put("G", "G");
+
+  std::string beginKey = "B";
+  std::string endKey   = "G";
+
+  sentinel -> deleteRange(beginKey, endKey);
+
+  std::vector<std::string> missingKeys = {"C", "D", "E", "F"};
+  for (auto missingKey: missingKeys) {
+    ASSERT_EQ("",  sentinel -> getBy(missingKey).first);
+  }
+
+  std::vector<std::string> presentKeys = {"A", "G"};
+  for (auto presentKey: presentKeys) {
+    ASSERT_EQ(presentKey,  sentinel -> getBy(presentKey).first);
+  }
+}
