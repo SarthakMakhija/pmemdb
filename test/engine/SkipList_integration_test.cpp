@@ -144,20 +144,17 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDelete
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteRangeWithBeginKeyPresent) {
     SkipList* skipList = new SkipList(5);
-    skipList -> put("A", "A");
     skipList -> put("B", "B");
     skipList -> put("C", "C");
-    skipList -> put("D", "D");
-    skipList -> put("E", "E");
 
-    skipList -> deleteRange("B", "D");
+    skipList -> deleteRange("B", "C");
     
-    std::vector<std::string> missingKeys = {"B", "C"};
+    std::vector<std::string> missingKeys = {"B"};
     for (auto missingKey: missingKeys) {
         ASSERT_EQ("",  skipList -> get(missingKey).first);
     }
 
-    std::vector<std::string> presentKeys = {"A", "D", "E"};
+    std::vector<std::string> presentKeys = {"C"};
     for (auto presentKey: presentKeys) {
         ASSERT_EQ(presentKey, skipList -> get(presentKey).first);
     }
