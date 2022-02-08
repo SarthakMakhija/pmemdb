@@ -360,3 +360,72 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange3) {
     ASSERT_EQ(presentKey,  sentinelInternal -> getBy(presentKey).first -> keyValuePair().getValue());
   }
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange4) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("A", "A");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("C", "C");
+  SkipListInternalNode *internalThird = new SkipListInternalNode("D", "D");
+  
+  sentinelInternal -> updateRight(internalFirst);
+  internalFirst -> updateRight(internalSecond);
+  internalSecond -> updateRight(internalThird);
+
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("A", "A");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("B", "B");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("C", "C");
+  SkipListLeafNode *leafFourth = sentinelLeaf -> put("D", "D");
+  
+  sentinelInternal -> updateDown(sentinelLeaf);
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  internalThird -> updateDown(leafFourth);
+
+  std::string beginKey = "B";
+  std::string endKey   = "F";
+  sentinelInternal -> deleteRange(beginKey, endKey);
+
+  std::vector<std::string> missingKeys = {"C", "D"};
+  for (auto missingKey: missingKeys) {
+    ASSERT_FALSE(sentinelInternal -> getBy(missingKey).second);
+  }
+
+  std::vector<std::string> presentKeys = {"A"};
+  for (auto presentKey: presentKeys) {
+    ASSERT_EQ(presentKey,  sentinelInternal -> getBy(presentKey).first -> keyValuePair().getValue());
+  }
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange5) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode();
+  SkipListLeafNode* sentinelLeaf         = newSentinelLeafNode();
+
+  SkipListInternalNode *internalFirst = new SkipListInternalNode("A", "A");
+  SkipListInternalNode *internalSecond = new SkipListInternalNode("C", "C");
+  SkipListInternalNode *internalThird = new SkipListInternalNode("D", "D");
+  
+  sentinelInternal -> updateRight(internalFirst);
+  internalFirst -> updateRight(internalSecond);
+  internalSecond -> updateRight(internalThird);
+
+  SkipListLeafNode *leafFirst = sentinelLeaf -> put("A", "A");
+  SkipListLeafNode *leafSecond = sentinelLeaf -> put("B", "B");
+  SkipListLeafNode *leafThird = sentinelLeaf -> put("C", "C");
+  SkipListLeafNode *leafFourth = sentinelLeaf -> put("D", "D");
+  
+  sentinelInternal -> updateDown(sentinelLeaf);
+  internalFirst  -> updateDown(leafFirst);
+  internalSecond -> updateDown(leafThird);
+  internalThird -> updateDown(leafFourth);
+
+  std::string beginKey = "A";
+  std::string endKey   = "F";
+  sentinelInternal -> deleteRange(beginKey, endKey);
+
+  std::vector<std::string> missingKeys = {"A", "C", "D"};
+  for (auto missingKey: missingKeys) {
+    ASSERT_FALSE(sentinelInternal -> getBy(missingKey).second);
+  }
+}
