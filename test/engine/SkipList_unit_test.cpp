@@ -3,6 +3,7 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
+/**
 TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndGetAValueByKey) {
     SkipList* skipList = new SkipList(5);
     skipList -> put("HDD", "Hard disk drive");
@@ -139,4 +140,46 @@ TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteByAKeyI
     skipList -> deleteBy("Pmem");
     std::pair<std::string, bool> existenceByValue = skipList -> get("Pmem");
     ASSERT_EQ("", existenceByValue.first);
+}
+**/
+
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteRangeWithBeginKeyPresent) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("A", "A");
+    skipList -> put("B", "B");
+    skipList -> put("C", "C");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    skipList -> deleteRange("B", "D");
+    
+    std::vector<std::string> missingKeys = {"B", "C"};
+    for (auto missingKey: missingKeys) {
+        ASSERT_EQ("",  skipList -> get(missingKey).first);
+    }
+
+    std::vector<std::string> presentKeys = {"A", "D", "E"};
+    for (auto presentKey: presentKeys) {
+        ASSERT_EQ(presentKey, skipList -> get(presentKey).first);
+    }
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListUnit_CreateASkipListAndDeleteRangeWithBeginKeyNotPresent) {
+    SkipList* skipList = new SkipList(5);
+    skipList -> put("A", "A");
+    skipList -> put("B", "B");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    skipList -> deleteRange("C", "E");
+    
+    std::vector<std::string> missingKeys = {"D"};
+    for (auto missingKey: missingKeys) {
+        ASSERT_EQ("",  skipList -> get(missingKey).first);
+    }
+
+    std::vector<std::string> presentKeys = {"A", "B", "E"};
+    for (auto presentKey: presentKeys) {
+        ASSERT_EQ(presentKey, skipList -> get(presentKey).first);
+    }
 }

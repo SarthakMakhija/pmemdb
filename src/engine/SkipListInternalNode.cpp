@@ -29,6 +29,10 @@ bool SkipListInternalNode::isKeyLessEqualTo(std::string key) {
     return this -> key <= key;
 }
 
+bool SkipListInternalNode::isKeyLessThan(std::string key) {
+    return this -> key < key;
+}
+
 bool SkipListInternalNode::isKeyGreaterEqualTo(std::string key) {
     return this -> key >= key;
 }
@@ -60,7 +64,7 @@ std::pair<SkipListNode*, bool> SkipListInternalNode::getBy(std::string key) {
     SkipListNode *targetNode = this;
     for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
         while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
-			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
+            targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
 		}        
         if (targetNode -> matchesKey(key)) {
             return std::make_pair(targetNode, true);
@@ -119,8 +123,10 @@ SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::strin
     SkipListNode *targetNode    = this;
 
     for(; !targetNode -> isLeaf(); ) {
-        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(endKey)) {            
+
+        while(static_cast<SkipListInternalNode*>(targetNode) != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> isKeyLessThan(endKey)) {                        
             if (static_cast<SkipListInternalNode*>(targetNode) -> isKeyGreaterEqualTo(beginKey)) {
+
                 static_cast<SkipListInternalNode*>(targetNode) -> down    = nullptr;
                 SkipListNode *p                                           = targetNode;
                 targetNode                                                = static_cast<SkipListInternalNode*>(targetNode) -> right;

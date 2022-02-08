@@ -22,6 +22,7 @@ class SkipListInternalNode : public SkipListNode {
     SkipListNode* addToRightWith(std::string key, std::string value);
     bool matchesKey(std::string key) const;
     bool isKeyLessEqualTo(std::string key);
+    bool isKeyLessThan(std::string key);
     bool isKeyGreaterEqualTo(std::string key);
 
     KeyValuePair keyValuePair();

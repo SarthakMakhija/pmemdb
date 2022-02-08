@@ -20,9 +20,9 @@ class SkipList {
     void put(std::string key, std::string value);
     void update(std::string key, std::string value);
     void deleteBy(std::string key);
+    void deleteRange(std::string beginKey, std::string endKey);
     std::pair<std::string, bool> get(std::string key);
     std::vector<std::pair<std::string, bool>> multiGet(const std::vector<std::string> &keys);
     std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
-
 };
 #endif

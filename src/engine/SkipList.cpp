@@ -56,6 +56,10 @@ void SkipList::deleteBy(std::string key) {
     SkipListIterator(this -> tower.back()).deleteBy(key);
 }
 
+void SkipList::deleteRange(std::string beginKey, std::string endKey) {
+    SkipListIterator(this -> tower.back()).deleteRange(beginKey, endKey);
+}
+
 std::pair<std::string, bool> SkipList::get(std::string key) {
     SkipListNode *targetNode = this -> tower.back();
     return SkipListIterator(targetNode).getBy(key);
