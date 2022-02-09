@@ -182,14 +182,16 @@ void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey) {
             targetLeaf = targetLeaf -> right.get();
             followerLeaf -> right = nullptr;
             followerLeaf = targetLeaf;
+            previousLeaf -> right = targetLeaf;
 
             delete_persistent<PersistentLeaf>(targetNode -> leaf);
             targetNode -> leaf    = nullptr;
             targetNode            = targetNode -> right;
             followerNode -> right = nullptr;
+            previousNode -> right = targetNode;
+            
+            delete followerNode;
             followerNode          = targetNode;
         }
-        previousLeaf -> right = targetLeaf;
-        previousNode -> right = targetNode;
     });
 }
