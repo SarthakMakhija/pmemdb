@@ -44,26 +44,26 @@ KeyValuePair SkipListLeafNode::rightKeyValuePair() {
 }
 
 SkipListLeafNode* SkipListLeafNode::put(std::string key, std::string value) {
-    PersistentLeaf* targetNode   = this -> leaf.get();
-    SkipListLeafNode* targetLeaf = this; 
+    PersistentLeaf* targetLeaf   = this -> leaf.get();
+    SkipListLeafNode* targetNode = this; 
 
-    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= key) {
-        targetNode = targetNode -> right.get();
-        targetLeaf = targetLeaf -> right;
+    while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= key) {
+        targetLeaf = targetLeaf -> right.get();
+        targetNode = targetNode -> right;
     }
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
    
     SkipListLeafNode* newNode   = new SkipListLeafNode();
-    newNode -> right            = targetLeaf -> right;
-    targetLeaf -> right         = newNode;
+    newNode -> right            = targetNode -> right;
+    targetNode -> right         = newNode;
     
     transaction::run(pmpool, [&] {
         persistent_ptr<PersistentLeaf> newLeaf = make_persistent<PersistentLeaf>();
         newNode -> leaf = newLeaf;                
         newNode -> leaf.get() -> put(key, value); 
         
-        newNode -> leaf.get() -> right = targetNode -> right;
-        targetNode -> right = newLeaf;
+        newNode -> leaf.get() -> right = targetLeaf -> right;
+        targetLeaf -> right = newLeaf;
     });
 
     return newNode;
