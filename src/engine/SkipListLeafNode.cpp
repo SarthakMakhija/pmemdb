@@ -105,15 +105,15 @@ std::vector<KeyValuePair> SkipListLeafNode::scan(std::string beginKey, std::stri
 }
 
 void SkipListLeafNode::update(std::string key, std::string value) {
-    PersistentLeaf* targetNode = this -> leaf.get();
-    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= key) {
-        targetNode = targetNode -> right.get();
+    PersistentLeaf* targetLeaf = this -> leaf.get();
+    while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= key) {
+        targetLeaf = targetLeaf -> right.get();
     }
 
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
-    if (std::string(targetNode -> key()) == key) {
+    if (std::string(targetLeaf -> key()) == key) {
         transaction::run(pmpool, [&] {
-            targetNode -> put(key, value);
+            targetLeaf -> put(key, value);
         });
     }
 }
