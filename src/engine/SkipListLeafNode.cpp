@@ -70,31 +70,31 @@ SkipListLeafNode* SkipListLeafNode::put(std::string key, std::string value) {
 }
 
 std::pair<std::string, bool>  SkipListLeafNode::getBy(std::string key) {
-    PersistentLeaf* targetNode = this -> leaf.get();
-    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= key) {
-        targetNode = targetNode -> right.get();
+    PersistentLeaf* targetLeaf = this -> leaf.get();
+    while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= key) {
+        targetLeaf = targetLeaf -> right.get();
     }
-    if (std::string(targetNode -> key()) == key) {
-        return std::make_pair(std::string(targetNode -> value()), true);
+    if (std::string(targetLeaf -> key()) == key) {
+        return std::make_pair(std::string(targetLeaf -> value()), true);
     }
     return std::make_pair("", false);
 }
 
 std::vector<KeyValuePair> SkipListLeafNode::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
-    PersistentLeaf* targetNode = this -> leaf.get();
-    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= beginKey) {
-        targetNode = targetNode -> right.get();
+    PersistentLeaf* targetLeaf = this -> leaf.get();
+    while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= beginKey) {
+        targetLeaf = targetLeaf -> right.get();
     }
-    if (std::string(targetNode -> key()) < beginKey) {
-        targetNode = targetNode -> right.get();
+    if (std::string(targetLeaf -> key()) < beginKey) {
+        targetLeaf = targetLeaf -> right.get();
     }
 
     std::vector<KeyValuePair> keyValuePairs;
     int64_t pairCount = 0;
     
-    while(targetNode && std::string(targetNode -> key()) < endKey) {
-        keyValuePairs.push_back(KeyValuePair(targetNode -> key(), targetNode -> value()));
-        targetNode = targetNode -> right.get();
+    while(targetLeaf && std::string(targetLeaf -> key()) < endKey) {
+        keyValuePairs.push_back(KeyValuePair(targetLeaf -> key(), targetLeaf -> value()));
+        targetLeaf = targetLeaf -> right.get();
         pairCount = pairCount + 1;
 
         if (pairCount == maxPairs) {
