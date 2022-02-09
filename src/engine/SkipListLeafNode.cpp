@@ -146,6 +146,7 @@ void SkipListLeafNode::deleteBy(std::string key) {
             delete_persistent<PersistentLeaf>(targetNode -> leaf);
             targetNode -> leaf = nullptr;
         });
+        delete targetNode;
     }   
 }
 
