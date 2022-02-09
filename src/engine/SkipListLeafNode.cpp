@@ -119,32 +119,32 @@ void SkipListLeafNode::update(std::string key, std::string value) {
 }
 
 void SkipListLeafNode::deleteBy(std::string key) {
-    PersistentLeaf* previousNode = nullptr;
-    PersistentLeaf* targetNode   = this -> leaf.get();
+    PersistentLeaf* previousLeaf = nullptr;
+    PersistentLeaf* targetLeaf   = this -> leaf.get();
 
-    SkipListLeafNode* previousLeaf = nullptr;
-    SkipListLeafNode* targetLeaf   = this;
+    SkipListLeafNode* previousNode = nullptr;
+    SkipListLeafNode* targetNode   = this;
 
-    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= key) {
-        previousLeaf = targetLeaf;
-        targetLeaf   = targetLeaf -> right;
-
+    while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= key) {
         previousNode = targetNode;
-        targetNode   = targetNode -> right.get();
+        targetNode   = targetNode -> right;
+
+        previousLeaf = targetLeaf;
+        targetLeaf   = targetLeaf -> right.get();
     }
 
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
-    if (std::string(targetNode -> key()) == key) {
-        previousLeaf -> right = targetLeaf -> right;
-        targetLeaf -> right   = nullptr;
+    if (std::string(targetLeaf -> key()) == key) {
+        previousNode -> right = targetNode -> right;
+        targetNode -> right   = nullptr;
 
         transaction::run(pmpool, [&] {
-            targetNode -> clear();
-            previousNode -> right = targetNode -> right;
-            targetNode -> right   = nullptr;
+            targetLeaf -> clear();
+            previousLeaf -> right = targetLeaf -> right;
+            targetLeaf -> right   = nullptr;
             
-            delete_persistent<PersistentLeaf>(targetLeaf -> leaf);
-            targetLeaf -> leaf = nullptr;
+            delete_persistent<PersistentLeaf>(targetNode -> leaf);
+            targetNode -> leaf = nullptr;
         });
     }   
 }
