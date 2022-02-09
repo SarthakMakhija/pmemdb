@@ -189,6 +189,6 @@ void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey) {
             followerNode          = targetNode;
         }
         previousLeaf -> right = targetLeaf;
-        previousNode -> right = targetLeaf;
+        previousNode -> right = targetNode;
     });
 }
