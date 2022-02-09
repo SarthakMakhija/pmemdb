@@ -150,45 +150,45 @@ void SkipListLeafNode::deleteBy(std::string key) {
 }
 
 void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey) {
-    PersistentLeaf* previousNode = nullptr;
-    PersistentLeaf* targetNode   = this -> leaf.get();
+    PersistentLeaf* previousLeaf = nullptr;
+    PersistentLeaf* targetLeaf   = this -> leaf.get();
 
-    SkipListLeafNode* previousLeaf = nullptr;
-    SkipListLeafNode* targetLeaf   = this;
+    SkipListLeafNode* previousNode = nullptr;
+    SkipListLeafNode* targetNode   = this;
     
-    while(targetNode -> right.get() && std::string(targetNode -> right.get() -> key()) <= beginKey) {
-        previousLeaf = targetLeaf;
-        targetLeaf   = targetLeaf -> right;
-
+    while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= beginKey) {
         previousNode = targetNode;
-        targetNode   = targetNode -> right.get();
+        targetNode   = targetNode -> right;
+
+        previousLeaf = targetLeaf;
+        targetLeaf   = targetLeaf -> right.get();
     }
-    if (std::string(targetNode -> key()) < beginKey) {
-        previousLeaf = targetLeaf;
-        targetLeaf   = targetLeaf -> right;
-
+    if (std::string(targetLeaf -> key()) < beginKey) {
         previousNode = targetNode;
-        targetNode   = targetNode -> right.get();
+        targetNode   = targetNode -> right;
+
+        previousLeaf = targetLeaf;
+        targetLeaf   = targetLeaf -> right.get();
     }
 
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
     transaction::run(pmpool, [&] {
-        PersistentLeaf* previous = targetNode;
-        SkipListLeafNode* p      = targetLeaf;
+        PersistentLeaf* followerLeaf    = targetLeaf;
+        SkipListLeafNode* followerNode  = targetNode;
 
-        while(targetNode && std::string(targetNode -> key()) < endKey) {
-            targetNode -> clear();
-            targetNode = targetNode -> right.get();
-            previous -> right = nullptr;
-            previous = targetNode;
+        while(targetLeaf && std::string(targetLeaf -> key()) < endKey) {
+            targetLeaf -> clear();
+            targetLeaf = targetLeaf -> right.get();
+            followerLeaf -> right = nullptr;
+            followerLeaf = targetLeaf;
 
-            delete_persistent<PersistentLeaf>(targetLeaf -> leaf);
-            targetLeaf -> leaf = nullptr;
-            targetLeaf = targetLeaf -> right;
-            p -> right = nullptr;
-            p = targetLeaf;
+            delete_persistent<PersistentLeaf>(targetNode -> leaf);
+            targetNode -> leaf    = nullptr;
+            targetNode            = targetNode -> right;
+            followerNode -> right = nullptr;
+            followerNode          = targetNode;
         }
-        previousNode -> right = targetNode;
         previousLeaf -> right = targetLeaf;
+        previousNode -> right = targetLeaf;
     });
 }
