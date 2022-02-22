@@ -67,6 +67,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExcept
     ASSERT_THROW(skipList -> scan("B", "A", 10), std::invalid_argument);
 }
 
+/*
 TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenBeginAndEndKeyIsSameInDeleteRange) {
     SkipList* skipList = new SkipList(5);
     
@@ -78,3 +79,4 @@ TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExcept
     
     ASSERT_THROW(skipList -> deleteRange("B", "A"), std::invalid_argument);
 }
+*/

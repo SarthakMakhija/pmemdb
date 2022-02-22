@@ -5,14 +5,11 @@
 #include <vector>
 #include "SkipListNode.h"
 #include "SkipListNodes.h"
-
-
+#include "SkipListInternalNode.h"
 
 class SkipList {
     private:
-    std::vector<SkipListNode *> tower;
-
-    void update(std::string key, std::string value, SkipListNode* startingNode);
+    SkipListInternalNode* header;
 
     public:
     SkipList(int towerSize);

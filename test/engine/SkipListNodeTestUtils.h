@@ -7,6 +7,6 @@
 
 KeyValuePair downKeyValuePairOf(SkipListInternalNode* node);
 SkipListLeafNode* newSentinelLeafNode();
-SkipListInternalNode* newSentinelInternalNode();
+SkipListInternalNode* newSentinelInternalNode(int level);
 
 #endif

@@ -18,6 +18,11 @@ SkipListLeafNode* newSentinelLeafNode() {
     return sentinel;
 }
 
-SkipListInternalNode* newSentinelInternalNode() {
-    return new SkipListInternalNode();
+SkipListInternalNode* newSentinelInternalNode(int level) {
+    SkipListInternalNode* node     = new SkipListInternalNode("", "", level);
+    SkipListLeafNode* sentinelNode = new SkipListLeafNode();
+    sentinelNode -> persist();
+    node -> attach(sentinelNode);
+
+    return node;
 }

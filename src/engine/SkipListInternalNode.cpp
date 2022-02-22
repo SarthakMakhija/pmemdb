@@ -1,24 +1,19 @@
 #include "SkipListInternalNode.h"
 #include "KeyValuePair.h"
 
-SkipListInternalNode::SkipListInternalNode() : SkipListInternalNode("", "") {}
-
-SkipListInternalNode::SkipListInternalNode(std::string key, std::string value) {
+SkipListInternalNode::SkipListInternalNode(std::string key, std::string value, int level) {
     this -> key     = key;
     this -> value   = value;
-    this -> right   = nullptr;
     this -> down    = nullptr;
+
+    this -> forwards.resize(level);
+    for (int index = 0; index < level; index++) {
+        this -> forwards[index] = nullptr;
+    }
 }
 
 bool SkipListInternalNode::isLeaf() {
     return false;
-}
-
-SkipListNode* SkipListInternalNode::addToRightWith(std::string key, std::string value) {
-    SkipListInternalNode* newNode = new SkipListInternalNode(key, value);
-	newNode -> updateRight(this -> right);
-	this -> updateRight(newNode);
-	return newNode;
 }
 
 bool SkipListInternalNode::matchesKey(std::string key) const {
@@ -41,61 +36,93 @@ KeyValuePair SkipListInternalNode::keyValuePair() {
     return KeyValuePair(this -> key, this -> value);
 }
 
-KeyValuePair SkipListInternalNode::rightKeyValuePair() {
-    if (this -> right != nullptr)  {
-        return KeyValuePair(this -> right -> key, this -> right -> value);
-    }
-    return  KeyValuePair("", "");
-}
-
 SkipListNode* SkipListInternalNode::getDown()  {
     return this -> down;
 }
 
-void SkipListInternalNode::updateDown(SkipListNode* down) {
+void SkipListInternalNode::attach(SkipListLeafNode* down) {
     this -> down = down;
 }
 
-void SkipListInternalNode::updateRight(SkipListInternalNode* right) {
-    this -> right = right;
+std::pair<SkipListNode*, bool> SkipListInternalNode::getBy(std::string key) {
+    SkipListInternalNode* current = this;
+    for(int level = this -> forwards.size()-1; level >= 0; level--) {
+       while(current -> forwards[level] && current -> forwards[level] -> key < key) {
+           current = current -> forwards[level];
+       }
+    }
+    current = current -> forwards[0];
+    if (current && current -> key == key) {
+       return std::make_pair(current, true);
+    }
+    return std::make_pair(nullptr, false);
 }
 
-std::pair<SkipListNode*, bool> SkipListInternalNode::getBy(std::string key) {
-    SkipListNode *targetNode = this;
-    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
-        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
-            targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
-		}        
-        if (targetNode -> matchesKey(key)) {
-            return std::make_pair(targetNode, true);
+std::vector<KeyValuePair> SkipListInternalNode::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
+    SkipListInternalNode* current = this;
+    for(int level = this -> forwards.size()-1; level >= 0; level--) {
+       while(current -> forwards[level] && current -> forwards[level] -> key <= beginKey) {
+           current = current -> forwards[level];
+       }
+    }
+    if (current -> key < beginKey) {
+        current = current -> forwards[0];
+    }
+    std::vector<KeyValuePair> keyValuePairs;
+    int64_t pairCount = 0;
+    
+    while(current && current -> key < endKey) {
+        keyValuePairs.push_back(KeyValuePair(current -> key, current -> value));
+        current = current -> forwards[0];
+        pairCount = pairCount + 1;
+
+        if (pairCount == maxPairs) {
+            break;
         }
     }
-    return std::make_pair(targetNode, false);
+    return keyValuePairs;
 }
 
-SkipListNode* SkipListInternalNode::scan(std::string beginKey) {
-    SkipListNode *targetNode = this;
-    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
-        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(beginKey)) {
-			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
-		}
+std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string key, std::string value) {
+    SkipListInternalNode* current = this;
+    std::vector<SkipListInternalNode*> positions(this -> forwards.size(), nullptr);
+
+    for(int level = this -> forwards.size()-1; level >= 0; level--) {
+       while(current -> forwards[level] && current -> forwards[level] -> key < key) {
+           current = current -> forwards[level];
+       }
+       positions[level] = current; 
     }
-    return targetNode;
+    current = current -> forwards[0];
+    if (current == nullptr || current -> key != key) {
+        int newLevel = 4; //generate level
+        SkipListInternalNode* newNode = new SkipListInternalNode(key, value, newLevel);
+
+        for (int level = 0; level < newLevel; level++) {
+            newNode -> forwards[level] = positions[level] -> forwards[level];
+            positions[level] -> forwards[level] = newNode;
+        }
+        return std::make_pair(newNode, positions[0] -> down);
+    }
+    return std::make_pair(nullptr, nullptr);
 }
 
 SkipListNode* SkipListInternalNode::update(std::string key, std::string value) {
-    SkipListNode *targetNode = this;
-    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
-        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
-			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
-		}        
-        if (targetNode -> matchesKey(key)) {
-            static_cast<SkipListInternalNode*>(targetNode) -> updateValue(value);
-        }
+    SkipListInternalNode* current = this;
+    for(int level = this -> forwards.size()-1; level >= 0; level--) {
+       while(current -> forwards[level] && current -> forwards[level] -> key < key) {
+           current = current -> forwards[level];
+       }
     }
-    return targetNode;
+    current = current -> forwards[0];
+    if (current && current -> key == key) {
+        current -> updateValue(value);
+        return current -> down;
+    }
+    return nullptr;
 }
 
+/*
 SkipListNode* SkipListInternalNode::deleteBy(std::string key) {
     SkipListNode *previousNode  = nullptr;
     SkipListNode *targetNode    = this;
@@ -143,19 +170,7 @@ SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::strin
     }
     return targetNode;
 }
-
-std::pair<std::vector<SkipListNode*>, SkipListNode*> SkipListInternalNode::insertPositionsFor(std::string key) {
-    std::vector<SkipListNode*> nodes;
-    SkipListNode *targetNode = this;
-
-    for(; !targetNode -> isLeaf(); targetNode = static_cast<SkipListInternalNode*>(targetNode) -> down) {
-        while(static_cast<SkipListInternalNode*>(targetNode) -> right != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> right -> isKeyLessEqualTo(key)) {
-			targetNode = static_cast<SkipListInternalNode*>(targetNode) -> right;
-		}        
-        nodes.push_back(targetNode);
-    }
-    return std::make_pair(nodes, targetNode);
-}
+*/
 
 void SkipListInternalNode::updateValue(std::string value) {
     this -> value = value;

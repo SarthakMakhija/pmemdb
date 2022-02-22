@@ -4,40 +4,38 @@
 #include <string>
 #include <vector>
 #include "SkipListNode.h"
+#include "SkipListLeafNode.h"
+
 
 class SkipListInternalNode : public SkipListNode {
     private:
     std::string key;
     std::string value;
-    SkipListInternalNode* right;
     SkipListNode* down;
+    std::vector<SkipListInternalNode*> forwards;
 
     void updateValue(std::string value);
 
     public:
-    SkipListInternalNode(std::string key, std::string value);
-    SkipListInternalNode();
+    SkipListInternalNode(std::string key, std::string value, int level);
 
     bool isLeaf();
-    SkipListNode* addToRightWith(std::string key, std::string value);
     bool matchesKey(std::string key) const;
     bool isKeyLessEqualTo(std::string key);
     bool isKeyLessThan(std::string key);
     bool isKeyGreaterEqualTo(std::string key);
 
     KeyValuePair keyValuePair();
-    KeyValuePair rightKeyValuePair();
 
     SkipListNode* getDown();
-    void updateDown(SkipListNode* down);
-    void updateRight(SkipListInternalNode* right);    
-    
+    void attach(SkipListLeafNode* down);
+
     std::pair<SkipListNode*, bool> getBy(std::string key);
-    SkipListNode* scan(std::string beginKey);
+    std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
+    std::pair<SkipListNode*, SkipListNode*> put(std::string key, std::string value);
     SkipListNode* update(std::string key, std::string value);
     SkipListNode* deleteBy(std::string key);
     SkipListNode* deleteRange(std::string beginKey, std::string endKey);
-    std::pair<std::vector<SkipListNode*>, SkipListNode*> insertPositionsFor(std::string key);
 };
 
 #endif

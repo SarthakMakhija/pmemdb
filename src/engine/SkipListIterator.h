@@ -9,8 +9,6 @@ class SkipListIterator {
     private:
     SkipListNode* startingNode;
     
-    std::pair<SkipListNodes, SkipListNode*> insertPositionsFor(std::string key);
-
     public:
     SkipListIterator(SkipListNode* startingNode);
 

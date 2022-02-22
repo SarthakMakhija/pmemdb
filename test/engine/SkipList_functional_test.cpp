@@ -21,24 +21,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndAdd500K
     }
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndAdd500KeyValuePairsInSkipListWithTowerSize1) {
-    SkipList* skipList = new SkipList(1);
-    for (int count = 1; count <= 500; count++) {
-        std::string key   = "Key-"    + std::to_string(count);
-        std::string value = "Value-"  + std::to_string(count);
-
-        skipList -> put(key, value);
-    }
-    for (int count = 1; count <= 500; count++) {
-        std::string key           = "Key-"   + std::to_string(count);
-        std::string expectedValue = "Value-" + std::to_string(count);
-        
-        std::pair<std::string, bool> existenceByValue = skipList -> get(key);
-        ASSERT_EQ(expectedValue, existenceByValue.first);
-        ASSERT_TRUE(existenceByValue.second);
-    }
-}
-
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesAScan) {
     SkipList* skipList = new SkipList(10);
     for (int count = 1; count <= 500; count+=2) {
@@ -104,6 +86,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndUpdate5
     }
 }
 
+/*
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteKeys) {
     SkipList* skipList = new SkipList(10);
     for (int count = 1; count <= 500; count++) {
@@ -163,3 +146,4 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteA
         ASSERT_FALSE(existenceByValue.second);
     }
 }
+*/
