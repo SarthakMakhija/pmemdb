@@ -3,7 +3,6 @@
 
 #include <string>
 #include "SkipListNode.h"
-#include "SkipListNodes.h"
 
 class SkipListIterator {   
     private:

@@ -8,8 +8,6 @@ add_library(SkipList
             KeyValuePair.h 
             KeyValuePair.cpp 
             SkipListNode.h 
-            SkipListNodes.h 
-            SkipListNodes.cpp 
             SkipList.h 
             SkipList.cpp
             SkipListInternalNode.h 

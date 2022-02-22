@@ -8,7 +8,6 @@
 #include "../../src/engine/PersistentMemoryPool.h"
 
 
-
 class PersistentMemoryPoolFixture : public ::testing::Test {
 
     private:

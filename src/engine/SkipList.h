@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include "SkipListNode.h"
-#include "SkipListNodes.h"
 #include "SkipListInternalNode.h"
 
 class SkipList {
