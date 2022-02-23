@@ -150,33 +150,34 @@ SkipListNode* SkipListInternalNode::deleteBy(std::string key) {
     return nullptr;
 }
 
-/*
 SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::string endKey) {
-    SkipListNode *previousNode  = nullptr;
-    SkipListNode *targetNode    = this;
+    SkipListInternalNode* current = this;
+    std::vector<SkipListInternalNode*> positions(this -> forwards.size(), nullptr);
 
-    for(; !targetNode -> isLeaf(); ) {
-
-        while(static_cast<SkipListInternalNode*>(targetNode) != nullptr && static_cast<SkipListInternalNode*>(targetNode) -> isKeyLessThan(endKey)) {                        
-            if (static_cast<SkipListInternalNode*>(targetNode) -> isKeyGreaterEqualTo(beginKey)) {
-
-                static_cast<SkipListInternalNode*>(targetNode) -> down    = nullptr;
-                SkipListNode *p                                           = targetNode;
-                targetNode                                                = static_cast<SkipListInternalNode*>(targetNode) -> right;
-                static_cast<SkipListInternalNode*>(p) -> right            = nullptr;
-                static_cast<SkipListInternalNode*>(previousNode) -> right = static_cast<SkipListInternalNode*>(targetNode);
-                delete p; //warning?
-            } else  {
-                previousNode                                              = targetNode;
-                targetNode                                                = static_cast<SkipListInternalNode*>(targetNode) -> right;
-            }
-		}
-        targetNode                                                        = static_cast<SkipListInternalNode*>(previousNode) -> down;
-        previousNode                                                      = targetNode;      
+    for(int level = this -> forwards.size()-1; level >= 0; level--) {
+       while(current -> forwards[level] && current -> forwards[level] -> key < beginKey) {
+           current = current -> forwards[level];
+       }
+       positions[level] = current; 
     }
-    return targetNode;
+    current = current -> forwards[0];
+    while (current != nullptr && current -> key >= beginKey && current -> key < endKey) {
+         for (int level = 0; level < this -> forwards.size(); level++) {
+            if (positions[level] -> forwards[level] != current) {
+                break;
+            }
+            positions[level] -> forwards[level] = current -> forwards[level];
+        }
+        current -> down = nullptr;
+        SkipListInternalNode* backup = current -> forwards[0];
+        for (int level = 0; level < current -> forwards.size(); level++) {
+            current -> forwards[level] = nullptr;
+        }
+        delete current;
+        current = backup;
+    }
+    return positions[0] -> down;
 }
-*/
 
 void SkipListInternalNode::updateValue(std::string value) {
     this -> value = value;
