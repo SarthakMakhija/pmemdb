@@ -15,6 +15,7 @@ class SkipListInternalNode : public SkipListNode {
     std::vector<SkipListInternalNode*> forwards;
 
     void updateValue(std::string value);
+    int generateLevel(int maxLevel, double probability);
 
     public:
     SkipListInternalNode(std::string key, std::string value, int level);
@@ -32,7 +33,7 @@ class SkipListInternalNode : public SkipListNode {
 
     std::pair<SkipListNode*, bool> getBy(std::string key);
     std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
-    std::pair<SkipListNode*, SkipListNode*> put(std::string key, std::string value);
+    std::pair<SkipListNode*, SkipListNode*> put(std::string key, std::string value, double probability);
     SkipListNode* update(std::string key, std::string value);
     SkipListNode* deleteBy(std::string key);
     SkipListNode* deleteRange(std::string beginKey, std::string endKey);

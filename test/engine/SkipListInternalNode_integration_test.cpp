@@ -51,8 +51,8 @@ TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForAnExistingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  sentinelInternal -> put("HDD", "Hard disk drive");
-  sentinelInternal -> put("SDD", "Solid state drive");
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  sentinelInternal -> put("SDD", "Solid state drive", 0.5);
 
   std::string key = "SDD";
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
@@ -62,83 +62,71 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForAnExistingKe
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExistingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  initializeSkipListNodeLevelGenerator(6, 0.5);
-
-  sentinelInternal -> put("HDD", "Hard disk drive");
-  sentinelInternal -> put("SDD", "Solid state drive");
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  sentinelInternal -> put("SDD", "Solid state drive", 0.5);
 
   std::string key = "Pmem";
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
   
-  cleanUpSkipListNodeLevelGenerator();
   ASSERT_FALSE(existenceByNode.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  initializeSkipListNodeLevelGenerator(6, 0.5);
- 
-  sentinelInternal -> put("HDD", "Hard disk drive");
-  sentinelInternal -> put("SDD", "Solid state drive");
-  sentinelInternal -> put("Pmem", "Persistent Memory");
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  sentinelInternal -> put("SDD", "Solid state drive", 0.5);
+  sentinelInternal -> put("Pmem", "Persistent Memory", 0.5);
 
   std::string key = "SDD";
   sentinelInternal -> update(key, "Solid Drive");
 
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
-  cleanUpSkipListNodeLevelGenerator();
 
   ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInBetweenInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  initializeSkipListNodeLevelGenerator(6, 0.5);
  
-  sentinelInternal -> put("HDD", "Hard disk drive");
-  sentinelInternal -> put("SDD", "Solid state drive");
-  sentinelInternal -> put("Pmem", "Persistent Memory");
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  sentinelInternal -> put("SDD", "Solid state drive", 0.5);
+  sentinelInternal -> put("Pmem", "Persistent Memory", 0.5);
 
   std::string key = "Pmem";
   SkipListNode* leaf = sentinelInternal -> deleteBy(key);
 
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
 
-  cleanUpSkipListNodeLevelGenerator();
   ASSERT_FALSE(existenceByNode.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInEndInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  initializeSkipListNodeLevelGenerator(6, 0.5);
  
-  sentinelInternal -> put("HDD", "Hard disk drive");
-  sentinelInternal -> put("SDD", "Solid state drive");
-  sentinelInternal -> put("Pmem", "Persistent Memory");
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  sentinelInternal -> put("SDD", "Solid state drive", 0.5);
+  sentinelInternal -> put("Pmem", "Persistent Memory", 0.5);
 
   std::string key = "SDD";
   SkipListNode* leaf = sentinelInternal -> deleteBy(key);
 
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
 
-  cleanUpSkipListNodeLevelGenerator();
   ASSERT_FALSE(existenceByNode.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInBeginningInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  initializeSkipListNodeLevelGenerator(6, 0.5);
  
-  sentinelInternal -> put("HDD", "Hard disk drive");
-  sentinelInternal -> put("SDD", "Solid state drive");
-  sentinelInternal -> put("Pmem", "Persistent Memory");
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  sentinelInternal -> put("SDD", "Solid state drive", 0.5);
+  sentinelInternal -> put("Pmem", "Persistent Memory", 0.5);
 
   std::string key = "HDD";
   SkipListNode* leaf = sentinelInternal -> deleteBy(key);
 
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
 
-  cleanUpSkipListNodeLevelGenerator();
   ASSERT_FALSE(existenceByNode.second);
 }
 

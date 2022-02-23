@@ -10,6 +10,8 @@ class SkipList {
     private:
     SkipListInternalNode* header;
 
+    double probability;
+
     public:
     SkipList(int towerSize, double probability);
     

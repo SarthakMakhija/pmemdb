@@ -5,8 +5,8 @@
 SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }
 
-void SkipListIterator::put(std::string key, std::string value) {
-    std::pair<SkipListNode*, SkipListNode*> leafByInternalNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> put(key, value);
+void SkipListIterator::put(std::string key, std::string value, double probability) {
+    std::pair<SkipListNode*, SkipListNode*> leafByInternalNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> put(key, value, probability);
     SkipListLeafNode* leafNode = static_cast<SkipListLeafNode*>(leafByInternalNode.second) -> put(key, value);
     static_cast<SkipListInternalNode*>(leafByInternalNode.first) -> attach(leafNode);
 }

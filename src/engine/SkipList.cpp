@@ -3,7 +3,6 @@
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
 #include "SkipListIterator.h"
-#include "SkipListNodeLevelGenerator.h"
 #include <stdlib.h>
 #include <stdexcept>
 
@@ -14,13 +13,12 @@ SkipList::SkipList(int towerSize, double probability) {
     if (probability < 0 || probability > 1) {
         throw std::invalid_argument("probability must be less than 1 and greater than zero");
     }
-    SkipListNodeLevelGenerator::initialize(towerSize, probability);
-    
     SkipListLeafNode* sentinelLeafNode = new SkipListLeafNode();
     sentinelLeafNode -> persist();
 
     this -> header = new SkipListInternalNode("", "", towerSize);
     this -> header -> attach(sentinelLeafNode);
+    this -> probability = probability;
 }
 
 void SkipList::put(std::string key, std::string value) {
@@ -30,7 +28,7 @@ void SkipList::put(std::string key, std::string value) {
 
     std::pair<std::string, bool> valueByExistence = this -> get(key);
 	if (!valueByExistence.second){
-        SkipListIterator(this -> header).put(key, value);
+        SkipListIterator(this -> header).put(key, value, this -> probability);
         return;
     }
     throw std::invalid_argument("key already exists");

@@ -18,8 +18,6 @@ add_library(SkipList
             SkipListIterator.cpp
             PersistentMemoryPool.h
             PersistentMemoryPool.cpp
-            SkipListNodeLevelGenerator.h
-            SkipListNodeLevelGenerator.cpp
             PersistentLeaf.h)
 
 target_include_directories(SkipList PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})

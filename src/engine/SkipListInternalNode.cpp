@@ -1,6 +1,5 @@
 #include "SkipListInternalNode.h"
 #include "KeyValuePair.h"
-#include "SkipListNodeLevelGenerator.h"
 
 SkipListInternalNode::SkipListInternalNode(std::string key, std::string value, int level) {
     this -> key     = key;
@@ -84,7 +83,7 @@ std::vector<KeyValuePair> SkipListInternalNode::scan(std::string beginKey, std::
     return keyValuePairs;
 }
 
-std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string key, std::string value) {
+std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string key, std::string value, double probability) {
     SkipListInternalNode* current = this;
     std::vector<SkipListInternalNode*> positions(this -> forwards.size(), nullptr);
 
@@ -96,7 +95,7 @@ std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string ke
     }
     current = current -> forwards[0];
     if (current == nullptr || current -> key != key) {
-        int newLevel = SkipListNodeLevelGenerator::getInstance() -> generateLevel();
+        int newLevel = generateLevel(this -> forwards.size(), probability);
         SkipListInternalNode* newNode = new SkipListInternalNode(key, value, newLevel);
 
         for (int level = 0; level < newLevel; level++) {
@@ -181,4 +180,15 @@ SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::strin
 
 void SkipListInternalNode::updateValue(std::string value) {
     this -> value = value;
+}
+
+int SkipListInternalNode::generateLevel(int maxLevel, double probability) { 
+    double random = (double)rand()/RAND_MAX;
+    int level = 1;
+
+    while (random < probability && level < maxLevel) {
+        level = level + 1;
+        random = (double)rand()/RAND_MAX;
+    }
+    return level;
 }

@@ -26,11 +26,3 @@ SkipListInternalNode* newSentinelInternalNode(int level) {
 
     return node;
 }
-
-void initializeSkipListNodeLevelGenerator(int maxLevel, double probability) {
-    SkipListNodeLevelGenerator::initialize(maxLevel, probability);
-}
-
-void cleanUpSkipListNodeLevelGenerator() {
-    delete SkipListNodeLevelGenerator::getInstance();
-}
