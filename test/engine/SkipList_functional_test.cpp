@@ -123,7 +123,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteK
     }
 }
 
-/*
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteAllKeysByRange) {
     SkipList* skipList = new SkipList(10, 0.5);
     for (int count = 1; count <= 8; count++) {
@@ -146,4 +145,3 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteA
         ASSERT_FALSE(existenceByValue.second);
     }
 }
-*/
