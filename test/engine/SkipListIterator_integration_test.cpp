@@ -62,10 +62,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
   std::vector<std::pair<std::string, bool>> result = iterator.multiGet(keys);
   
   std::vector<std::pair<std::string, bool>> expected = {
+                            std::make_pair("", false),
                             std::make_pair("Hard disk drive", true), 
-                            std::make_pair("Solid state drive", true),
                             std::make_pair("Persistent memory", true),
-                            std::make_pair("", false)
+                            std::make_pair("Solid state drive", true)
   };
 
   ASSERT_EQ(expected, result);

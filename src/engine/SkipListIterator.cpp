@@ -1,6 +1,7 @@
 #include "SkipListIterator.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
+#include <bits/stdc++.h>
 
 SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{startingNode} {
 }
@@ -11,11 +12,20 @@ void SkipListIterator::put(std::string key, std::string value, double probabilit
     static_cast<SkipListInternalNode*>(leafByInternalNode.first) -> attach(leafNode);
 }
 
-std::vector<std::pair<std::string, bool>> SkipListIterator::multiGet(const std::vector<std::string> &keys) {
+std::vector<std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector<std::string> keys) {
     std::vector<std::pair<std::string, bool>> result;   
-   
+
+    std::sort(keys.begin(), keys.end());
+    SkipListNode* starting = this -> startingNode;
+
     for (auto key : keys) {
-        result.push_back(getBy(key));
+        std::pair<SkipListNode*, bool> existenceByNode = static_cast<SkipListInternalNode*>(startingNode) -> getBy(key);
+        if (existenceByNode.second) {
+            result.push_back(std::make_pair(existenceByNode.first -> keyValuePair().getValue(), true));
+            startingNode = existenceByNode.first;
+        } else {
+            result.push_back(std::make_pair("", false));
+        }
     }
     return result;
 }
