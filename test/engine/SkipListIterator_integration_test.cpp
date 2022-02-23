@@ -177,3 +177,30 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   ASSERT_FALSE(iterator.getBy(key).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteRange1) {
+  SkipListInternalNode* sentinel = newSentinelInternalNode(6);
+  SkipListIterator iterator      = SkipListIterator(sentinel);
+
+  iterator.put("A", "A", 0.5);
+  iterator.put("B", "B", 0.5);
+  iterator.put("C", "C", 0.5);
+
+  iterator.deleteRange("B", "D");
+
+  std::vector<std::string> missingKeys = {"B", "C"};
+  for (auto missingKey: missingKeys) {
+    ASSERT_FALSE(iterator.getBy(missingKey).second);
+  }
+  for (auto missingKey: missingKeys) {
+    ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(missingKey).second);
+  }
+
+  std::vector<std::string> presentKeys = {"A"};
+  for (auto presentKey: presentKeys) {
+    ASSERT_EQ(presentKey,  iterator.getBy(presentKey).first);
+  }
+  for (auto presentKey: presentKeys) {
+    ASSERT_EQ(presentKey,  static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(presentKey).first);
+  }
+}
