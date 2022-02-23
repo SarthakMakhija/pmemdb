@@ -15,7 +15,7 @@ target_sources(pmemdb_tests
 	PRIVATE	
 	# test/engine/SkipList_functional_test.cpp
 	# test/engine/SkipList_exception_unit_test.cpp
-	# test/engine/SkipList_integration_test.cpp
+	test/engine/SkipList_integration_test.cpp
 	# test/engine/SkipListInternalNode_integration_test.cpp
 	test/engine/SkipListIterator_integration_test.cpp
 	# test/engine/SkipListLeafNode_integration_test.cpp
