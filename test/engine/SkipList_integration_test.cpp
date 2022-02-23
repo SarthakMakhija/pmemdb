@@ -142,7 +142,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDelete
     ASSERT_EQ("", existenceByValue.first);
 }
 
-/*
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteRangeWithBeginKeyPresent) {
     SkipList* skipList = new SkipList(8, 0.5);
     skipList -> put("B", "B");
@@ -237,4 +236,19 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDelete
         ASSERT_EQ("",  skipList -> get(missingKey).first);
     }
 }
-*/
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteRangeWithEntireRangeNotPresent) {
+    SkipList* skipList = new SkipList(8, 0.5);
+    skipList -> put("A", "A");
+    skipList -> put("B", "B");
+    skipList -> put("C", "C");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    skipList -> deleteRange("F", "H");
+    
+    std::vector<std::string> presentKeys = {"A", "B", "C", "D", "E"};
+    for (auto presentKey: presentKeys) {
+        ASSERT_EQ(presentKey,  skipList -> get(presentKey).first);
+    }
+}

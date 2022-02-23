@@ -50,14 +50,12 @@ void SkipList::deleteBy(std::string key) {
     SkipListIterator(this -> header).deleteBy(key);
 }
 
-/*
 void SkipList::deleteRange(std::string beginKey, std::string endKey) {
     if (beginKey == endKey || endKey < beginKey) {
         throw std::invalid_argument("beginKey and endKey must be different and endKey must be greater than beginKey");
     }
     SkipListIterator(this -> header).deleteRange(beginKey, endKey);
 }
-*/
 
 std::pair<std::string, bool> SkipList::get(std::string key) {
     return SkipListIterator(this -> header).getBy(key);
