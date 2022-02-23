@@ -47,7 +47,11 @@ tasks:
           - status: pending
           - task: Probably separate iterator and writer interface
           - status: pending
-          - task: Generate level, handle delete, handle deleteRange, relook at all the methods across all classes and remove the ones that are not needed
+          - task: handle deleteRange, relook at all the methods across all classes and remove the ones that are not needed
+          - status: pending
+          - task: take snapshot while writing transactionally in leaf nodes + handle rollback
+          - status: pending
+          - task: take snapshot while writing transactionally in leaf nodes + handle rollback
           - status: pending
 later:
   items:
