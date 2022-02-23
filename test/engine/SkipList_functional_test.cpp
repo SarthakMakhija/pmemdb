@@ -3,8 +3,8 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndAdd500KeyValuePairsInSkipListWithTowerSize10) {
-    SkipList* skipList = new SkipList(10);
+TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndAdd500KeyValuePairsInSkipList) {
+    SkipList* skipList = new SkipList(10, 0.5);
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
@@ -22,7 +22,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndAdd500K
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesAScan) {
-    SkipList* skipList = new SkipList(10);
+    SkipList* skipList = new SkipList(10, 0.5);
     for (int count = 1; count <= 500; count+=2) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
@@ -43,7 +43,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesASc
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesAScanWithMaxPairsAs5) {
-    SkipList* skipList = new SkipList(10);
+    SkipList* skipList = new SkipList(10, 0.5);
     for (int count = 1; count <= 500; count+=2) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
@@ -62,8 +62,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesASc
     ASSERT_EQ(expected, pairs);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndUpdate500KeyValuePairsUsingUpdateInSkipListWithTowerSize10) {
-    SkipList* skipList = new SkipList(10);
+TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndUpdate500KeyValuePairsUsingUpdateInSkipList) {
+    SkipList* skipList = new SkipList(10, 0.5);
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
@@ -87,7 +87,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndUpdate5
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteKeys) {
-    SkipList* skipList = new SkipList(10);
+    SkipList* skipList = new SkipList(10, 0.5);
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
@@ -125,7 +125,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteK
 
 /*
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteAllKeysByRange) {
-    SkipList* skipList = new SkipList(10);
+    SkipList* skipList = new SkipList(10, 0.5);
     for (int count = 1; count <= 8; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);

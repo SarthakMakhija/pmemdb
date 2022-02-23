@@ -11,7 +11,7 @@ class SkipList {
     SkipListInternalNode* header;
 
     public:
-    SkipList(int towerSize);
+    SkipList(int towerSize, double probability);
     
     void put(std::string key, std::string value);
     void update(std::string key, std::string value);

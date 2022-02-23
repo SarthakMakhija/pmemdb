@@ -1,6 +1,6 @@
 #include "SkipListInternalNode.h"
 #include "KeyValuePair.h"
-#include <iostream>
+#include "SkipListNodeLevelGenerator.h"
 
 SkipListInternalNode::SkipListInternalNode(std::string key, std::string value, int level) {
     this -> key     = key;
@@ -96,7 +96,7 @@ std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string ke
     }
     current = current -> forwards[0];
     if (current == nullptr || current -> key != key) {
-        int newLevel = 4; //generate level
+        int newLevel = SkipListNodeLevelGenerator::getInstance() -> generateLevel();
         SkipListInternalNode* newNode = new SkipListInternalNode(key, value, newLevel);
 
         for (int level = 0; level < newLevel; level++) {

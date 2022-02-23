@@ -3,14 +3,19 @@
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
 #include "SkipListIterator.h"
+#include "SkipListNodeLevelGenerator.h"
 #include <stdlib.h>
 #include <stdexcept>
 
-SkipList::SkipList(int towerSize) {
+SkipList::SkipList(int towerSize, double probability) {
     if (towerSize < 1) {
         throw std::invalid_argument("towerSize has to be greater than or equal to one");
     }
-
+    if (probability < 0 || probability > 1) {
+        throw std::invalid_argument("probability must be less than 1 and greater than zero");
+    }
+    SkipListNodeLevelGenerator::initialize(towerSize, probability);
+    
     SkipListLeafNode* sentinelLeafNode = new SkipListLeafNode();
     sentinelLeafNode -> persist();
 
