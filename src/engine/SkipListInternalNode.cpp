@@ -134,14 +134,14 @@ SkipListNode* SkipListInternalNode::deleteBy(std::string key) {
     }
     current = current -> forwards[0];
     if (current != nullptr && current -> key == key) {
-         for (int level = 0; level < this -> forwards.size()-1; level++) {
+         for (int level = 0; level < this -> forwards.size(); level++) {
             if (positions[level] -> forwards[level] != current) {
                 break;
             }
             positions[level] -> forwards[level] = current -> forwards[level];
         }
         current -> down = nullptr;
-        for (int level = 0; level < current -> forwards.size()-1; level++) {
+        for (int level = 0; level < current -> forwards.size(); level++) {
             current -> forwards[level] = nullptr;
         }
         delete current;
