@@ -7,6 +7,7 @@
 #include "./PersistentMemoryPoolFixture.h"
 #include "./SkipListNodeTestUtils.h"
 
+/*
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutASingleKeyValuePair) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
     initializeSkipListNodeLevelGenerator(6, 0.5);
@@ -177,6 +178,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   ASSERT_FALSE(iterator.getBy(key).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
 }
+*/
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInEnd) {
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
@@ -196,6 +198,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
 }
 
+/*
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInBeginning) {
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   initializeSkipListNodeLevelGenerator(6, 0.5);
@@ -213,3 +216,4 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   ASSERT_FALSE(iterator.getBy(key).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
 }
+*/
