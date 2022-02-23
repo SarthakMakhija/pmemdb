@@ -111,9 +111,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndUpdate
     ASSERT_EQ("", existenceByValue.first);
 }
 
-/*
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheBeginning) {
-    SkipList* skipList = new SkipList(1);
+    SkipList* skipList = new SkipList(8);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
 
@@ -123,7 +122,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDelete
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInBetween) {
-    SkipList* skipList = new SkipList(1);
+    SkipList* skipList = new SkipList(8);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
     skipList -> put("SDD", "Solid state drive");
@@ -143,6 +142,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDelete
     ASSERT_EQ("", existenceByValue.first);
 }
 
+/*
 TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteRangeWithBeginKeyPresent) {
     SkipList* skipList = new SkipList(8);
     skipList -> put("B", "B");

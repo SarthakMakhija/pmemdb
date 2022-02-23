@@ -39,7 +39,6 @@ void SkipList::update(std::string key, std::string value) {
     SkipListIterator(this -> header).update(key, value);
 }
 
-/*
 void SkipList::deleteBy(std::string key) {
     if (key == "") {
         throw std::invalid_argument("key can not be blank while deleting the corresponding value");
@@ -48,6 +47,7 @@ void SkipList::deleteBy(std::string key) {
     SkipListIterator(this -> header).deleteBy(key);
 }
 
+/*
 void SkipList::deleteRange(std::string beginKey, std::string endKey) {
     if (beginKey == endKey || endKey < beginKey) {
         throw std::invalid_argument("beginKey and endKey must be different and endKey must be greater than beginKey");
