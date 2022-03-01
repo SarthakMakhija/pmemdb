@@ -68,3 +68,33 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     reader1.join();
     reader2.join();
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingScan) {
+    SkipList* skipList = new SkipList(8, 0.5);
+    skipList -> put("A", "A");
+    skipList -> put("B", "B");
+    skipList -> put("C", "C");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    std::thread reader1([&]() {
+        std::vector<KeyValuePair> expected = {
+            KeyValuePair("B", "B"), 
+            KeyValuePair("C", "C"), 
+            KeyValuePair("D", "D"), 
+            KeyValuePair("E", "E")
+        };
+        ASSERT_EQ(expected, skipList -> scan("B", "F", 10));
+    });
+
+    std::thread reader2([&]() {
+         std::vector<KeyValuePair> expected = {
+            KeyValuePair("A", "A"), 
+            KeyValuePair("B", "B")
+        };
+        ASSERT_EQ(expected, skipList -> scan("A", "C", 10));
+    });
+
+    reader1.join();
+    reader2.join();
+}
