@@ -21,3 +21,21 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsRead
     reader1.join();
     reader2.join();
 }
+
+
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsReadingDifferentKey) {
+    SkipList* skipList = new SkipList(8, 0.5);
+    skipList -> put("HDD", "Hard disk drive");
+    skipList -> put("Pmem", "Persistent Memory");
+
+    std::thread reader1([&]() {
+        ASSERT_EQ("Hard disk drive", skipList -> get("HDD").first);
+    });
+
+    std::thread reader2([&]() {
+        ASSERT_EQ("Persistent Memory", skipList -> get("Pmem").first);
+    });
+
+    reader1.join();
+    reader2.join();
+}
