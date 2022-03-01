@@ -19,6 +19,7 @@ target_sources(pmemdb_tests
 	test/engine/SkipListInternalNode_integration_test.cpp
 	test/engine/SkipListIterator_integration_test.cpp
 	test/engine/SkipListLeafNode_integration_test.cpp
+	test/engine/SkipList_concurrent_integration_test.cpp
 	test/engine/SkipListNodeTestUtils.h
 	test/engine/SkipListNodeTestUtils.cpp
 	test/engine/PersistentMemoryPoolFixture.h
