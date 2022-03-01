@@ -23,7 +23,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsRead
 }
 
 
-TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsReadingDifferentKey) {
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsReadingDifferentKeys) {
     SkipList* skipList = new SkipList(8, 0.5);
     skipList -> put("HDD", "Hard disk drive");
     skipList -> put("Pmem", "Persistent Memory");
