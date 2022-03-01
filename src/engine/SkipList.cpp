@@ -28,6 +28,7 @@ void SkipList::put(std::string key, std::string value) {
 
     std::pair<std::string, bool> valueByExistence = this -> get(key);
 	if (!valueByExistence.second){
+        std::lock_guard<std::shared_mutex> lock(this -> mutex_);
         SkipListIterator(this -> header).put(key, value, this -> probability);
         return;
     }
@@ -39,6 +40,7 @@ void SkipList::update(std::string key, std::string value) {
         throw std::invalid_argument("key and value can not be blank while updating");
     }
 
+    std::lock_guard<std::shared_mutex> lock(this -> mutex_);
     SkipListIterator(this -> header).update(key, value);
 }
 
@@ -47,6 +49,7 @@ void SkipList::deleteBy(std::string key) {
         throw std::invalid_argument("key can not be blank while deleting the corresponding value");
     }
 
+    std::lock_guard<std::shared_mutex> lock(this -> mutex_);
     SkipListIterator(this -> header).deleteBy(key);
 }
 
@@ -54,14 +57,18 @@ void SkipList::deleteRange(std::string beginKey, std::string endKey) {
     if (beginKey == endKey || endKey < beginKey) {
         throw std::invalid_argument("beginKey and endKey must be different and endKey must be greater than beginKey");
     }
+
+    std::lock_guard<std::shared_mutex> lock(this -> mutex_);
     SkipListIterator(this -> header).deleteRange(beginKey, endKey);
 }
 
 std::pair<std::string, bool> SkipList::get(std::string key) {
+    std::shared_lock<std::shared_mutex> lock(this -> mutex_);
     return SkipListIterator(this -> header).getBy(key);
 }
 
 std::vector<std::pair<std::string, bool>> SkipList::multiGet(const std::vector<std::string> &keys) {
+    std::shared_lock<std::shared_mutex> lock(this -> mutex_);
     return SkipListIterator(this -> header).multiGet(keys);
 }
 
@@ -72,5 +79,7 @@ std::vector<KeyValuePair> SkipList::scan(std::string beginKey, std::string endKe
     if (beginKey == endKey || endKey < beginKey) {
         throw std::invalid_argument("beginKey and endKey must be different and endKey must be greater than beginKey");
     }
+
+    std::shared_lock<std::shared_mutex> lock(this -> mutex_);
     return SkipListIterator(this -> header).scan(beginKey, endKey, maxPairs);
 }
