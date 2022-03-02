@@ -195,3 +195,21 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     std::string value = skipList -> get("HDD").first;
     ASSERT_TRUE(value == "Hard disk" || value == "HDD");
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingPutAndDeleteOnSameKey) {
+    SkipList* skipList = new SkipList(8, 0.5);
+
+    std::thread writer1([&]() {
+        skipList -> put("HDD", "Hard disk drive");
+    });
+    
+    std::thread writer2([&]() {
+        skipList -> deleteBy("HDD");
+    });
+
+    writer1.join();
+    writer2.join();
+
+    std::string value = skipList -> get("HDD").first;
+    ASSERT_TRUE(value == "Hard disk drive" || value == "");
+}
