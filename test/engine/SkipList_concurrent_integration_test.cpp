@@ -3,7 +3,7 @@
 #include <thread>
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
-
+#include <iostream>
 
 TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsReadingTheSameKey) {
     SkipList* skipList = new SkipList(8, 0.5);
@@ -248,6 +248,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     };
     std::vector<std::string> keys = {"A", "B", "C", "D", "E"};
     std::vector<std::pair<std::string, bool>>  result = skipList -> multiGet(keys);
+    for (auto pair: result ){
+        std::cout << pair.first << " -- " << pair.second << std::endl;
+    }
 
     ASSERT_TRUE(result == expectedAll || result == expectedDeleted);
 }
