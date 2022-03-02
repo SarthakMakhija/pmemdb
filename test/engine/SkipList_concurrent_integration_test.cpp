@@ -120,7 +120,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
                         std::make_pair("Non volatile memory", true),
                         std::make_pair("Persistent Memory", true),
                         std::make_pair("Solid state drive", true)
-        };
+    };
     std::vector<std::string> keys = {"Pmem", "Nvm", "HDD", "SDD"};
     ASSERT_EQ(expected, skipList -> multiGet(keys));
 }
@@ -148,7 +148,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     std::vector<std::pair<std::string, bool>> expected = {
                         std::make_pair("Hard disk drive", true),
                         std::make_pair("Solid state drive", true)
-        };
+    };
     std::vector<std::string> keys = {"HDD", "SDD"};
     ASSERT_EQ(expected, skipList -> multiGet(keys));
 }
@@ -172,7 +172,26 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     std::vector<std::pair<std::string, bool>> expected = {
                         std::make_pair("Hard disk", true),
                         std::make_pair("Solid state drive", true)
-        };
+    };
     std::vector<std::string> keys = {"HDD", "SDD"};
     ASSERT_EQ(expected, skipList -> multiGet(keys));
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingUpdateOnSameKey) {
+    SkipList* skipList = new SkipList(8, 0.5);
+    skipList -> put("HDD", "Hard disk drive");
+
+    std::thread writer1([&]() {
+        skipList -> update("HDD", "Hard disk");
+    });
+    
+    std::thread writer2([&]() {
+        skipList -> update("HDD", "HDD");
+    });
+
+    writer1.join();
+    writer2.join();
+
+    std::string value = skipList -> get("HDD").first;
+    ASSERT_TRUE(value == "Hard disk" || value == "HDD");
 }
