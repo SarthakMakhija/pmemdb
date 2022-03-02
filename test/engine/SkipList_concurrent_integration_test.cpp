@@ -98,3 +98,57 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     reader1.join();
     reader2.join();
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingPutOnDifferentKeyValuePairs) {
+    SkipList* skipList = new SkipList(8, 0.5);
+
+    std::thread writer1([&]() {
+        skipList -> put("HDD", "Hard disk drive");
+        skipList -> put("SDD", "Solid state drive");
+    });
+
+    std::thread writer2([&]() {
+        skipList -> put("Pmem", "Persistent Memory");
+        skipList -> put("Nvm", "Non volatile memory");
+    });
+
+    writer1.join();
+    writer2.join();
+
+    std::vector<std::pair<std::string, bool>> expected = {
+                        std::make_pair("Hard disk drive", true),
+                        std::make_pair("Non volatile memory", true),
+                        std::make_pair("Persistent Memory", true),
+                        std::make_pair("Solid state drive", true)
+        };
+    std::vector<std::string> keys = {"Pmem", "Nvm", "HDD", "SDD"};
+    ASSERT_EQ(expected, skipList -> multiGet(keys));
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingPutOnDSameKeyValuePairs) {
+    SkipList* skipList = new SkipList(8, 0.5);
+
+    std::thread writer1([&]() {
+        try {
+            skipList -> put("HDD", "Hard disk drive");
+            skipList -> put("SDD", "Solid state drive");
+        } catch(const std::invalid_argument &e) {}
+    });
+
+    std::thread writer2([&]() {
+        try {
+            skipList -> put("HDD", "Hard disk drive");
+            skipList -> put("SDD", "Solid state drive");
+        } catch(const std::invalid_argument &e) {}
+    });
+
+    writer1.join();
+    writer2.join();
+
+    std::vector<std::pair<std::string, bool>> expected = {
+                        std::make_pair("Hard disk drive", true),
+                        std::make_pair("Solid state drive", true)
+        };
+    std::vector<std::string> keys = {"HDD", "SDD"};
+    ASSERT_EQ(expected, skipList -> multiGet(keys));
+}
