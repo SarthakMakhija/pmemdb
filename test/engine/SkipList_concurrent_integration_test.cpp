@@ -251,3 +251,36 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
 
     ASSERT_TRUE(result == expectedAll || result == expectedDeleted);
 }
+
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingUpdateAndDeleteRange) {
+    SkipList* skipList = new SkipList(8, 0.5);
+    skipList -> put("A", "A");
+    skipList -> put("B", "B");
+    skipList -> put("C", "C");
+    skipList -> put("D", "D");
+    skipList -> put("E", "E");
+
+    std::thread writer1([&]() {
+        skipList -> update("C", "C-Updated");
+        skipList -> update("D", "D-Updated");
+        skipList -> update("E", "E-Updated");
+    });
+    
+    std::thread writer2([&]() {
+        skipList -> deleteRange("B", "E");
+    });
+
+    writer1.join();
+    writer2.join();
+
+    std::vector<std::pair<std::string, bool>> expected = {
+                        std::make_pair("A", true), 
+                        std::make_pair("", false),
+                        std::make_pair("", false),
+                        std::make_pair("", false),
+                        std::make_pair("E-Updated", true)
+    };
+
+    std::vector<std::string> keys = {"A", "B", "C", "D", "E"};
+    ASSERT_EQ(expected, skipList -> multiGet(keys));
+}
