@@ -71,6 +71,19 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExisting
   ASSERT_FALSE(existenceByNode.second);
 }
 
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_AttemptsToPutSameKeyInInternalNode) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  std::pair<SkipListNode*, SkipListNode*> leafByInternalNode = sentinelInternal -> put("HDD", "Hard disk", 0.5);
+
+  std::string key = "HDD";
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
+
+  ASSERT_EQ("Hard disk drive", sentinelInternal -> getBy(key).first -> keyValuePair().getValue());
+  ASSERT_EQ(nullptr, leafByInternalNode.first);
+  ASSERT_EQ(nullptr, leafByInternalNode.second);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
   sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
