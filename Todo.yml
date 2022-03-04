@@ -31,8 +31,6 @@ tasks:
           - status: done
           - task: Add an integration test for update
           - status: done
-          - task: Probably make update and getBy virtual
-          - status: pending
           - task: Duplication in SkipListInternalNode, duplication in SkipListLeafNode
           - status: pending
           - task: Do we need to increase towersize?
@@ -52,6 +50,8 @@ tasks:
           - task: take snapshot while writing transactionally in leaf nodes + handle rollback
           - status: pending
           - task: currently concurrency uses shared_mutex, shall we change it to have an event loop kind of structure
+          - status: pending
+          - task: improve the return types from internal nodes
           - status: pending
 later:
   items:
