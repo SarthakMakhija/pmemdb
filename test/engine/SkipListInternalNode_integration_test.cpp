@@ -99,6 +99,19 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingK
   ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }
 
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositionOfAMatchingKeyInInternalNode) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
+  sentinelInternal -> put("HDD", "Hard disk drive", 0.5);
+  sentinelInternal -> put("SDD", "Solid state drive", 0.5);
+  sentinelInternal -> put("Pmem", "Persistent Memory", 0.5);
+
+  std::string key = "SDD";
+  UpdatePosition updatePosition = sentinelInternal -> updatePosition(key);
+
+  ASSERT_EQ("SDD", updatePosition.internal -> keyValuePair().getKey());
+  ASSERT_EQ("Solid state drive", updatePosition.internal -> keyValuePair().getValue());
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInBetweenInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
  
