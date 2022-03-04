@@ -45,9 +45,10 @@ std::vector<KeyValuePair> SkipListIterator::scan(std::string beginKey, std::stri
 }
 
 void SkipListIterator::update(std::string key, std::string value) {
-    SkipListNode* node = static_cast<SkipListInternalNode*>(this -> startingNode) -> update(key, value);
-    if (node != nullptr && node -> isLeaf()) {
-        static_cast<SkipListLeafNode*>(node) -> update(key, value);
+    UpdatePosition updatePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> updatePosition(key);
+    if (updatePosition.leaf != nullptr) {
+        static_cast<SkipListLeafNode*>(updatePosition.leaf) -> update(key, value);
+        static_cast<SkipListInternalNode*>(updatePosition.internal) -> update(key, value);
     }
 }
 

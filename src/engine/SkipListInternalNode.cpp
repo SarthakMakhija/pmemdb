@@ -107,7 +107,7 @@ std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string ke
     return std::make_pair(nullptr, nullptr);
 }
 
-SkipListNode* SkipListInternalNode::update(std::string key, std::string value) {
+UpdatePosition SkipListInternalNode::updatePosition(std::string key) {
     SkipListInternalNode* current = this;
     for(int level = this -> forwards.size()-1; level >= 0; level--) {
        while(current -> forwards[level] && current -> forwards[level] -> key < key) {
@@ -116,10 +116,16 @@ SkipListNode* SkipListInternalNode::update(std::string key, std::string value) {
     }
     current = current -> forwards[0];
     if (current && current -> key == key) {
-        current -> updateValue(value);
-        return current -> down;
+        return UpdatePosition{current, current -> down};
     }
-    return nullptr;
+    return UpdatePosition{nullptr, nullptr};
+}
+
+void SkipListInternalNode::update(std::string key, std::string value) {
+    SkipListInternalNode* current = this;
+    if (current && current -> key == key) {
+        current -> updateValue(value);
+    }
 }
 
 SkipListNode* SkipListInternalNode::deleteBy(std::string key) {

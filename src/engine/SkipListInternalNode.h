@@ -5,7 +5,7 @@
 #include <vector>
 #include "SkipListNode.h"
 #include "SkipListLeafNode.h"
-
+#include "WritePosition.h"
 
 class SkipListInternalNode : public SkipListNode {
     private:
@@ -34,7 +34,10 @@ class SkipListInternalNode : public SkipListNode {
     std::pair<SkipListNode*, bool> getBy(std::string key);
     std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
     std::pair<SkipListNode*, SkipListNode*> put(std::string key, std::string value, double probability);
-    SkipListNode* update(std::string key, std::string value);
+
+    UpdatePosition updatePosition(std::string key);
+    void update(std::string key, std::string value);
+
     SkipListNode* deleteBy(std::string key);
     SkipListNode* deleteRange(std::string beginKey, std::string endKey);
 };

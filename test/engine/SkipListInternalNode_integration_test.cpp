@@ -91,7 +91,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingK
   sentinelInternal -> put("Pmem", "Persistent Memory", 0.5);
 
   std::string key = "SDD";
-  sentinelInternal -> update(key, "Solid Drive");
+  UpdatePosition updatePosition = sentinelInternal -> updatePosition(key);
+  static_cast<SkipListInternalNode*>(updatePosition.internal) -> update(key, "Solid Drive");
 
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
 
