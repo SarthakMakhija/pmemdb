@@ -26,13 +26,7 @@ void SkipList::put(std::string key, std::string value) {
         throw std::invalid_argument("key and value can not be blank while putting");
     }
 
-    std::pair<std::string, bool> valueByExistence = this -> get(key);
-	if (!valueByExistence.second){
-        std::lock_guard<std::shared_mutex> lock(this -> mutex_);
-        SkipListIterator(this -> header).put(key, value, this -> probability);
-        return;
-    }
-    throw std::invalid_argument("key already exists");
+    SkipListIterator(this -> header).put(key, value, this -> probability);
 }
 
 void SkipList::update(std::string key, std::string value) {

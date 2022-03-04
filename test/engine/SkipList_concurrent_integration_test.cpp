@@ -128,17 +128,13 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     SkipList* skipList = new SkipList(8, 0.5);
 
     std::thread writer1([&]() {
-        try {
-            skipList -> put("HDD", "Hard disk drive");
-            skipList -> put("SDD", "Solid state drive");
-        } catch(const std::invalid_argument &e) {}
+        skipList -> put("HDD", "Hard disk drive");
+        skipList -> put("SDD", "Solid state drive");
     });
 
     std::thread writer2([&]() {
-        try {
-            skipList -> put("HDD", "Hard disk drive");
-            skipList -> put("SDD", "Solid state drive");
-        } catch(const std::invalid_argument &e) {}
+        skipList -> put("HDD", "Hard disk drive");
+        skipList -> put("SDD", "Solid state drive");
     });
 
     writer1.join();
