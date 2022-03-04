@@ -124,7 +124,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerf
     ASSERT_EQ(expected, skipList -> multiGet(keys));
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingPutOnDSameKeyValuePairs) {
+TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsPerformingPutOnSameKeyValuePairs) {
     SkipList* skipList = new SkipList(8, 0.5);
 
     std::thread writer1([&]() {
