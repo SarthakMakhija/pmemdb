@@ -49,9 +49,12 @@ std::pair<SkipListNode*, bool> SkipListInternalNode::getBy(std::string key) {
     for(int level = this -> forwards.size()-1; level >= 0; level--) {
        while(current -> forwards[level] && current -> forwards[level] -> key < key) {
            current = current -> forwards[level];
+            //std::cout<< "get" << current -> key << std::endl;
        }
     }
     current = current -> forwards[0];
+    //std::cout<< "get" << current << std::endl;
+
     if (current && current -> key == key) {
        return std::make_pair(current, true);
     }
@@ -83,7 +86,7 @@ std::vector<KeyValuePair> SkipListInternalNode::scan(std::string beginKey, std::
     return keyValuePairs;
 }
 
-std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string key, std::string value, double probability) {
+PutPosition SkipListInternalNode::putPosition(std::string key, double probability) {
     SkipListInternalNode* current = this;
     std::vector<SkipListInternalNode*> positions(this -> forwards.size(), nullptr);
 
@@ -96,15 +99,23 @@ std::pair<SkipListNode*, SkipListNode*> SkipListInternalNode::put(std::string ke
     current = current -> forwards[0];
     if (current == nullptr || current -> key != key) {
         int newLevel = generateLevel(this -> forwards.size(), probability);
-        SkipListInternalNode* newNode = new SkipListInternalNode(key, value, newLevel);
-
-        for (int level = 0; level < newLevel; level++) {
-            newNode -> forwards[level] = positions[level] -> forwards[level];
-            positions[level] -> forwards[level] = newNode;
-        }
-        return std::make_pair(newNode, positions[0] -> down);
+        return PutPosition{positions, newLevel, this, positions[0] -> down};
     }
-    return std::make_pair(nullptr, nullptr);
+    std::vector<SkipListInternalNode*> empty;
+    return PutPosition{empty, -1, nullptr, nullptr};
+}
+
+SkipListNode* SkipListInternalNode::put(std::string key, 
+                                         std::string value, 
+                                         std::vector<SkipListInternalNode*> positions,
+                                         int nodeLevel) {
+
+    SkipListInternalNode* newNode = new SkipListInternalNode(key, value, nodeLevel);
+    for (int level = 0; level < nodeLevel; level++) {
+        newNode -> forwards[level] = positions[level] -> forwards[level];
+        positions[level] -> forwards[level] = newNode;
+    }
+    return newNode;
 }
 
 UpdatePosition SkipListInternalNode::updatePosition(std::string key) {

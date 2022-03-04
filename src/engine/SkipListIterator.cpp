@@ -7,10 +7,11 @@ SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{st
 }
 
 void SkipListIterator::put(std::string key, std::string value, double probability) {
-    std::pair<SkipListNode*, SkipListNode*> leafByInternalNode = static_cast<SkipListInternalNode*>(this -> startingNode) -> put(key, value, probability);
-    if (leafByInternalNode.first != nullptr && leafByInternalNode.second != nullptr) {
-        SkipListLeafNode* leafNode = static_cast<SkipListLeafNode*>(leafByInternalNode.second) -> put(key, value);
-        static_cast<SkipListInternalNode*>(leafByInternalNode.first) -> attach(leafNode);
+    PutPosition putPosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> putPosition(key, probability);
+    if (putPosition.leaf != nullptr) {
+        SkipListLeafNode* newLeaf = static_cast<SkipListLeafNode*>(putPosition.leaf) -> put(key, value);
+        SkipListNode* newInternal = static_cast<SkipListInternalNode*>(putPosition.internal) -> put(key, value, putPosition.positions, putPosition.newLevel);
+        static_cast<SkipListInternalNode*>(newInternal) -> attach(newLeaf);
     }
 }
 

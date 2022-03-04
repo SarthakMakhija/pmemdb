@@ -25,7 +25,7 @@ void SkipList::put(std::string key, std::string value) {
     if (key == "" || value == "") {
         throw std::invalid_argument("key and value can not be blank while putting");
     }
-
+    std::lock_guard<std::shared_mutex> lock(this -> mutex_);
     SkipListIterator(this -> header).put(key, value, this -> probability);
 }
 
