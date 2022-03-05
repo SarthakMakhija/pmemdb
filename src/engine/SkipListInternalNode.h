@@ -34,10 +34,10 @@ class SkipListInternalNode : public SkipListNode {
     std::pair<SkipListNode*, bool> getBy(std::string key);
     std::vector<KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
 
-    PutPosition putPosition(std::string key, double probability);
+    PutPosition putPositionOf(std::string key, double withProbability);
     SkipListNode* put(std::string key, std::string value, std::vector<SkipListInternalNode*> positions, int nodeLevel);
 
-    UpdatePosition updatePosition(std::string key);
+    UpdatePosition updatePositionOf(std::string key);
     void update(std::string key, std::string value);
 
     SkipListNode* deleteBy(std::string key);

@@ -7,7 +7,7 @@
 #include  "PersistentMemoryPoolFixture.h"
 
 SkipListNode* put(SkipListInternalNode* node, std::string key, std::string value, double probability = 0.5) {
-  PutPosition putPosition = node -> putPosition(key, probability);
+  PutPosition putPosition = node -> putPositionOf(key, probability);
   if (putPosition.newLevel != -1) {
     return node -> put(key, value, putPosition.positions, putPosition.newLevel);
   }
@@ -99,7 +99,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingK
   put(sentinelInternal, "Pmem", "Persistent Memory");
 
   std::string key = "SDD";
-  UpdatePosition updatePosition = sentinelInternal -> updatePosition(key);
+  UpdatePosition updatePosition = sentinelInternal -> updatePositionOf(key);
   static_cast<SkipListInternalNode*>(updatePosition.internal) -> update(key, "Solid Drive");
 
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
@@ -114,7 +114,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositio
   put(sentinelInternal, "Pmem", "Persistent Memory");
 
   std::string key = "SDD";
-  UpdatePosition updatePosition = sentinelInternal -> updatePosition(key);
+  UpdatePosition updatePosition = sentinelInternal -> updatePositionOf(key);
 
   ASSERT_EQ("SDD", updatePosition.internal -> keyValuePair().getKey());
   ASSERT_EQ("Solid state drive", updatePosition.internal -> keyValuePair().getValue());

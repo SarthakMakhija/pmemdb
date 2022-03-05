@@ -86,7 +86,7 @@ std::vector<KeyValuePair> SkipListInternalNode::scan(std::string beginKey, std::
     return keyValuePairs;
 }
 
-PutPosition SkipListInternalNode::putPosition(std::string key, double probability) {
+PutPosition SkipListInternalNode::putPositionOf(std::string key, double withProbability) {
     SkipListInternalNode* current = this;
     std::vector<SkipListInternalNode*> positions(this -> forwards.size(), nullptr);
 
@@ -98,7 +98,7 @@ PutPosition SkipListInternalNode::putPosition(std::string key, double probabilit
     }
     current = current -> forwards[0];
     if (current == nullptr || current -> key != key) {
-        int newLevel = generateLevel(this -> forwards.size(), probability);
+        int newLevel = generateLevel(this -> forwards.size(), withProbability);
         return PutPosition{positions, newLevel, this, positions[0] -> down};
     }
     std::vector<SkipListInternalNode*> empty;
@@ -118,7 +118,7 @@ SkipListNode* SkipListInternalNode::put(std::string key,
     return newNode;
 }
 
-UpdatePosition SkipListInternalNode::updatePosition(std::string key) {
+UpdatePosition SkipListInternalNode::updatePositionOf(std::string key) {
     SkipListInternalNode* current = this;
     for(int level = this -> forwards.size()-1; level >= 0; level--) {
        while(current -> forwards[level] && current -> forwards[level] -> key < key) {
