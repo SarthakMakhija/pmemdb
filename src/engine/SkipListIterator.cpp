@@ -54,9 +54,10 @@ void SkipListIterator::update(std::string key, std::string value) {
 }
 
 void SkipListIterator::deleteBy(std::string key) {
-    SkipListNode* node = static_cast<SkipListInternalNode*>(this -> startingNode) -> deleteBy(key);
-    if (node != nullptr && node -> isLeaf()) {
-        static_cast<SkipListLeafNode*>(node) -> deleteBy(key);
+    DeletePosition deletePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> deletePositionOf(key);
+    if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
+        static_cast<SkipListLeafNode*>(deletePosition.leaf) -> deleteBy(key);
+        static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteBy(key, deletePosition.positions, deletePosition.deleteLevel);
     }
 }
 

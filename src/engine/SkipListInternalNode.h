@@ -40,7 +40,9 @@ class SkipListInternalNode : public SkipListNode {
     UpdatePosition updatePositionOf(std::string key);
     void update(std::string key, std::string value);
 
-    SkipListNode* deleteBy(std::string key);
+    DeletePosition deletePositionOf(std::string key);
+    void deleteBy(std::string key, std::vector<SkipListInternalNode*> positions, int deleteLevel);
+
     SkipListNode* deleteRange(std::string beginKey, std::string endKey);
 };
 
