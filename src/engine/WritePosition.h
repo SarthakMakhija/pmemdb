@@ -20,3 +20,10 @@ struct DeletePosition {
     SkipListNode* internal;
     SkipListNode* leaf;
 };
+
+struct DeleteRangePosition {
+    std::vector<SkipListInternalNode*> positions;
+    int deleteLevel;
+    SkipListNode* internal;
+    SkipListNode* leaf;
+};

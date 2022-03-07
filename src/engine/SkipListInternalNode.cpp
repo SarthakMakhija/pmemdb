@@ -174,7 +174,7 @@ void SkipListInternalNode::deleteBy(std::string key,
     }
 }
 
-SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::string endKey) {
+DeleteRangePosition SkipListInternalNode::deleteRangePositionOf(std::string beginKey, std::string endKey) {
     SkipListInternalNode* current = this;
     std::vector<SkipListInternalNode*> positions(this -> forwards.size(), nullptr);
 
@@ -185,8 +185,16 @@ SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::strin
        positions[level] = current; 
     }
     current = current -> forwards[0];
+    if (current != nullptr && current -> key >= beginKey && current -> key < endKey) {
+        return DeleteRangePosition{positions, (int)this -> forwards.size(), current, positions[0] -> down};
+    }
+    return DeleteRangePosition{positions, -1, nullptr, nullptr};
+}
+
+void SkipListInternalNode::deleteRange(std::string beginKey, std::string endKey, std::vector<SkipListInternalNode*> positions, int deleteLevel) {
+    SkipListInternalNode* current = this;
     while (current != nullptr && current -> key >= beginKey && current -> key < endKey) {
-         for (int level = 0; level < this -> forwards.size(); level++) {
+         for (int level = 0; level < deleteLevel; level++) {
             if (positions[level] -> forwards[level] != current) {
                 break;
             }
@@ -200,7 +208,6 @@ SkipListNode* SkipListInternalNode::deleteRange(std::string beginKey, std::strin
         delete current;
         current = backup;
     }
-    return positions[0] -> down;
 }
 
 void SkipListInternalNode::updateValue(std::string value) {

@@ -21,6 +21,13 @@ void deleteBy(SkipListInternalNode* node, std::string key) {
   }
 }
 
+void deleteRange(SkipListInternalNode* node, std::string beginKey, std::string endKey) {
+  DeleteRangePosition deletePosition = node -> deleteRangePositionOf(beginKey, endKey);
+  if (deletePosition.internal != nullptr) {
+    static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteRange(beginKey, endKey, deletePosition.positions, deletePosition.deleteLevel);
+  }
+}
+
 TEST(SkipListInternalNode, UpdateDownPointer) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive",  4);
   SkipListLeafNode *down     = new SkipListLeafNode();
@@ -193,7 +200,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange1) {
 
   std::string beginKey = "B";
   std::string endKey   = "D";
-  sentinelInternal -> deleteRange(beginKey, endKey);
+  deleteRange(sentinelInternal, beginKey, endKey);
 
   std::vector<std::string> missingKeys = {"B", "C"};
   for (auto missingKey: missingKeys) {
@@ -215,7 +222,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange2) {
 
   std::string beginKey = "A";
   std::string endKey   = "D";
-  sentinelInternal -> deleteRange(beginKey, endKey);
+  deleteRange(sentinelInternal, beginKey, endKey);
 
   std::vector<std::string> missingKeys = {"A", "B", "C"};
   for (auto missingKey: missingKeys) {
@@ -237,7 +244,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange3) {
 
   std::string beginKey = "B";
   std::string endKey   = "F";
-  sentinelInternal -> deleteRange(beginKey, endKey);
+  deleteRange(sentinelInternal, beginKey, endKey);
 
   std::vector<std::string> missingKeys = {"B", "C", "D"};
   for (auto missingKey: missingKeys) {
@@ -259,7 +266,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange4) {
 
   std::string beginKey = "A";
   std::string endKey   = "F";
-  sentinelInternal -> deleteRange(beginKey, endKey);
+  deleteRange(sentinelInternal, beginKey, endKey);
 
   std::vector<std::string> missingKeys = {"A", "B", "C", "D"};
   for (auto missingKey: missingKeys) {

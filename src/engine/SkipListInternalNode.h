@@ -43,7 +43,8 @@ class SkipListInternalNode : public SkipListNode {
     DeletePosition deletePositionOf(std::string key);
     void deleteBy(std::string key, std::vector<SkipListInternalNode*> positions, int deleteLevel);
 
-    SkipListNode* deleteRange(std::string beginKey, std::string endKey);
+    DeleteRangePosition deleteRangePositionOf(std::string beginKey, std::string endKey);
+    void deleteRange(std::string beginKey, std::string endKey, std::vector<SkipListInternalNode*> positions, int deleteLevel);
 };
 
 #endif

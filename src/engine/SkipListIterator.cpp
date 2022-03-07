@@ -62,8 +62,9 @@ void SkipListIterator::deleteBy(std::string key) {
 }
 
 void SkipListIterator::deleteRange(std::string beginKey, std::string endKey) {
-    SkipListNode* node = static_cast<SkipListInternalNode*>(this -> startingNode) -> deleteRange(beginKey, endKey);
-    if (node != nullptr && node -> isLeaf()) {
-        static_cast<SkipListLeafNode*>(node) -> deleteRange(beginKey, endKey);
+    DeleteRangePosition deletePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> deleteRangePositionOf(beginKey, endKey);
+    if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
+        static_cast<SkipListLeafNode*>(deletePosition.leaf) -> deleteRange(beginKey, endKey);
+        static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteRange(beginKey, endKey, deletePosition.positions, deletePosition.deleteLevel);
     }
 }
