@@ -108,7 +108,7 @@ std::vector<KeyValuePair> SkipListLeafNode::scan(std::string beginKey, std::stri
     return keyValuePairs;
 }
 
-void SkipListLeafNode::update(std::string key, std::string value, std::function<void(void)> postUpdateHook) {
+Status SkipListLeafNode::update(std::string key, std::string value, std::function<void(void)> postUpdateHook) {
     PersistentLeaf* targetLeaf = this -> leaf.get();
     while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= key) {
         targetLeaf = targetLeaf -> right.get();
@@ -122,11 +122,13 @@ void SkipListLeafNode::update(std::string key, std::string value, std::function<
                 postUpdateHook();
             });
         }
-    } catch(...){
+    } catch(...) {
+        return Status::Failed;
     }
+    return Status::Ok;
 }
 
-void SkipListLeafNode::deleteBy(std::string key, std::function<void(void)> postDeleteHook) {
+Status SkipListLeafNode::deleteBy(std::string key, std::function<void(void)> postDeleteHook) {
     PersistentLeaf* previousLeaf = nullptr;
     PersistentLeaf* targetLeaf   = this -> leaf.get();
 
@@ -159,10 +161,12 @@ void SkipListLeafNode::deleteBy(std::string key, std::function<void(void)> postD
             delete targetNode;
         }   
     } catch(...) {
+        return Status::Failed;
     }
+    return Status::Ok;
 }
 
-void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey, std::function<void(void)> postDeleteRangeHook) {
+Status SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey, std::function<void(void)> postDeleteRangeHook) {
     PersistentLeaf* previousLeaf = nullptr;
     PersistentLeaf* targetLeaf   = this -> leaf.get();
 
@@ -210,5 +214,7 @@ void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey, std
             }
         });
     } catch(...) {
+        return Status::Failed;
     }
+    return Status::Ok;
 }
