@@ -7,15 +7,16 @@
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhilePuttingAKeyValue) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
-  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive", [] {throw std::runtime_error("FailsWhilePuttingAKeyValue");});
+  std::pair<SkipListLeafNode*, Status> statusNodePair = sentinel -> put("HDD", "Hard disk drive", [] {throw std::runtime_error("FailsWhilePuttingAKeyValue");});
   ASSERT_FALSE(sentinel -> getBy("HDD").second);
+  ASSERT_EQ(Status::Failed, statusNodePair.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhilePuttingAKeyValueAndSucceedsWithOther) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   sentinel -> put("SDD", "Solid state drive");
 
-  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive", [] {throw std::runtime_error("FailsWhilePuttingAKeyValueAndSucceedsWithOther");});
+  std::pair<SkipListLeafNode*, Status> statusNodePair = sentinel -> put("HDD", "Hard disk drive", [] {throw std::runtime_error("FailsWhilePuttingAKeyValueAndSucceedsWithOther");});
   ASSERT_FALSE(sentinel -> getBy("HDD").second);
   ASSERT_TRUE(sentinel -> getBy("SDD").second);
 }

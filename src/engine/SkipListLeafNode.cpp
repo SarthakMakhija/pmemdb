@@ -44,7 +44,7 @@ KeyValuePair SkipListLeafNode::rightKeyValuePair() {
     return KeyValuePair("", "");
 }
 
-SkipListLeafNode* SkipListLeafNode::put(std::string key, std::string value, std::function<void(void)> postPutHook) {
+std::pair<SkipListLeafNode*, Status> SkipListLeafNode::put(std::string key, std::string value, std::function<void(void)> postPutHook) {
     PersistentLeaf* targetLeaf   = this -> leaf.get();
     SkipListLeafNode* targetNode = this; 
 
@@ -69,8 +69,9 @@ SkipListLeafNode* SkipListLeafNode::put(std::string key, std::string value, std:
             postPutHook();
         });
     } catch(...) {
+        return std::make_pair(nullptr, Status::Failed);
     }
-    return newNode;
+    return std::make_pair(newNode, Status::Ok);
 }
 
 std::pair<std::string, bool>  SkipListLeafNode::getBy(std::string key) {

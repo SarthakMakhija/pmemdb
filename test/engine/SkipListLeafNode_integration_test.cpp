@@ -8,8 +8,8 @@
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenDownPointerIsNotNull) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
-  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
-  SkipListLeafNode *right = sentinel -> put("SDD", "Solid state drive");
+  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive").first;
+  SkipListLeafNode *right = sentinel -> put("SDD", "Solid state drive").first;
   
   KeyValuePair pair = node -> rightKeyValuePair();
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> rightKeyValuePair());
@@ -17,7 +17,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenDownP
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenRightPointerIsNull) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
-  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive").first;
 
   KeyValuePair pair = node -> rightKeyValuePair();  
   ASSERT_EQ(KeyValuePair("", ""), node -> rightKeyValuePair());
@@ -27,7 +27,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenRight
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_MatchKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
-  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive").first;
   bool matches = node -> matchesKey("HDD");
   
   ASSERT_TRUE(matches);
@@ -37,7 +37,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_MatchKeyInSkipListNode) {
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DoesNotMatchKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   
-  SkipListLeafNode *node = sentinel -> put("SDD", "Solid state drive");
+  SkipListLeafNode *node = sentinel -> put("SDD", "Solid state drive").first;
   bool matches = node -> matchesKey("HDD");
   
   ASSERT_FALSE(matches);
@@ -46,7 +46,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DoesNotMatchKeyInSkipListNo
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsLessThanGivenKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
-  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive").first;
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("SDD");
   
   ASSERT_TRUE(isKeyLessOrEqual);
@@ -55,7 +55,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsLessThanGivenKeyI
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsEqualToGivenKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
-  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive");
+  SkipListLeafNode *node = sentinel -> put("HDD", "Hard disk drive").first;
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
   
   ASSERT_TRUE(isKeyLessOrEqual);
@@ -64,7 +64,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsEqualToGivenKeyIn
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
-  SkipListLeafNode *node = sentinel -> put("SDD", "Solid state drive");
+  SkipListLeafNode *node = sentinel -> put("SDD", "Solid state drive").first;
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
   
   ASSERT_FALSE(isKeyLessOrEqual);
