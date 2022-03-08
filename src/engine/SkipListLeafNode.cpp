@@ -1,6 +1,7 @@
 #include "SkipListLeafNode.h"
 #include "KeyValuePair.h"
 #include "PersistentMemoryPool.h"
+#include <iostream>
 
 SkipListLeafNode::SkipListLeafNode(){
      this -> right = nullptr;
@@ -43,7 +44,7 @@ KeyValuePair SkipListLeafNode::rightKeyValuePair() {
     return KeyValuePair("", "");
 }
 
-SkipListLeafNode* SkipListLeafNode::put(std::string key, std::string value) {
+SkipListLeafNode* SkipListLeafNode::put(std::string key, std::string value, std::function<void(void)> postPutHook) {
     PersistentLeaf* targetLeaf   = this -> leaf.get();
     SkipListLeafNode* targetNode = this; 
 
@@ -56,16 +57,19 @@ SkipListLeafNode* SkipListLeafNode::put(std::string key, std::string value) {
     SkipListLeafNode* newNode   = new SkipListLeafNode();
     newNode -> right            = targetNode -> right;
     targetNode -> right         = newNode;
-    
-    transaction::run(pmpool, [&] {
-        persistent_ptr<PersistentLeaf> newLeaf = make_persistent<PersistentLeaf>();
-        newNode -> leaf = newLeaf;                
-        newNode -> leaf.get() -> put(key, value); 
-        
-        newNode -> leaf.get() -> right = targetLeaf -> right;
-        targetLeaf -> right = newLeaf;
-    });
-
+   
+    try {
+        transaction::run(pmpool, [&] {
+            persistent_ptr<PersistentLeaf> newLeaf = make_persistent<PersistentLeaf>();
+            newNode -> leaf = newLeaf;                
+            newNode -> leaf.get() -> put(key, value); 
+            
+            newNode -> leaf.get() -> right = targetLeaf -> right;
+            targetLeaf -> right = newLeaf;
+            postPutHook();
+        });
+    } catch(...) {
+    }
     return newNode;
 }
 
@@ -104,21 +108,25 @@ std::vector<KeyValuePair> SkipListLeafNode::scan(std::string beginKey, std::stri
     return keyValuePairs;
 }
 
-void SkipListLeafNode::update(std::string key, std::string value) {
+void SkipListLeafNode::update(std::string key, std::string value, std::function<void(void)> postUpdateHook) {
     PersistentLeaf* targetLeaf = this -> leaf.get();
     while(targetLeaf -> right.get() && std::string(targetLeaf -> right.get() -> key()) <= key) {
         targetLeaf = targetLeaf -> right.get();
     }
 
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
-    if (std::string(targetLeaf -> key()) == key) {
-        transaction::run(pmpool, [&] {
-            targetLeaf -> put(key, value);
-        });
+    try {
+        if (std::string(targetLeaf -> key()) == key) {
+            transaction::run(pmpool, [&] {
+                targetLeaf -> put(key, value);
+                postUpdateHook();
+            });
+        }
+    } catch(...){
     }
 }
 
-void SkipListLeafNode::deleteBy(std::string key) {
+void SkipListLeafNode::deleteBy(std::string key, std::function<void(void)> postDeleteHook) {
     PersistentLeaf* previousLeaf = nullptr;
     PersistentLeaf* targetLeaf   = this -> leaf.get();
 
@@ -134,23 +142,27 @@ void SkipListLeafNode::deleteBy(std::string key) {
     }
 
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
-    if (std::string(targetLeaf -> key()) == key) {
-        previousNode -> right = targetNode -> right;
-        targetNode -> right   = nullptr;
+    try {
+        if (std::string(targetLeaf -> key()) == key) {
+            previousNode -> right = targetNode -> right;
+            targetNode -> right   = nullptr;
 
-        transaction::run(pmpool, [&] {
-            targetLeaf -> clear();
-            previousLeaf -> right = targetLeaf -> right;
-            targetLeaf -> right   = nullptr;
-            
-            delete_persistent<PersistentLeaf>(targetNode -> leaf);
-            targetNode -> leaf = nullptr;
-        });
-        delete targetNode;
-    }   
+            transaction::run(pmpool, [&] {
+                targetLeaf -> clear();
+                previousLeaf -> right = targetLeaf -> right;
+                targetLeaf -> right   = nullptr;
+                
+                delete_persistent<PersistentLeaf>(targetNode -> leaf);
+                targetNode -> leaf = nullptr;
+                postDeleteHook();
+            });
+            delete targetNode;
+        }   
+    } catch(...) {
+    }
 }
 
-void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey) {
+void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey, std::function<void(void)> postDeleteRangeHook) {
     PersistentLeaf* previousLeaf = nullptr;
     PersistentLeaf* targetLeaf   = this -> leaf.get();
 
@@ -173,25 +185,30 @@ void SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey) {
     }
 
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
-    transaction::run(pmpool, [&] {
-        PersistentLeaf* followerLeaf    = targetLeaf;
-        SkipListLeafNode* followerNode  = targetNode;
+    try {
+        transaction::run(pmpool, [&] {
+            PersistentLeaf* followerLeaf    = targetLeaf;
+            SkipListLeafNode* followerNode  = targetNode;
 
-        while(targetLeaf && std::string(targetLeaf -> key()) < endKey) {
-            targetLeaf -> clear();
-            targetLeaf = targetLeaf -> right.get();
-            followerLeaf -> right = nullptr;
-            followerLeaf = targetLeaf;
-            previousLeaf -> right = targetLeaf;
+            while(targetLeaf && std::string(targetLeaf -> key()) < endKey) {
+                targetLeaf -> clear();
+                targetLeaf = targetLeaf -> right.get();
+                followerLeaf -> right = nullptr;
+                followerLeaf = targetLeaf;
+                previousLeaf -> right = targetLeaf;
 
-            delete_persistent<PersistentLeaf>(targetNode -> leaf);
-            targetNode -> leaf    = nullptr;
-            targetNode            = targetNode -> right;
-            followerNode -> right = nullptr;
-            previousNode -> right = targetNode;
-            
-            delete followerNode;
-            followerNode          = targetNode;
-        }
-    });
+                delete_persistent<PersistentLeaf>(targetNode -> leaf);
+                targetNode -> leaf    = nullptr;
+                targetNode            = targetNode -> right;
+                followerNode -> right = nullptr;
+                previousNode -> right = targetNode;
+                
+                delete followerNode;
+                followerNode          = targetNode;
+
+                postDeleteRangeHook();
+            }
+        });
+    } catch(...) {
+    }
 }
