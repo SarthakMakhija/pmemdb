@@ -7,12 +7,14 @@ SkipListIterator::SkipListIterator(SkipListNode* startingNode) : startingNode{st
 }
 
 void SkipListIterator::put(std::string key, std::string value, double probability) {
-    PutPosition putPosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> putPositionOf(key, probability);
-    if (putPosition.leaf != nullptr) {
-        SkipListLeafNode* newLeaf = static_cast<SkipListLeafNode*>(putPosition.leaf) -> put(key, value);
-        SkipListNode* newInternal = static_cast<SkipListInternalNode*>(putPosition.internal) -> put(key, value, putPosition.positions, putPosition.newLevel);
-        static_cast<SkipListInternalNode*>(newInternal) -> attach(newLeaf);
-    }
+    try {
+        PutPosition putPosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> putPositionOf(key, probability);
+        if (putPosition.leaf != nullptr) {
+            SkipListLeafNode* newLeaf = static_cast<SkipListLeafNode*>(putPosition.leaf) -> put(key, value);
+            SkipListNode* newInternal = static_cast<SkipListInternalNode*>(putPosition.internal) -> put(key, value, putPosition.positions, putPosition.newLevel);
+            static_cast<SkipListInternalNode*>(newInternal) -> attach(newLeaf);
+        }
+    } catch(...){}
 }
 
 std::vector<std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector<std::string> keys) {
@@ -46,25 +48,31 @@ std::vector<KeyValuePair> SkipListIterator::scan(std::string beginKey, std::stri
 }
 
 void SkipListIterator::update(std::string key, std::string value) {
-    UpdatePosition updatePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> updatePositionOf(key);
-    if (updatePosition.leaf != nullptr) {
-        static_cast<SkipListLeafNode*>(updatePosition.leaf) -> update(key, value);
-        static_cast<SkipListInternalNode*>(updatePosition.internal) -> update(key, value);
-    }
+    try {
+        UpdatePosition updatePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> updatePositionOf(key);
+        if (updatePosition.leaf != nullptr) {
+            static_cast<SkipListLeafNode*>(updatePosition.leaf) -> update(key, value);
+            static_cast<SkipListInternalNode*>(updatePosition.internal) -> update(key, value);
+        }
+    } catch(...) {}
 }
 
 void SkipListIterator::deleteBy(std::string key) {
-    DeletePosition deletePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> deletePositionOf(key);
-    if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
-        static_cast<SkipListLeafNode*>(deletePosition.leaf) -> deleteBy(key);
-        static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteBy(key, deletePosition.positions, deletePosition.deleteLevel);
-    }
+    try {
+        DeletePosition deletePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> deletePositionOf(key);
+        if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
+            static_cast<SkipListLeafNode*>(deletePosition.leaf) -> deleteBy(key);
+            static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteBy(key, deletePosition.positions, deletePosition.deleteLevel);
+        }
+    } catch(...){}
 }
 
 void SkipListIterator::deleteRange(std::string beginKey, std::string endKey) {
-    DeleteRangePosition deletePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> deleteRangePositionOf(beginKey, endKey);
-    if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
-        static_cast<SkipListLeafNode*>(deletePosition.leaf) -> deleteRange(beginKey, endKey);
-        static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteRange(beginKey, endKey, deletePosition.positions, deletePosition.deleteLevel);
-    }
+    try {
+        DeleteRangePosition deletePosition = static_cast<SkipListInternalNode*>(this -> startingNode) -> deleteRangePositionOf(beginKey, endKey);
+        if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
+            static_cast<SkipListLeafNode*>(deletePosition.leaf) -> deleteRange(beginKey, endKey);
+            static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteRange(beginKey, endKey, deletePosition.positions, deletePosition.deleteLevel);
+        }
+    } catch(...) {}
 }
