@@ -53,6 +53,10 @@ tasks:
           - status: pending
           - task: improve the return types from internal nodes
           - status: pending
+          - task: see if we want to flush skiplist changes, feedback by Karthik
+          - status: pending
+          - task: see if we want to keep onlykeys in the RAM, feedback by Karthik
+          - status: pending
 later:
   items:
     - name: Skiplist iterator
