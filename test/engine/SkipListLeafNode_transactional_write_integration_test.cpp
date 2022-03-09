@@ -76,6 +76,27 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileDeletingAKeyRange
   ASSERT_EQ(Status::Failed, status);
 }
 
+TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileDeletingOneOfTheKeysInAKeyRange) {
+  SkipListLeafNode* sentinel = newSentinelLeafNode();
+  sentinel -> put("A", "A");
+  sentinel -> put("B", "B");
+  sentinel -> put("C", "C");
+  sentinel -> put("D", "D");
+
+  int count = 0;
+  Status status = sentinel -> deleteRange("A", "D", [&] {
+    count = count + 1;
+    if (count >= 2) {
+      throw std::runtime_error("FailsWhileDeletingAKeyRange");
+    }
+  });
+  ASSERT_EQ("A", sentinel -> getBy("A").first);
+  ASSERT_EQ("B", sentinel -> getBy("B").first);
+  ASSERT_EQ("C", sentinel -> getBy("C").first);
+  ASSERT_EQ("D", sentinel -> getBy("D").first);
+  ASSERT_EQ(Status::Failed, status);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileDeletingAKeyRangeAndSucceedsWithOther) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   sentinel -> put("A", "A");
