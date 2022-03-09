@@ -144,6 +144,10 @@ Status SkipListLeafNode::deleteBy(std::string key, std::function<void(void)> pos
     }
 
     pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance() -> getPmpool();
+    SkipListLeafNode* previousRight               = previousNode -> right;
+    SkipListLeafNode* targetRight                 = targetNode -> right;
+    persistent_ptr<PersistentLeaf> persistentLeaf = targetNode -> leaf;
+
     try {
         if (std::string(targetLeaf -> key()) == key) {
             previousNode -> right = targetNode -> right;
@@ -161,6 +165,10 @@ Status SkipListLeafNode::deleteBy(std::string key, std::function<void(void)> pos
             delete targetNode;
         }   
     } catch(...) {
+        previousNode -> right = previousRight;
+        targetNode -> right   = targetRight;
+        targetNode -> leaf    = persistentLeaf;
+
         return Status::Failed;
     }
     return Status::Ok;
