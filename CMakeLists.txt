@@ -6,8 +6,6 @@ project(pmemdb)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_compile_options(-g)
-
 # include engine and dependencies
 add_subdirectory(src/engine)
 
