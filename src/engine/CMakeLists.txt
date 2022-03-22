@@ -5,6 +5,7 @@ find_library(LIBPMEM_LIBRARY NAMES pmem libpmem)
 find_library(LIBPMEMOBJ_LIBRARY NAMES pmemobj libpmemobj)
 
 add_library(SkipList 
+            SHARED
             KeyValuePair.h 
             KeyValuePair.cpp 
             SkipListNode.h 
@@ -18,7 +19,9 @@ add_library(SkipList
             SkipListIterator.cpp
             PersistentMemoryPool.h
             PersistentMemoryPool.cpp
-            PersistentLeaf.h)
+            PersistentLeaf.h
+            Status.h
+            WritePosition.h)
 
 target_include_directories(SkipList PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
 target_link_libraries(SkipList PRIVATE ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
