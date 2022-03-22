@@ -6,6 +6,9 @@
 #include "SkipListNodeTestUtils.h"
 #include  "PersistentMemoryPoolFixture.h"
 
+using namespace pmem::storage;
+using namespace pmem::storage::internal;
+
 SkipListNode* put(SkipListInternalNode* node, std::string key, std::string value, double probability = 0.5) {
   PutPosition putPosition = node -> putPositionOf(key, probability);
   if (putPosition.newLevel != -1) {

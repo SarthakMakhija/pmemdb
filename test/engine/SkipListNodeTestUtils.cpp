@@ -1,26 +1,26 @@
 #include "./SkipListNodeTestUtils.h"
 
-KeyValuePair downKeyValuePairOf(SkipListInternalNode* node) {
+pmem::storage::KeyValuePair downKeyValuePairOf(pmem::storage::internal::SkipListInternalNode* node) {
     if (node != nullptr)  {
         if (!node -> getDown() -> isLeaf()) {
-            return static_cast<SkipListInternalNode*>(node -> getDown()) -> keyValuePair();
+            return static_cast<pmem::storage::internal::SkipListInternalNode*>(node -> getDown()) -> keyValuePair();
         } else {
-            return static_cast<SkipListLeafNode*>(node -> getDown()) -> keyValuePair();
+            return static_cast<pmem::storage::internal::SkipListLeafNode*>(node -> getDown()) -> keyValuePair();
         }
     }
-    return KeyValuePair("", "");
+    return pmem::storage::KeyValuePair("", "");
 }
 
-SkipListLeafNode* newSentinelLeafNode() {
-    SkipListLeafNode* sentinel = new SkipListLeafNode();
+pmem::storage::internal::SkipListLeafNode* newSentinelLeafNode() {
+    auto sentinel = new pmem::storage::internal::SkipListLeafNode();
     sentinel -> persist();
 
     return sentinel;
 }
 
-SkipListInternalNode* newSentinelInternalNode(int level) {
-    SkipListInternalNode* node     = new SkipListInternalNode("", "", level);
-    SkipListLeafNode* sentinelNode = new SkipListLeafNode();
+pmem::storage::internal::SkipListInternalNode* newSentinelInternalNode(int level) {
+    pmem::storage::internal::SkipListInternalNode* node     = new pmem::storage::internal::SkipListInternalNode("", "", level);
+    pmem::storage::internal::SkipListLeafNode* sentinelNode = new pmem::storage::internal::SkipListLeafNode();
     sentinelNode -> persist();
     node -> attach(sentinelNode);
 

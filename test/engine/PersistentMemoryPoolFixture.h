@@ -7,6 +7,7 @@
 
 #include "../../src/engine/PersistentMemoryPool.h"
 
+using namespace pmem::storage::internal;
 
 class PersistentMemoryPoolFixture : public ::testing::Test {
 

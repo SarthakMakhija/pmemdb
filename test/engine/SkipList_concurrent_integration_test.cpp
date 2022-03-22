@@ -4,6 +4,8 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
+using namespace pmem::storage;
+
 TEST_F(PersistentMemoryPoolFixture, SkipListConcurrentIntegration_TwoThreadsReadingTheSameKey) {
     SkipList* skipList = new SkipList(8, 0.5);
     skipList -> put("HDD", "Hard disk drive");

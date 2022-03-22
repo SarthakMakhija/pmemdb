@@ -3,6 +3,8 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
+using namespace pmem::storage;
+
 TEST_F(PersistentMemoryPoolFixture, SkipListException_ThrowInvalidArgumentExceptionGivenTowerSizeIsZero) {
     ASSERT_THROW(new SkipList(0, 0.5), std::invalid_argument);
 }

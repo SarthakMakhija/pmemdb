@@ -4,6 +4,8 @@
 #include "./PersistentMemoryPoolFixture.h"
 #include "./SkipListNodeTestUtils.h"
 
+using namespace pmem::storage::internal;
+
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhilePuttingAKeyValue) {
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 

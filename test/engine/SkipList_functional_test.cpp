@@ -3,6 +3,7 @@
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
 
+using namespace pmem::storage;
 TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndAdd500KeyValuePairsInSkipList) {
     SkipList* skipList = new SkipList(100, 0.5);
     for (int count = 1; count <= 500; count++) {

@@ -7,6 +7,9 @@
 #include "./PersistentMemoryPoolFixture.h"
 #include "./SkipListNodeTestUtils.h"
 
+using namespace pmem::storage;
+using namespace pmem::storage::internal;
+
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutASingleKeyValuePair) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
     SkipListIterator iterator = SkipListIterator(sentinel);
