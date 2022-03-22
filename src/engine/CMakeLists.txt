@@ -19,6 +19,7 @@ add_library(SkipList
             PersistentMemoryPool.h
             PersistentMemoryPool.cpp
             PersistentLeaf.h
+            WritePosition.h
             Status.h)
 
 target_include_directories(SkipList PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
