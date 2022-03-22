@@ -4,9 +4,8 @@ find_path(LIBPMEM_INCLUDE_DIR libpmem.h)
 find_library(LIBPMEM_LIBRARY NAMES pmem libpmem)
 find_library(LIBPMEMOBJ_LIBRARY NAMES pmemobj libpmemobj)
 
-add_library(SkipList 
-            SHARED
-            KeyValuePair.h 
+add_library(SkipList
+            KeyValuePair.h
             KeyValuePair.cpp 
             SkipListNode.h 
             SkipList.h 
