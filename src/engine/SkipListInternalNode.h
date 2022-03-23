@@ -17,8 +17,6 @@ namespace pmem {
                 SkipListNode *down;
                 std::vector<SkipListInternalNode *> forwards;
 
-                void updateValue(std::string value);
-
                 int generateLevel(int maxLevel, double probability);
 
             public:

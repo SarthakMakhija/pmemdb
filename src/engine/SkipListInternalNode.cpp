@@ -162,10 +162,6 @@ namespace pmem {
                 }
             }
 
-            void SkipListInternalNode::updateValue(std::string value) {
-                this->value = value;
-            }
-
             int SkipListInternalNode::generateLevel(int maxLevel, double probability) {
                 double random = (double) rand() / RAND_MAX;
                 int level = 1;
