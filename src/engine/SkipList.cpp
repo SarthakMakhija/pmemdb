@@ -18,7 +18,7 @@ namespace pmem {
             auto *sentinelLeafNode = new pmem::storage::internal::SkipListLeafNode();
             sentinelLeafNode->persist();
 
-            this->header = new pmem::storage::internal::SkipListInternalNode("", "", towerSize);
+            this->header = new pmem::storage::internal::SkipListInternalNode("", towerSize);
             this->header->attach(sentinelLeafNode);
             this->probability = probability;
         }

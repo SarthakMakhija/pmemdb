@@ -4,9 +4,8 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-            SkipListInternalNode::SkipListInternalNode(std::string key, std::string value, int level) {
+            SkipListInternalNode::SkipListInternalNode(std::string key, int level) {
                 this->key = key;
-                this->value = value;
                 this->down = nullptr;
 
                 this->forwards.resize(level);
@@ -36,7 +35,7 @@ namespace pmem {
             }
 
             KeyValuePair SkipListInternalNode::keyValuePair() {
-                return KeyValuePair(this->key, this->value);
+                return KeyValuePair(this->key, "");
             }
 
             SkipListNode *SkipListInternalNode::getDown() {
@@ -99,11 +98,10 @@ namespace pmem {
             }
 
             SkipListNode *SkipListInternalNode::put(std::string key,
-                                                    std::string value,
                                                     std::vector<SkipListInternalNode *> positions,
                                                     int nodeLevel) {
 
-                SkipListInternalNode *newNode = new SkipListInternalNode(key, value, nodeLevel);
+                SkipListInternalNode *newNode = new SkipListInternalNode(key, nodeLevel);
                 for (int level = 0; level < nodeLevel; level++) {
                     newNode->forwards[level] = positions[level]->forwards[level];
                     positions[level]->forwards[level] = newNode;

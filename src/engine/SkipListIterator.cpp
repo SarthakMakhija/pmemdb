@@ -20,7 +20,6 @@ namespace pmem {
                     if (statusNodePair.second != Status::Failed) {
                         SkipListLeafNode *newLeaf = statusNodePair.first;
                         SkipListNode *newInternal = static_cast<SkipListInternalNode *>(putPosition.internal)->put(key,
-                                                                                                                   value,
                                                                                                                    putPosition.positions,
                                                                                                                    putPosition.newLevel);
                         static_cast<SkipListInternalNode *>(newInternal)->attach(newLeaf);

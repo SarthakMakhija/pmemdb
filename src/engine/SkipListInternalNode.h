@@ -13,14 +13,13 @@ namespace pmem {
             class SkipListInternalNode : public SkipListNode {
             private:
                 std::string key;
-                std::string value;
                 SkipListNode *down;
                 std::vector<SkipListInternalNode *> forwards;
 
                 int generateLevel(int maxLevel, double probability);
 
             public:
-                SkipListInternalNode(std::string key, std::string value, int level);
+                SkipListInternalNode(std::string key, int level);
 
                 bool isLeaf();
 
@@ -45,7 +44,7 @@ namespace pmem {
                 PutPosition putPositionOf(std::string key, double withProbability);
 
                 SkipListNode *
-                put(std::string key, std::string value, std::vector<SkipListInternalNode *> positions, int nodeLevel);
+                put(std::string key, std::vector<SkipListInternalNode *> positions, int nodeLevel);
 
                 UpdatePosition updatePositionOf(std::string key);
 

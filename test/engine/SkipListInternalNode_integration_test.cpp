@@ -14,7 +14,7 @@ void put(SkipListInternalNode* node, std::string key, std::string value, double 
   if (putPosition.newLevel != -1) {
       std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(key, value);
       SkipListLeafNode *newLeaf = statusNodePair.first;
-      SkipListNode *newInternal =  node -> put(key, value, putPosition.positions, putPosition.newLevel);
+      SkipListNode *newInternal =  node -> put(key, putPosition.positions, putPosition.newLevel);
       static_cast<SkipListInternalNode *>(newInternal) -> attach(newLeaf);
   }
 }
@@ -27,7 +27,7 @@ void deleteBy(SkipListInternalNode* node, std::string key) {
 }
 
 TEST(SkipListInternalNode, UpdateDownPointer) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive",  4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
   SkipListLeafNode *down     = new SkipListLeafNode();
   node -> attach(down);
 
@@ -35,35 +35,35 @@ TEST(SkipListInternalNode, UpdateDownPointer) {
 }
 
 TEST(SkipListInternalNode, MatchKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
   bool matches = node -> matchesKey("HDD");
 
   ASSERT_TRUE(matches);
 }
 
 TEST(SkipListInternalNode, DoesNotMatchKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("SDD", "Solid state drive", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("SDD", 4);
   bool matches = node -> matchesKey("HDD");
 
   ASSERT_FALSE(matches);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsLessThanGivenKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive",   4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("SDD");
 
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsEqualToGivenKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
 
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("SDD", "Solid state drive", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("SDD", 4);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
 
   ASSERT_FALSE(isKeyLessOrEqual);
@@ -135,7 +135,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositio
   UpdatePosition updatePosition = sentinelInternal -> updatePositionOf(key);
 
   ASSERT_EQ("SDD", updatePosition.internal -> keyValuePair().getKey());
-  ASSERT_EQ("Solid state drive", updatePosition.internal -> keyValuePair().getValue());
+  ASSERT_EQ("Solid state drive", updatePosition.leaf -> keyValuePair().getValue());
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfANonMatchingKeyInInternalNode) {

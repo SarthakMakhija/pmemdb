@@ -19,7 +19,7 @@ pmem::storage::internal::SkipListLeafNode* newSentinelLeafNode() {
 }
 
 pmem::storage::internal::SkipListInternalNode* newSentinelInternalNode(int level) {
-    pmem::storage::internal::SkipListInternalNode* node     = new pmem::storage::internal::SkipListInternalNode("", "", level);
+    pmem::storage::internal::SkipListInternalNode* node     = new pmem::storage::internal::SkipListInternalNode("", level);
     pmem::storage::internal::SkipListLeafNode* sentinelNode = new pmem::storage::internal::SkipListLeafNode();
     sentinelNode -> persist();
     node -> attach(sentinelNode);
