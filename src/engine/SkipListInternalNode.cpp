@@ -58,35 +58,25 @@ namespace pmem {
 
                 if (current && current->key == key) {
                     return std::make_pair(current -> down, true);
-                    //return std::make_pair(current, true);
                 }
                 return std::make_pair(nullptr, false);
             }
 
-            std::vector <KeyValuePair>
-            SkipListInternalNode::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
+            std::pair<SkipListNode *, bool> SkipListInternalNode::scan(std::string beginKey) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
                     while (current->forwards[level] && current->forwards[level]->key <= beginKey) {
                         current = current->forwards[level];
                     }
                 }
-                if (current->key < beginKey) {
-                    current = current->forwards[0];
+                if (current && current -> key < beginKey) {
+                    current = current -> forwards[0];
                 }
-                std::vector <KeyValuePair> keyValuePairs;
-                int64_t pairCount = 0;
 
-                while (current && current->key < endKey) {
-                    keyValuePairs.push_back(KeyValuePair(current->key, current->value));
-                    current = current->forwards[0];
-                    pairCount = pairCount + 1;
-
-                    if (pairCount == maxPairs) {
-                        break;
-                    }
+                if (current != nullptr) {
+                    return std::make_pair(current -> down, true);
                 }
-                return keyValuePairs;
+                return std::make_pair(nullptr, false);
             }
 
             PutPosition SkipListInternalNode::putPositionOf(std::string key, double withProbability) {

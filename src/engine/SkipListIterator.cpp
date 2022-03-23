@@ -57,7 +57,13 @@ namespace pmem {
 
             std::vector <KeyValuePair>
             SkipListIterator::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
-                return static_cast<SkipListInternalNode *>(this->startingNode)->scan(beginKey, endKey, maxPairs);
+                std::pair < SkipListNode * ,
+                        bool > existenceByNode =  static_cast<SkipListInternalNode *>(this->startingNode)->scan(beginKey);
+
+                if (existenceByNode.second) {
+                    return static_cast<SkipListLeafNode *>(existenceByNode.first) -> scan(beginKey, endKey, maxPairs);
+                }
+                return std::vector<KeyValuePair>();
             }
 
             void

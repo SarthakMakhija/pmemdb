@@ -63,10 +63,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
 
   std::vector<std::string> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
   std::vector<std::pair<std::string, bool>> result = iterator.multiGet(keys);
-  
+
   std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("", false),
-                            std::make_pair("Hard disk drive", true), 
+                            std::make_pair("Hard disk drive", true),
                             std::make_pair("Persistent memory", true),
                             std::make_pair("Solid state drive", true)
   };
@@ -87,7 +87,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyPresent) {
 
   std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent memory")};
-  
+
   ASSERT_EQ(expected, pairs);
 }
 
@@ -98,14 +98,31 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyNotPresent)
   iterator.put("HDD", "Hard disk drive", 0.5);
   iterator.put("SDD", "Solid state drive", 0.5);
   iterator.put("Pmem", "Persistent memory", 0.5);
- 
+
   std::string beginKey = "RAM";
   std::string endKey   = "Tuff";
 
   std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("SDD", "Solid state drive")};
-  
+
   ASSERT_EQ(expected, pairs);
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyOutsideTheBounds) {
+    SkipListInternalNode* sentinel = newSentinelInternalNode(6);
+    SkipListIterator iterator      = SkipListIterator(sentinel);
+
+    iterator.put("HDD", "Hard disk drive", 0.5);
+    iterator.put("SDD", "Solid state drive", 0.5);
+    iterator.put("Pmem", "Persistent memory", 0.5);
+
+    std::string beginKey = "Tuff";
+    std::string endKey   = "Zero";
+
+    std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
+    std::vector<KeyValuePair> expected = {};
+
+    ASSERT_EQ(expected, pairs);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKey) {

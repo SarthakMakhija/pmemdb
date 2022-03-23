@@ -118,6 +118,30 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingK
 }
 */
 
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheStartingLeafNodeToPerformScan) {
+    SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
+    put(sentinelInternal, "HDD", "Hard disk drive");
+    put(sentinelInternal, "SDD", "Solid state drive");
+    put(sentinelInternal, "Pmem", "Persistent Memory");
+
+    std::string beginKey = "Pmem";
+    std::pair<SkipListNode*, bool> nodeByExistence = sentinelInternal -> scan(beginKey);
+
+    ASSERT_EQ("Persistent Memory", nodeByExistence.first -> keyValuePair().getValue());
+}
+
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsFalseToPerformScanGivenBeginKeyIsOutsideTheBounds) {
+    SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
+    put(sentinelInternal, "HDD", "Hard disk drive");
+    put(sentinelInternal, "SDD", "Solid state drive");
+    put(sentinelInternal, "Pmem", "Persistent Memory");
+
+    std::string beginKey = "Tuff";
+    std::pair<SkipListNode*, bool> nodeByExistence = sentinelInternal -> scan(beginKey);
+
+    ASSERT_FALSE(nodeByExistence.second);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositionOfAMatchingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
   put(sentinelInternal, "HDD", "Hard disk drive");

@@ -42,7 +42,7 @@ namespace pmem {
 
                 std::pair<SkipListNode *, bool> getBy(std::string key);
 
-                std::vector <KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
+                std::pair<SkipListNode *, bool> scan(std::string beginKey);
 
                 PutPosition putPositionOf(std::string key, double withProbability);
 
