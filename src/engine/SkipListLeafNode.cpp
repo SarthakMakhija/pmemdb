@@ -179,60 +179,6 @@ namespace pmem {
                 }
                 return Status::Ok;
             }
-
-            Status SkipListLeafNode::deleteRange(std::string beginKey, std::string endKey,
-                                                 std::function<void(void)> postDeleteRangeHook) {
-                pmem::storage::internal::PersistentLeaf *previousLeaf = nullptr;
-                pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
-
-                SkipListLeafNode *previousNode = nullptr;
-                SkipListLeafNode *targetNode = this;
-
-                while (targetLeaf->right.get() && std::string(targetLeaf->right.get()->key()) <= beginKey) {
-                    previousNode = targetNode;
-                    targetNode = targetNode->right;
-
-                    previousLeaf = targetLeaf;
-                    targetLeaf = targetLeaf->right.get();
-                }
-                if (std::string(targetLeaf->key()) < beginKey) {
-                    previousNode = targetNode;
-                    targetNode = targetNode->right;
-
-                    previousLeaf = targetLeaf;
-                    targetLeaf = targetLeaf->right.get();
-                }
-
-                pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance()->getPmpool();
-                try {
-                    transaction::run(pmpool, [&] {
-                        pmem::storage::internal::PersistentLeaf *followerLeaf = targetLeaf;
-                        SkipListLeafNode *followerNode = targetNode;
-
-                        while (targetLeaf && std::string(targetLeaf->key()) < endKey) {
-                            targetLeaf->clear();
-                            targetLeaf = targetLeaf->right.get();
-                            followerLeaf->right = nullptr;
-                            followerLeaf = targetLeaf;
-                            previousLeaf->right = targetLeaf;
-
-                            delete_persistent<pmem::storage::internal::PersistentLeaf>(targetNode->leaf);
-                            targetNode->leaf = nullptr;
-                            targetNode = targetNode->right;
-                            followerNode->right = nullptr;
-                            previousNode->right = targetNode;
-
-                            delete followerNode;
-                            followerNode = targetNode;
-
-                            postDeleteRangeHook();
-                        }
-                    });
-                } catch (...) {
-                    return Status::Failed;
-                }
-                return Status::Ok;
-            }
         }
     }
 }

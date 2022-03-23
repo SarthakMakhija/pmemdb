@@ -56,12 +56,6 @@ namespace pmem {
                 DeletePosition deletePositionOf(std::string key);
 
                 void deleteBy(std::string key, std::vector<SkipListInternalNode *> positions, int deleteLevel);
-
-                DeleteRangePosition deleteRangePositionOf(std::string beginKey, std::string endKey);
-
-                void
-                deleteRange(std::string beginKey, std::string endKey, std::vector<SkipListInternalNode *> positions,
-                            int deleteLevel);
             };
         }
     }

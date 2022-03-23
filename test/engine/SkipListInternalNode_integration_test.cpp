@@ -9,12 +9,14 @@
 using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
-SkipListNode* put(SkipListInternalNode* node, std::string key, std::string value, double probability = 0.5) {
+void put(SkipListInternalNode* node, std::string key, std::string value, double probability = 0.5) {
   PutPosition putPosition = node -> putPositionOf(key, probability);
   if (putPosition.newLevel != -1) {
-    return node -> put(key, value, putPosition.positions, putPosition.newLevel);
+      std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(key, value);
+      SkipListLeafNode *newLeaf = statusNodePair.first;
+      SkipListNode *newInternal =  node -> put(key, value, putPosition.positions, putPosition.newLevel);
+      static_cast<SkipListInternalNode *>(newInternal) -> attach(newLeaf);
   }
-  return putPosition.leaf;
 }
 
 void deleteBy(SkipListInternalNode* node, std::string key) {
@@ -24,53 +26,46 @@ void deleteBy(SkipListInternalNode* node, std::string key) {
   }
 }
 
-void deleteRange(SkipListInternalNode* node, std::string beginKey, std::string endKey) {
-  DeleteRangePosition deletePosition = node -> deleteRangePositionOf(beginKey, endKey);
-  if (deletePosition.internal != nullptr) {
-    static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteRange(beginKey, endKey, deletePosition.positions, deletePosition.deleteLevel);
-  }
-}
-
 TEST(SkipListInternalNode, UpdateDownPointer) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive",  4);
   SkipListLeafNode *down     = new SkipListLeafNode();
   node -> attach(down);
-  
+
   ASSERT_TRUE(node -> getDown() != nullptr);
 }
 
 TEST(SkipListInternalNode, MatchKeyInSkipListNode) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive", 4);
   bool matches = node -> matchesKey("HDD");
-  
+
   ASSERT_TRUE(matches);
 }
 
 TEST(SkipListInternalNode, DoesNotMatchKeyInSkipListNode) {
   SkipListInternalNode *node = new SkipListInternalNode("SDD", "Solid state drive", 4);
   bool matches = node -> matchesKey("HDD");
-  
+
   ASSERT_FALSE(matches);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsLessThanGivenKeyInSkipListNode) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive",   4);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("SDD");
-  
+
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsEqualToGivenKeyInSkipListNode) {
   SkipListInternalNode *node = new SkipListInternalNode("HDD", "Hard disk drive", 4);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
-  
+
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
   SkipListInternalNode *node = new SkipListInternalNode("SDD", "Solid state drive", 4);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD");
-  
+
   ASSERT_FALSE(isKeyLessOrEqual);
 }
 
@@ -92,7 +87,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExisting
 
   std::string key = "Pmem";
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
-  
+
   ASSERT_FALSE(existenceByNode.second);
 }
 
@@ -100,15 +95,13 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_AttemptsToPutSameKeyInI
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
 
   put(sentinelInternal, "HDD", "Hard disk drive");
-  SkipListNode* node = put(sentinelInternal, "HDD", "Hard disk drive");
+  put(sentinelInternal, "HDD", "Hard disk drive");
 
   std::string key = "HDD";
-  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
-
   ASSERT_EQ("Hard disk drive", sentinelInternal -> getBy(key).first -> keyValuePair().getValue());
-  ASSERT_EQ(nullptr, node);
 }
 
+/*
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
   put(sentinelInternal, "HDD", "Hard disk drive");
@@ -123,6 +116,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_UpdateValueOfAMatchingK
 
   ASSERT_EQ(KeyValuePair("SDD", "Solid Drive"), existenceByNode.first -> keyValuePair());
 }
+*/
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositionOfAMatchingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
@@ -192,87 +186,4 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingK
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key);
 
   ASSERT_FALSE(existenceByNode.second);
-}
-
-TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange1) {
-  SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  put(sentinelInternal, "A", "A");
-  put(sentinelInternal, "B", "B");
-  put(sentinelInternal, "C", "C");
-  put(sentinelInternal, "D", "D");
-
-  std::string beginKey = "B";
-  std::string endKey   = "D";
-  deleteRange(sentinelInternal, beginKey, endKey);
-
-  std::vector<std::string> missingKeys = {"B", "C"};
-  for (auto missingKey: missingKeys) {
-    ASSERT_FALSE(sentinelInternal -> getBy(missingKey).second);
-  }
-
-  std::vector<std::string> presentKeys = {"A", "D"};
-  for (auto presentKey: presentKeys) {
-    ASSERT_EQ(presentKey,  sentinelInternal -> getBy(presentKey).first -> keyValuePair().getValue());
-  }
-}
-
-TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange2) {
-  SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  put(sentinelInternal, "A", "A");
-  put(sentinelInternal, "B", "B");
-  put(sentinelInternal, "C", "C");
-  put(sentinelInternal, "D", "D");
-
-  std::string beginKey = "A";
-  std::string endKey   = "D";
-  deleteRange(sentinelInternal, beginKey, endKey);
-
-  std::vector<std::string> missingKeys = {"A", "B", "C"};
-  for (auto missingKey: missingKeys) {
-    ASSERT_FALSE(sentinelInternal -> getBy(missingKey).second);
-  }
-
-  std::vector<std::string> presentKeys = {"D"};
-  for (auto presentKey: presentKeys) {
-    ASSERT_EQ(presentKey,  sentinelInternal -> getBy(presentKey).first -> keyValuePair().getValue());
-  }
-}
-
-TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange3) {
-  SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  put(sentinelInternal, "A", "A");
-  put(sentinelInternal, "B", "B");
-  put(sentinelInternal, "C", "C");
-  put(sentinelInternal, "D", "D");
-
-  std::string beginKey = "B";
-  std::string endKey   = "F";
-  deleteRange(sentinelInternal, beginKey, endKey);
-
-  std::vector<std::string> missingKeys = {"B", "C", "D"};
-  for (auto missingKey: missingKeys) {
-    ASSERT_FALSE(sentinelInternal -> getBy(missingKey).second);
-  }
-
-  std::vector<std::string> presentKeys = {"A"};
-  for (auto presentKey: presentKeys) {
-    ASSERT_EQ(presentKey,  sentinelInternal -> getBy(presentKey).first -> keyValuePair().getValue());
-  }
-}
-
-TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteRange4) {
-  SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6);
-  put(sentinelInternal, "A", "A");
-  put(sentinelInternal, "B", "B");
-  put(sentinelInternal, "C", "C");
-  put(sentinelInternal, "D", "D");
-
-  std::string beginKey = "A";
-  std::string endKey   = "F";
-  deleteRange(sentinelInternal, beginKey, endKey);
-
-  std::vector<std::string> missingKeys = {"A", "B", "C", "D"};
-  for (auto missingKey: missingKeys) {
-    ASSERT_FALSE(sentinelInternal -> getBy(missingKey).second);
-  }
 }

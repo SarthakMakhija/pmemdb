@@ -123,26 +123,3 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteK
         ASSERT_FALSE(existenceByValue.second);
     }
 }
-
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteAllKeysByRange) {
-    SkipList* skipList = new SkipList(10, 0.5);
-    for (int count = 1; count <= 8; count++) {
-        std::string key   = "Key-"    + std::to_string(count);
-        std::string value = "Value-"  + std::to_string(count);
-
-        skipList -> put(key, value);
-    }
-
-    std::string beginKey = "Key-"    + std::to_string(1);
-    std::string endKey   = "Key-"    + std::to_string(9);
-
-    skipList -> deleteRange(beginKey, endKey);
-
-    for (int count = 1; count <= 8; count++) {
-        std::string key   = "Key-"    + std::to_string(count);
-        std::pair<std::string, bool> existenceByValue = skipList -> get(key);
-
-        ASSERT_EQ("", existenceByValue.first);
-        ASSERT_FALSE(existenceByValue.second);
-    }
-}

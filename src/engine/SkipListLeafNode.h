@@ -40,9 +40,6 @@ namespace pmem {
                 Status update(std::string key, std::string value, std::function<void(void)> postUpdateHook = [] {});
 
                 Status deleteBy(std::string key, std::function<void(void)> postDeleteHook = [] {});
-
-                Status deleteRange(std::string beginKey, std::string endKey,
-                                   std::function<void(void)> postDeleteRangeHook = [] {});
             };
         }
     }

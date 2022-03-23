@@ -32,14 +32,12 @@ namespace pmem {
                 std::vector <std::pair<std::string, bool>> result;
 
                 std::sort(keys.begin(), keys.end());
-                SkipListNode *starting = this->startingNode;
-
                 for (auto key: keys) {
                     std::pair < SkipListNode * ,
                             bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key);
+
                     if (existenceByNode.second) {
-                        result.push_back(std::make_pair(existenceByNode.first->keyValuePair().getValue(), true));
-                        startingNode = existenceByNode.first;
+                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first) -> getBy(key));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }
@@ -50,8 +48,9 @@ namespace pmem {
             std::pair<std::string, bool> SkipListIterator::getBy(std::string key) {
                 std::pair < SkipListNode * ,
                         bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key);
+
                 if (existenceByNode.second) {
-                    return std::make_pair(existenceByNode.first->keyValuePair().getValue(), true);
+                    return static_cast<SkipListLeafNode *>(existenceByNode.first) -> getBy(key);
                 }
                 return std::make_pair("", false);
             }
@@ -83,21 +82,6 @@ namespace pmem {
                         static_cast<SkipListInternalNode *>(deletePosition.internal)->deleteBy(key,
                                                                                                deletePosition.positions,
                                                                                                deletePosition.deleteLevel);
-                    }
-                }
-            }
-
-            void SkipListIterator::deleteRange(std::string beginKey, std::string endKey,
-                                               std::function<void(void)> postDeleteRangeHook) {
-                DeleteRangePosition deletePosition = static_cast<SkipListInternalNode *>(this->startingNode)->deleteRangePositionOf(
-                        beginKey, endKey);
-                if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
-                    Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteRange(beginKey, endKey,
-                                                                                                      postDeleteRangeHook);
-                    if (status != Status::Failed) {
-                        static_cast<SkipListInternalNode *>(deletePosition.internal)->deleteRange(beginKey, endKey,
-                                                                                                  deletePosition.positions,
-                                                                                                  deletePosition.deleteLevel);
                     }
                 }
             }

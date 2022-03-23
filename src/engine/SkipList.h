@@ -26,8 +26,6 @@ namespace pmem {
 
             void deleteBy(std::string key);
 
-            void deleteRange(std::string beginKey, std::string endKey);
-
             std::pair<std::string, bool> get(std::string key);
 
             std::vector <std::pair<std::string, bool>> multiGet(const std::vector <std::string> &keys);

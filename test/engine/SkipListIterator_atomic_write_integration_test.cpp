@@ -75,37 +75,3 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValue
     ASSERT_EQ("Hard disk drive", iterator.getBy("HDD").first);
     ASSERT_FALSE(iterator.getBy("SDD").second);
 }
-
-TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyRange) {
-    SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
-
-    iterator.put("A", "A", 0.5);
-    iterator.put("B", "B", 0.5);
-    iterator.put("C", "C", 0.5);
-    iterator.put("D", "D", 0.5);
-
-    iterator.deleteRange("A", "D", [] {throw std::runtime_error("FailsWhileDeletingAKeyRange");});
-    ASSERT_EQ("A", iterator.getBy("A").first);
-    ASSERT_EQ("B", iterator.getBy("B").first);
-    ASSERT_EQ("C", iterator.getBy("C").first);
-    ASSERT_EQ("D", iterator.getBy("D").first);
-}
-
-TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyRangeAndSucceedsWithOther) {
-    SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
-
-    iterator.put("A", "A", 0.5);
-    iterator.put("B", "B", 0.5);
-    iterator.put("C", "C", 0.5);
-    iterator.put("D", "D", 0.5);
-
-    iterator.deleteRange("A", "D", [] {throw std::runtime_error("FailsWhileDeletingAKeyRangeAndSucceedsWithOther");});
-    iterator.deleteRange("A", "C");
-
-    ASSERT_EQ("", iterator.getBy("A").first);
-    ASSERT_EQ("", iterator.getBy("B").first);
-    ASSERT_EQ("C", iterator.getBy("C").first);
-    ASSERT_EQ("D", iterator.getBy("D").first);
-}

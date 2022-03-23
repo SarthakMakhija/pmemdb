@@ -57,7 +57,8 @@ namespace pmem {
                 current = current->forwards[0];
 
                 if (current && current->key == key) {
-                    return std::make_pair(current, true);
+                    return std::make_pair(current -> down, true);
+                    //return std::make_pair(current, true);
                 }
                 return std::make_pair(nullptr, false);
             }
@@ -175,43 +176,6 @@ namespace pmem {
                         current->forwards[level] = nullptr;
                     }
                     delete current;
-                }
-            }
-
-            DeleteRangePosition SkipListInternalNode::deleteRangePositionOf(std::string beginKey, std::string endKey) {
-                SkipListInternalNode *current = this;
-                std::vector < SkipListInternalNode * > positions(this->forwards.size(), nullptr);
-
-                for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && current->forwards[level]->key < beginKey) {
-                        current = current->forwards[level];
-                    }
-                    positions[level] = current;
-                }
-                current = current->forwards[0];
-                if (current != nullptr && current->key >= beginKey && current->key < endKey) {
-                    return DeleteRangePosition{positions, (int) this->forwards.size(), current, positions[0]->down};
-                }
-                return DeleteRangePosition{positions, -1, nullptr, nullptr};
-            }
-
-            void SkipListInternalNode::deleteRange(std::string beginKey, std::string endKey,
-                                                   std::vector<SkipListInternalNode *> positions, int deleteLevel) {
-                SkipListInternalNode *current = this;
-                while (current != nullptr && current->key >= beginKey && current->key < endKey) {
-                    for (int level = 0; level < deleteLevel; level++) {
-                        if (positions[level]->forwards[level] != current) {
-                            break;
-                        }
-                        positions[level]->forwards[level] = current->forwards[level];
-                    }
-                    current->down = nullptr;
-                    SkipListInternalNode *backup = current->forwards[0];
-                    for (int level = 0; level < current->forwards.size(); level++) {
-                        current->forwards[level] = nullptr;
-                    }
-                    delete current;
-                    current = backup;
                 }
             }
 

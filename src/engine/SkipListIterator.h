@@ -27,9 +27,6 @@ namespace pmem {
                 void update(std::string key, std::string value, std::function<void(void)> postUpdateHook = [] {});
 
                 void deleteBy(std::string key, std::function<void(void)> postDeleteHook = [] {});
-
-                void deleteRange(std::string beginKey, std::string endKey,
-                                 std::function<void(void)> postDeleteRangeHook = [] {});
             };
         }
     }

@@ -49,16 +49,6 @@ namespace pmem {
             pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
         }
 
-        void SkipList::deleteRange(std::string beginKey, std::string endKey) {
-            if (beginKey == endKey || endKey < beginKey) {
-                throw std::invalid_argument(
-                        "beginKey and endKey must be different and endKey must be greater than beginKey");
-            }
-
-            std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            pmem::storage::internal::SkipListIterator(this->header).deleteRange(beginKey, endKey);
-        }
-
         std::pair<std::string, bool> SkipList::get(std::string key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return pmem::storage::internal::SkipListIterator(this->header).getBy(key);
