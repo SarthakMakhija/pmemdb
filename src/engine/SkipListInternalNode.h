@@ -51,8 +51,6 @@ namespace pmem {
 
                 UpdatePosition updatePositionOf(std::string key);
 
-                void update(std::string key, std::string value);
-
                 DeletePosition deletePositionOf(std::string key);
 
                 void deleteBy(std::string key, std::vector<SkipListInternalNode *> positions, int deleteLevel);

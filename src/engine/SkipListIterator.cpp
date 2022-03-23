@@ -70,12 +70,9 @@ namespace pmem {
             SkipListIterator::update(std::string key, std::string value, std::function<void(void)> postUpdateHook) {
                 UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(
                         key);
+
                 if (updatePosition.leaf != nullptr) {
-                    Status status = static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key, value,
-                                                                                                 postUpdateHook);
-                    if (status != Status::Failed) {
-                        static_cast<SkipListInternalNode *>(updatePosition.internal)->update(key, value);
-                    }
+                    static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key, value, postUpdateHook);
                 }
             }
 

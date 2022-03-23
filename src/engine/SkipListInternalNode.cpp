@@ -125,13 +125,6 @@ namespace pmem {
                 return UpdatePosition{nullptr, nullptr};
             }
 
-            void SkipListInternalNode::update(std::string key, std::string value) {
-                SkipListInternalNode *current = this;
-                if (current && current->key == key) {
-                    current->updateValue(value);
-                }
-            }
-
             DeletePosition SkipListInternalNode::deletePositionOf(std::string key) {
                 SkipListInternalNode *current = this;
                 std::vector < SkipListInternalNode * > positions(this->forwards.size(), nullptr);
