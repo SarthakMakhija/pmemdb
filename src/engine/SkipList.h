@@ -9,26 +9,30 @@
 
 namespace pmem {
     namespace storage {
-        class SkipList {
-        private:
-            pmem::storage::internal::SkipListInternalNode *header;
-            double probability;
+        namespace internal {
 
-        public:
-            SkipList(int towerSize, double probability);
+            class SkipList {
+            private:
+                pmem::storage::internal::SkipListInternalNode *header;
+                double probability;
 
-            pmem::storage::internal::Status put(std::string key, std::string value);
+            public:
+                SkipList(int towerSize, double probability);
 
-            pmem::storage::internal::Status update(std::string key, std::string value);
+                Status put(std::string key, std::string value);
 
-            pmem::storage::internal::Status deleteBy(std::string key);
+                Status update(std::string key, std::string value);
 
-            std::pair<std::string, bool> get(std::string key);
+                Status deleteBy(std::string key);
 
-            std::vector <std::pair<std::string, bool>> multiGet(const std::vector <std::string> &keys);
+                std::pair<std::string, bool> get(std::string key);
 
-            std::vector <pmem::storage::KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
-        };
+                std::vector <std::pair<std::string, bool>> multiGet(const std::vector <std::string> &keys);
+
+                std::vector <pmem::storage::KeyValuePair>
+                scan(std::string beginKey, std::string endKey, int64_t maxPairs);
+            };
+        }
     }
 }
 #endif
