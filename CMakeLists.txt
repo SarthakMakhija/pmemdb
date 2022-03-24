@@ -12,19 +12,20 @@ add_subdirectory(src/engine)
 # Enable testing
 add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
-	PRIVATE	
-	test/engine/SkipList_functional_test.cpp
-	test/engine/SkipList_exception_unit_test.cpp
-	test/engine/SkipList_integration_test.cpp
-	test/engine/SkipListInternalNode_integration_test.cpp
-	test/engine/SkipListIterator_integration_test.cpp
-	test/engine/SkipListLeafNode_integration_test.cpp
-	test/engine/SkipList_concurrent_integration_test.cpp
-	test/engine/SkipListLeafNode_transactional_write_integration_test.cpp
-	test/engine/SkipListIterator_atomic_write_integration_test.cpp
-	test/engine/SkipListNodeTestUtils.h
-	test/engine/SkipListNodeTestUtils.cpp
-	test/engine/PersistentMemoryPoolFixture.h
+        PRIVATE
+        test/engine/SkipList_functional_test.cpp
+        test/engine/SkipList_exception_unit_test.cpp
+        test/engine/SkipList_integration_test.cpp
+        test/engine/SkipListInternalNode_integration_test.cpp
+        test/engine/SkipListIterator_integration_test.cpp
+        test/engine/SkipListLeafNode_integration_test.cpp
+        test/engine/SkipList_concurrent_integration_test.cpp
+        test/engine/SkipListLeafNode_transactional_write_integration_test.cpp
+        test/engine/SkipListIterator_atomic_write_integration_test.cpp
+        test/engine/SkipListNodeTestUtils.h
+        test/engine/SkipListNodeTestUtils.cpp
+        test/engine/PersistentMemoryPoolFixture.h
+        test/engine/DbFixture.h
 )
 
 find_package(GTest CONFIG REQUIRED)
@@ -39,14 +40,14 @@ enable_testing()
 
 target_include_directories(pmemdb_tests PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
 target_link_libraries(pmemdb_tests
-  	PRIVATE
-    SkipList
-	GTest::gtest
-	GTest::gtest_main
-	${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY}
-)
+        PRIVATE
+        SkipList
+        GTest::gtest
+        GTest::gtest_main
+        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY}
+        )
 
 add_test(
-  	NAME pmemdb_tests
-  	COMMAND $<TARGET_FILE:pmemdb_tests>
+        NAME pmemdb_tests
+        COMMAND $<TARGET_FILE:pmemdb_tests>
 )

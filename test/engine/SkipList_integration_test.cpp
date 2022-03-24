@@ -2,143 +2,139 @@
 #include <string>
 #include "../../src/engine/SkipList.h"
 #include "./PersistentMemoryPoolFixture.h"
+#include "./DbFixture.h"
+#include "../../src/engine/Db.h"
+#include "../../src/engine/Configuration.h"
+#include <iostream>
 
 using namespace pmem::storage;
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndGetAValueByKey) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetAValueByKey) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = skipList -> get("HDD");
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_EQ("Hard disk drive", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndGetExistenceOfKey) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetExistenceOfKey) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = skipList -> get("HDD");
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_TRUE(existenceByValue.second);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndGetAValueByNonExistentKey) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetAValueByNonExistentKey) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = skipList -> get("SDD");
-    
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
+
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndGetTheExistenceOfNonExistentKey) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetTheExistenceOfNonExistentKey) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = skipList -> get("SDD");
-    
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
+
     ASSERT_FALSE(existenceByValue.second);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDoesMultiGet) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
-    skipList -> put("SDD", "Solid state drive");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDoesMultiGet) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    DbFixture::getDb()->put("SDD", "Solid state drive");
 
     std::vector<std::string> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
-    std::vector<std::pair<std::string, bool>> result = skipList -> multiGet(keys);
+    std::vector<std::pair<std::string, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("", false),
-                            std::make_pair("Hard disk drive", true), 
+                            std::make_pair("Hard disk drive", true),
                             std::make_pair("Persistent Memory", true),
                             std::make_pair("Solid state drive", true)
     };
-    
+
     ASSERT_EQ(expected, result);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_ScanWithBeginKeyPresent) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
-    skipList -> put("SDD", "Solid state drive");
-    skipList -> put("RAM", "Random access memory");
+TEST_F(DbFixture, SkipListIntegration_ScanWithBeginKeyPresent) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    DbFixture::getDb()->put("SDD", "Solid state drive");
+    DbFixture::getDb() -> put("RAM", "Random access memory");
 
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
 
-    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 10);
+    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey, endKey, 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Memory"), KeyValuePair("RAM", "Random access memory")};
-    
+
     ASSERT_EQ(expected, pairs);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_ScanWithBeginKeyNotPresent) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("SDD", "Solid state drive");
-    skipList -> put("RAM", "Random access memory");
+TEST_F(DbFixture, SkipListIntegration_ScanWithBeginKeyNotPresent) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("SDD", "Solid state drive");
+    DbFixture::getDb() -> put("RAM", "Random access memory");
 
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
 
-    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 10);
+    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey, endKey, 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("RAM", "Random access memory")};
-    
+
   ASSERT_EQ(expected, pairs);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndUpdateAValue) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndUpdateAValue) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    skipList -> update("HDD", "Hard disk");
-    std::pair<std::string, bool> existenceByValue = skipList -> get("HDD");
+    DbFixture::getDb() -> update("HDD", "Hard disk");
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_EQ("Hard disk", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndUpdateAValueForNonExistingKey) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndUpdateAValueForNonExistingKey) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    skipList -> update("SDD", "Solid state drive");
-    std::pair<std::string, bool> existenceByValue = skipList -> get("SDD");
+    DbFixture::getDb() -> update("SDD", "Solid state drive");
+
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheBeginning) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheBeginning) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    skipList -> deleteBy("HDD");
-    std::pair<std::string, bool> existenceByValue = skipList -> get("HDD");
+    DbFixture::getDb() -> deleteBy("HDD");
+
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInBetween) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
-    skipList -> put("SDD", "Solid state drive");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInBetween) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    DbFixture::getDb()->put("SDD", "Solid state drive");
 
-    skipList -> deleteBy("Pmem");
-    std::pair<std::string, bool> existenceByValue = skipList -> get("Pmem");
+    DbFixture::getDb() -> deleteBy("Pmem");
+
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheEnd) {
-    SkipList* skipList = new SkipList(8, 0.5);
-    skipList -> put("HDD", "Hard disk drive");
-    skipList -> put("Pmem", "Persistent Memory");
+TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheEnd) {
+    DbFixture::getDb()->put("HDD", "Hard disk drive");
+    DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    skipList -> deleteBy("Pmem");
-    std::pair<std::string, bool> existenceByValue = skipList -> get("Pmem");
+    DbFixture::getDb() -> deleteBy("Pmem");
+
+    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
     ASSERT_EQ("", existenceByValue.first);
 }
