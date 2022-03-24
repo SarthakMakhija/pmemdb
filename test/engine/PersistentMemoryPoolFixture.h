@@ -17,7 +17,7 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
 
     public:
     void SetUp() {
-        pool = PersistentMemoryPool::initialize(filePath);
+        pool = PersistentMemoryPool::initialize(filePath, 8 * 1024 * 1024);
     }
 
     void TearDown() {

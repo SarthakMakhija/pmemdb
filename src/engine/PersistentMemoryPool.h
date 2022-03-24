@@ -15,7 +15,7 @@ namespace pmem {
 
                 void operator=(const PersistentMemoryPool &) = delete;
 
-                static PersistentMemoryPool *initialize(const char *filePath, uint64_t size = 8 * 1024 * 1024);
+                static PersistentMemoryPool *initialize(const char *filePath, uint64_t size);
 
                 static PersistentMemoryPool *getInstance();
 
