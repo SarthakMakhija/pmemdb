@@ -3,8 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <mutex>
-#include <shared_mutex>
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "Status.h"
@@ -14,8 +12,6 @@ namespace pmem {
         class SkipList {
         private:
             pmem::storage::internal::SkipListInternalNode *header;
-            std::shared_mutex mutex_;
-
             double probability;
 
         public:

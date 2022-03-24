@@ -4,7 +4,6 @@
 #include "SkipListLeafNode.h"
 #include "SkipListIterator.h"
 #include <stdlib.h>
-#include <stdexcept>
 
 namespace pmem {
     namespace storage {
@@ -27,7 +26,6 @@ namespace pmem {
             if (key == "" || value == "") {
                 throw std::invalid_argument("key and value can not be blank while putting");
             }
-            std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return pmem::storage::internal::SkipListIterator(this->header).put(key, value, this->probability);
         }
 
@@ -35,8 +33,6 @@ namespace pmem {
             if (key == "" || value == "") {
                 throw std::invalid_argument("key and value can not be blank while updating");
             }
-
-            std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return pmem::storage::internal::SkipListIterator(this->header).update(key, value);
         }
 
@@ -44,18 +40,14 @@ namespace pmem {
             if (key == "") {
                 throw std::invalid_argument("key can not be blank while deleting the corresponding value");
             }
-
-            std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
         }
 
         std::pair<std::string, bool> SkipList::get(std::string key) {
-            std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return pmem::storage::internal::SkipListIterator(this->header).getBy(key);
         }
 
         std::vector <std::pair<std::string, bool>> SkipList::multiGet(const std::vector <std::string> &keys) {
-            std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return pmem::storage::internal::SkipListIterator(this->header).multiGet(keys);
         }
 
@@ -67,8 +59,6 @@ namespace pmem {
                 throw std::invalid_argument(
                         "beginKey and endKey must be different and endKey must be greater than beginKey");
             }
-
-            std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return pmem::storage::internal::SkipListIterator(this->header).scan(beginKey, endKey, maxPairs);
         }
     }

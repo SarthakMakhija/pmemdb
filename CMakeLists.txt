@@ -13,15 +13,15 @@ add_subdirectory(src/engine)
 add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
         PRIVATE
-        test/engine/Db_integration_test.cpp
         test/engine/SkipList_functional_test.cpp
         test/engine/SkipList_exception_unit_test.cpp
         test/engine/SkipListInternalNode_integration_test.cpp
         test/engine/SkipListIterator_integration_test.cpp
         test/engine/SkipListLeafNode_integration_test.cpp
-        test/engine/SkipList_concurrent_integration_test.cpp
         test/engine/SkipListLeafNode_transactional_write_integration_test.cpp
         test/engine/SkipListIterator_atomic_write_integration_test.cpp
+        test/engine/Db_concurrent_integration_test.cpp
+        test/engine/Db_integration_test.cpp
         test/engine/SkipListNodeTestUtils.h
         test/engine/SkipListNodeTestUtils.cpp
         test/engine/PersistentMemoryPoolFixture.h

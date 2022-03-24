@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <mutex>
+#include <shared_mutex>
+
 #include "Status.h"
 #include "SkipList.h"
 #include "PersistentMemoryPool.h"
@@ -14,6 +17,7 @@ namespace pmem {
         private:
             SkipList *skipList;
             internal::PersistentMemoryPool* persistentMemoryPool;
+            std::shared_mutex mutex_;
 
         public:
             static Db *open(Configuration configuration);
