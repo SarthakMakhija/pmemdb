@@ -1,34 +1,56 @@
 #include <gtest/gtest.h>
 #include <string>
-#include "../../src/engine/SkipList.h"
-#include "./PersistentMemoryPoolFixture.h"
+#include  <cstdio>
+
+#include "../../src/engine/Db.h"
 
 using namespace pmem::storage;
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndAdd500KeyValuePairsInSkipList) {
-    SkipList* skipList = new SkipList(100, 0.5);
+
+const char* filePath = "./functional.log";
+
+Db* openDb(int skipListTowerSize = 100, double probability = 0.5) {
+    Configuration configuration = Configuration(filePath,
+                                                8 * 1024 * 1024,
+                                                skipListTowerSize,
+                                                probability);
+
+    return Db::open(configuration);
+}
+
+void closeDb(Db* db) {
+    db -> close();
+    remove(filePath);
+}
+
+TEST(Db_Functional, Add500KeyValuePairs) {
+    Db* db = openDb();
+
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
 
-        skipList -> put(key, value);
+        db -> put(key, value);
     }
     for (int count = 1; count <= 500; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         std::string expectedValue = "Value-" + std::to_string(count);
         
-        std::pair<std::string, bool> existenceByValue = skipList -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key);
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
+
+    closeDb(db);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesAScan) {
-    SkipList* skipList = new SkipList(100, 0.5);
+TEST(Db_Functional, DoesAScan) {
+    Db* db = openDb();
+
     for (int count = 1; count <= 500; count+=2) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
 
-        skipList -> put(key, value);
+        db -> put(key, value);
     }    
     std::string beginKey = "50";
     std::string endKey   = "70";
@@ -39,17 +61,20 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesASc
     }
     expected.push_back(KeyValuePair("7", "7"));
 
-    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 50);
+    std::vector<KeyValuePair> pairs = db -> scan(beginKey, endKey, 50);
     ASSERT_EQ(expected, pairs);
+
+    closeDb(db);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesAScanWithMaxPairsAs5) {
-    SkipList* skipList = new SkipList(100, 0.25);
+TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
+    Db* db = openDb(100, 0.25);
+
     for (int count = 1; count <= 500; count+=2) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
 
-        skipList -> put(key, value);
+        db -> put(key, value);
     }    
     std::string beginKey = "50";
     std::string endKey   = "70";
@@ -59,67 +84,75 @@ TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDoesASc
         expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
     }
 
-    std::vector<KeyValuePair> pairs = skipList -> scan(beginKey, endKey, 5);
+    std::vector<KeyValuePair> pairs = db -> scan(beginKey, endKey, 5);
     ASSERT_EQ(expected, pairs);
+
+    closeDb(db);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndUpdate500KeyValuePairsUsingUpdateInSkipList) {
-    SkipList* skipList = new SkipList(100, 0.125);
+TEST(Db_Functional, Update500KeyValuePairs) {
+    Db* db = openDb(100, 0.125);
+
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
 
-        skipList -> put(key, value);
+        db -> put(key, value);
     }
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count*2);
 
-        skipList -> update(key, value);
+        db -> update(key, value);
     }
     for (int count = 1; count <= 500; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         std::string expectedValue = "Value-" + std::to_string(count*2);
         
-        std::pair<std::string, bool> existenceByValue = skipList -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key);
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
+
+    closeDb(db);
 }
 
-TEST_F(PersistentMemoryPoolFixture, SkipListFunctional_CreateASkipListAndDeleteKeys) {
-    SkipList* skipList = new SkipList(100, 0.125);
+TEST(Db_Functional, DeleteKeys) {
+    Db* db = openDb(100, 0.125);
+
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
 
-        skipList -> put(key, value);
+        db -> put(key, value);
     }
 
-    skipList -> deleteBy("Key-"    + std::to_string(1));
+    db -> deleteBy("Key-"    + std::to_string(1));
     for (int count = 500; count <= 400; count++) {
         std::string key   = "Key-"    + std::to_string(count);
 
-        skipList -> deleteBy(key);
+        db -> deleteBy(key);
     }
 
     for (int count = 2; count < 400; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         std::string expectedValue = "Value-" + std::to_string(count);
         
-        std::pair<std::string, bool> existenceByValue = skipList -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key);
 
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
 
-    ASSERT_FALSE(skipList -> get("Key-"    + std::to_string(1)).second);
+    ASSERT_FALSE(db -> get("Key-"    + std::to_string(1)).second);
     for (int count = 500; count <= 400; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         
-        std::pair<std::string, bool> existenceByValue = skipList -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key);
 
         ASSERT_EQ("", existenceByValue.first);
         ASSERT_FALSE(existenceByValue.second);
     }
+
+    closeDb(db);
 }
