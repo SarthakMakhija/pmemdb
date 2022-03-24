@@ -1,15 +1,11 @@
 #include <gtest/gtest.h>
 #include <string>
-#include "../../src/engine/SkipList.h"
-#include "./PersistentMemoryPoolFixture.h"
 #include "./DbFixture.h"
 #include "../../src/engine/Db.h"
-#include "../../src/engine/Configuration.h"
-#include <iostream>
 
 using namespace pmem::storage;
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetAValueByKey) {
+TEST_F(DbFixture, DbIntegration_GetAValueByKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
@@ -17,7 +13,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetAValueByKey) {
     ASSERT_EQ("Hard disk drive", existenceByValue.first);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetExistenceOfKey) {
+TEST_F(DbFixture, DbIntegration_GetExistenceOfKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
@@ -25,7 +21,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetExistenceOfKey) {
     ASSERT_TRUE(existenceByValue.second);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetAValueByNonExistentKey) {
+TEST_F(DbFixture, DbIntegration_GetAValueByNonExistentKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
@@ -34,7 +30,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetAValueByNonExistentKe
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetTheExistenceOfNonExistentKey) {
+TEST_F(DbFixture, DbIntegration_GetTheExistenceOfNonExistingKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
@@ -43,7 +39,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndGetTheExistenceOfNonExis
     ASSERT_FALSE(existenceByValue.second);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDoesMultiGet) {
+TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
     DbFixture::getDb()->put("SDD", "Solid state drive");
@@ -60,7 +56,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDoesMultiGet) {
     ASSERT_EQ(expected, result);
 }
 
-TEST_F(DbFixture, SkipListIntegration_ScanWithBeginKeyPresent) {
+TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyPresent) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
     DbFixture::getDb()->put("SDD", "Solid state drive");
@@ -75,7 +71,7 @@ TEST_F(DbFixture, SkipListIntegration_ScanWithBeginKeyPresent) {
     ASSERT_EQ(expected, pairs);
 }
 
-TEST_F(DbFixture, SkipListIntegration_ScanWithBeginKeyNotPresent) {
+TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyNotPresent) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("SDD", "Solid state drive");
     DbFixture::getDb() -> put("RAM", "Random access memory");
@@ -89,7 +85,7 @@ TEST_F(DbFixture, SkipListIntegration_ScanWithBeginKeyNotPresent) {
   ASSERT_EQ(expected, pairs);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndUpdateAValue) {
+TEST_F(DbFixture, DbIntegration_UpdateAValue) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
@@ -98,7 +94,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndUpdateAValue) {
     ASSERT_EQ("Hard disk", existenceByValue.first);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndUpdateAValueForNonExistingKey) {
+TEST_F(DbFixture, DbIntegration_UpdateAValueForNonExistingKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
@@ -108,7 +104,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndUpdateAValueForNonExisti
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheBeginning) {
+TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheBeginning) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
@@ -118,7 +114,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheBeginni
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInBetween) {
+TEST_F(DbFixture, DbIntegration_DeleteByAKeyInBetween) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
     DbFixture::getDb()->put("SDD", "Solid state drive");
@@ -129,7 +125,7 @@ TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInBetween) {
     ASSERT_EQ("", existenceByValue.first);
 }
 
-TEST_F(DbFixture, SkipListIntegration_CreateASkipListAndDeleteByAKeyInTheEnd) {
+TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheEnd) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 

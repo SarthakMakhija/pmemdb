@@ -13,9 +13,9 @@ add_subdirectory(src/engine)
 add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
         PRIVATE
+        test/engine/Db_integration_test.cpp
         test/engine/SkipList_functional_test.cpp
         test/engine/SkipList_exception_unit_test.cpp
-        test/engine/SkipList_integration_test.cpp
         test/engine/SkipListInternalNode_integration_test.cpp
         test/engine/SkipListIterator_integration_test.cpp
         test/engine/SkipListLeafNode_integration_test.cpp
@@ -44,8 +44,7 @@ target_link_libraries(pmemdb_tests
         SkipList
         GTest::gtest
         GTest::gtest_main
-        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY}
-        )
+        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
 
 add_test(
         NAME pmemdb_tests
