@@ -23,23 +23,14 @@ namespace pmem {
         }
 
         pmem::storage::internal::Status SkipList::put(std::string key, std::string value) {
-            if (key == "" || value == "") {
-                throw std::invalid_argument("key and value can not be blank while putting");
-            }
             return pmem::storage::internal::SkipListIterator(this->header).put(key, value, this->probability);
         }
 
         pmem::storage::internal::Status SkipList::update(std::string key, std::string value) {
-            if (key == "" || value == "") {
-                throw std::invalid_argument("key and value can not be blank while updating");
-            }
             return pmem::storage::internal::SkipListIterator(this->header).update(key, value);
         }
 
         pmem::storage::internal::Status SkipList::deleteBy(std::string key) {
-            if (key == "") {
-                throw std::invalid_argument("key can not be blank while deleting the corresponding value");
-            }
             return pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
         }
 
@@ -52,13 +43,6 @@ namespace pmem {
         }
 
         std::vector <KeyValuePair> SkipList::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
-            if (maxPairs <= 0) {
-                throw std::invalid_argument("maxPairs must be greater than 0");
-            }
-            if (beginKey == endKey || endKey < beginKey) {
-                throw std::invalid_argument(
-                        "beginKey and endKey must be different and endKey must be greater than beginKey");
-            }
             return pmem::storage::internal::SkipListIterator(this->header).scan(beginKey, endKey, maxPairs);
         }
     }

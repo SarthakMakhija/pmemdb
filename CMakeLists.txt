@@ -22,6 +22,7 @@ target_sources(pmemdb_tests
         test/engine/SkipListIterator_atomic_write_integration_test.cpp
         test/engine/Db_concurrent_integration_test.cpp
         test/engine/Db_integration_test.cpp
+        test/engine/Db_exception_unit_test.cpp
         test/engine/SkipListNodeTestUtils.h
         test/engine/SkipListNodeTestUtils.cpp
         test/engine/PersistentMemoryPoolFixture.h
