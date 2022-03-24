@@ -24,15 +24,15 @@ namespace pmem {
                 this->probability = probability;
             }
 
-            pmem::storage::internal::Status SkipList::put(std::string key, std::string value) {
+            Status SkipList::put(std::string key, std::string value) {
                 return pmem::storage::internal::SkipListIterator(this->header).put(key, value, this->probability);
             }
 
-            pmem::storage::internal::Status SkipList::update(std::string key, std::string value) {
+            Status SkipList::update(std::string key, std::string value) {
                 return pmem::storage::internal::SkipListIterator(this->header).update(key, value);
             }
 
-            pmem::storage::internal::Status SkipList::deleteBy(std::string key) {
+            Status SkipList::deleteBy(std::string key) {
                 return pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
             }
 

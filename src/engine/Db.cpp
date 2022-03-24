@@ -16,7 +16,7 @@ namespace pmem {
             return db;
         }
 
-        internal::Status Db::put(std::string key, std::string value) {
+        Status Db::put(std::string key, std::string value) {
             if (key == "" || value == "") {
                 throw std::invalid_argument("key and value can not be blank while putting");
             }
@@ -25,7 +25,7 @@ namespace pmem {
             return this->skipList->put(key, value);
         }
 
-        internal::Status Db::update(std::string key, std::string value) {
+        Status Db::update(std::string key, std::string value) {
             if (key == "" || value == "") {
                 throw std::invalid_argument("key and value can not be blank while updating");
             }
@@ -34,7 +34,7 @@ namespace pmem {
             return this->skipList->update(key, value);
         }
 
-        internal::Status Db::deleteBy(std::string key) {
+        Status Db::deleteBy(std::string key) {
             if (key == "") {
                 throw std::invalid_argument("key can not be blank while deleting the corresponding value");
             }

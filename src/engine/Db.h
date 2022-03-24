@@ -13,7 +13,6 @@
 
 namespace pmem {
     namespace storage {
-
         class Db {
         private:
             internal::SkipList *skipList;
@@ -23,11 +22,11 @@ namespace pmem {
         public:
             static Db *open(Configuration configuration);
 
-            internal::Status put(std::string key, std::string value);
+            Status put(std::string key, std::string value);
 
-            internal::Status update(std::string key, std::string value);
+            Status update(std::string key, std::string value);
 
-            internal::Status deleteBy(std::string key);
+            Status deleteBy(std::string key);
 
             std::pair<std::string, bool> get(std::string key);
 

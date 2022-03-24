@@ -3,14 +3,12 @@
 
 namespace pmem {
     namespace storage {
-        namespace internal {
-            enum Status {
-                Ok,
-                Failed,
-                KeyNotFound,
-                KeyAlreadyExists
-            };
-        }
+        enum Status {
+            Ok,
+            Failed,
+            KeyNotFound,
+            KeyAlreadyExists
+        };
     }
 }
 #endif
