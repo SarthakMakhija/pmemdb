@@ -4,6 +4,7 @@
 #include <string>
 #include <functional>
 #include "SkipListNode.h"
+#include "Status.h"
 
 namespace pmem {
     namespace storage {
@@ -15,7 +16,7 @@ namespace pmem {
             public:
                 SkipListIterator(SkipListNode *startingNode);
 
-                void put(std::string key, std::string value, double probability,
+                Status put(std::string key, std::string value, double probability,
                          std::function<void(void)> postPutHook = [] {});
 
                 std::pair<std::string, bool> getBy(std::string key);
@@ -24,9 +25,9 @@ namespace pmem {
 
                 std::vector <KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
 
-                void update(std::string key, std::string value, std::function<void(void)> postUpdateHook = [] {});
+                Status update(std::string key, std::string value, std::function<void(void)> postUpdateHook = [] {});
 
-                void deleteBy(std::string key, std::function<void(void)> postDeleteHook = [] {});
+                Status deleteBy(std::string key, std::function<void(void)> postDeleteHook = [] {});
             };
         }
     }

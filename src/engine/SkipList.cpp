@@ -23,30 +23,30 @@ namespace pmem {
             this->probability = probability;
         }
 
-        void SkipList::put(std::string key, std::string value) {
+        pmem::storage::internal::Status SkipList::put(std::string key, std::string value) {
             if (key == "" || value == "") {
                 throw std::invalid_argument("key and value can not be blank while putting");
             }
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            pmem::storage::internal::SkipListIterator(this->header).put(key, value, this->probability);
+            return pmem::storage::internal::SkipListIterator(this->header).put(key, value, this->probability);
         }
 
-        void SkipList::update(std::string key, std::string value) {
+        pmem::storage::internal::Status SkipList::update(std::string key, std::string value) {
             if (key == "" || value == "") {
                 throw std::invalid_argument("key and value can not be blank while updating");
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            pmem::storage::internal::SkipListIterator(this->header).update(key, value);
+            return pmem::storage::internal::SkipListIterator(this->header).update(key, value);
         }
 
-        void SkipList::deleteBy(std::string key) {
+        pmem::storage::internal::Status SkipList::deleteBy(std::string key) {
             if (key == "") {
                 throw std::invalid_argument("key can not be blank while deleting the corresponding value");
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
+            return pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
         }
 
         std::pair<std::string, bool> SkipList::get(std::string key) {

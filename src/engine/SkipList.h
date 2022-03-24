@@ -7,6 +7,7 @@
 #include <shared_mutex>
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
+#include "Status.h"
 
 namespace pmem {
     namespace storage {
@@ -20,11 +21,11 @@ namespace pmem {
         public:
             SkipList(int towerSize, double probability);
 
-            void put(std::string key, std::string value);
+            pmem::storage::internal::Status put(std::string key, std::string value);
 
-            void update(std::string key, std::string value);
+            pmem::storage::internal::Status update(std::string key, std::string value);
 
-            void deleteBy(std::string key);
+            pmem::storage::internal::Status deleteBy(std::string key);
 
             std::pair<std::string, bool> get(std::string key);
 

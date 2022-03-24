@@ -9,7 +9,7 @@ namespace pmem {
             SkipListIterator::SkipListIterator(SkipListNode *startingNode) : startingNode{startingNode} {
             }
 
-            void SkipListIterator::put(std::string key, std::string value, double probability,
+            Status SkipListIterator::put(std::string key, std::string value, double probability,
                                        std::function<void(void)> postPutHook) {
                 PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
                                                                                                                  probability);
@@ -24,7 +24,9 @@ namespace pmem {
                                                                                                                    putPosition.newLevel);
                         static_cast<SkipListInternalNode *>(newInternal)->attach(newLeaf);
                     }
+                    return statusNodePair.second;
                 }
+                return Status::KeyAlreadyExists;
             }
 
             std::vector <std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector <std::string> keys) {
@@ -65,19 +67,21 @@ namespace pmem {
                 return std::vector<KeyValuePair>();
             }
 
-            void
+            Status
             SkipListIterator::update(std::string key, std::string value, std::function<void(void)> postUpdateHook) {
                 UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(
                         key);
 
                 if (updatePosition.leaf != nullptr) {
-                    static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key, value, postUpdateHook);
+                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key, value, postUpdateHook);
                 }
+                return Status::KeyNotFound;
             }
 
-            void SkipListIterator::deleteBy(std::string key, std::function<void(void)> postDeleteHook) {
+            Status SkipListIterator::deleteBy(std::string key, std::function<void(void)> postDeleteHook) {
                 DeletePosition deletePosition = static_cast<SkipListInternalNode *>(this->startingNode)->deletePositionOf(
                         key);
+
                 if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
                     Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteBy(key, postDeleteHook);
                     if (status != Status::Failed) {
@@ -85,7 +89,9 @@ namespace pmem {
                                                                                                deletePosition.positions,
                                                                                                deletePosition.deleteLevel);
                     }
+                    return status;
                 }
+                return Status::KeyNotFound;
             }
         }
     }

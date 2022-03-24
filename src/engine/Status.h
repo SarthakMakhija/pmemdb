@@ -6,7 +6,9 @@ namespace pmem {
         namespace internal {
             enum Status {
                 Ok,
-                Failed
+                Failed,
+                KeyNotFound,
+                KeyAlreadyExists
             };
         }
     }
