@@ -85,7 +85,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyPresent) {
   std::string beginKey = "Pmem";
   std::string endKey = "SDD";
 
-  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
+  std::vector<KeyValuePair> pairs = iterator.scan(beginKey.c_str(), endKey.c_str(), 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent memory")};
 
   ASSERT_EQ(expected, pairs);
@@ -102,7 +102,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyNotPresent)
   std::string beginKey = "RAM";
   std::string endKey   = "Tuff";
 
-  std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
+  std::vector<KeyValuePair> pairs = iterator.scan(beginKey.c_str(), endKey.c_str(), 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("SDD", "Solid state drive")};
 
   ASSERT_EQ(expected, pairs);
@@ -119,7 +119,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyOutsideTheB
     std::string beginKey = "Tuff";
     std::string endKey   = "Zero";
 
-    std::vector<KeyValuePair> pairs = iterator.scan(beginKey, endKey, 10);
+    std::vector<KeyValuePair> pairs = iterator.scan(beginKey.c_str(), endKey.c_str(), 10);
     std::vector<KeyValuePair> expected = {};
 
     ASSERT_EQ(expected, pairs);
@@ -162,9 +162,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   iterator.put("Pmem", "Persistent memory", 0.5);
 
   std::string key = "Pmem";
-  iterator.deleteBy(key);
+  iterator.deleteBy(key.c_str());
 
-  ASSERT_FALSE(iterator.getBy(key).second);
+  ASSERT_FALSE(iterator.getBy(key.c_str()).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
 }
 
@@ -177,9 +177,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   iterator.put("Pmem", "Persistent memory", 0.5);
 
   std::string key = "SDD";
-  iterator.deleteBy(key);
+  iterator.deleteBy(key.c_str());
 
-  ASSERT_FALSE(iterator.getBy(key).second);
+  ASSERT_FALSE(iterator.getBy(key.c_str()).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
 }
 
@@ -192,8 +192,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   iterator.put("Pmem", "Persistent memory", 0.5);
 
   std::string key = "HDD";
-  iterator.deleteBy(key);
+  iterator.deleteBy(key.c_str());
 
-  ASSERT_FALSE(iterator.getBy(key).second);
+  ASSERT_FALSE(iterator.getBy(key.c_str()).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
 }

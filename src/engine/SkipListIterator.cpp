@@ -9,7 +9,7 @@ namespace pmem {
             SkipListIterator::SkipListIterator(SkipListNode *startingNode) : startingNode{startingNode} {
             }
 
-            Status SkipListIterator::put(std::string key, std::string value, double probability,
+            Status SkipListIterator::put(const char* key, const char* value, double probability,
                                        std::function<void(void)> postPutHook) {
                 PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
                                                                                                                  probability);
@@ -46,7 +46,7 @@ namespace pmem {
                 return result;
             }
 
-            std::pair<std::string, bool> SkipListIterator::getBy(std::string key) {
+            std::pair<std::string, bool> SkipListIterator::getBy(const char* key) {
                 std::pair < SkipListNode * ,
                         bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key);
 
@@ -57,7 +57,7 @@ namespace pmem {
             }
 
             std::vector <KeyValuePair>
-            SkipListIterator::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
+            SkipListIterator::scan(const char* beginKey, const char* endKey, int64_t maxPairs) {
                 std::pair < SkipListNode * ,
                         bool > existenceByNode =  static_cast<SkipListInternalNode *>(this->startingNode)->scan(beginKey);
 
@@ -68,7 +68,7 @@ namespace pmem {
             }
 
             Status
-            SkipListIterator::update(std::string key, std::string value, std::function<void(void)> postUpdateHook) {
+            SkipListIterator::update(const char* key, const char* value, std::function<void(void)> postUpdateHook) {
                 UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(
                         key);
 
@@ -78,7 +78,7 @@ namespace pmem {
                 return Status::KeyNotFound;
             }
 
-            Status SkipListIterator::deleteBy(std::string key, std::function<void(void)> postDeleteHook) {
+            Status SkipListIterator::deleteBy(const char* key, std::function<void(void)> postDeleteHook) {
                 DeletePosition deletePosition = static_cast<SkipListInternalNode *>(this->startingNode)->deletePositionOf(
                         key);
 
