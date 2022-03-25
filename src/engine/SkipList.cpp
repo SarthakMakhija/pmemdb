@@ -24,19 +24,19 @@ namespace pmem {
                 this->probability = probability;
             }
 
-            Status SkipList::put(std::string key, std::string value) {
+            Status SkipList::put(const char* key, const char* value) {
                 return pmem::storage::internal::SkipListIterator(this->header).put(key, value, this->probability);
             }
 
-            Status SkipList::update(std::string key, std::string value) {
+            Status SkipList::update(const char* key, const char* value) {
                 return pmem::storage::internal::SkipListIterator(this->header).update(key, value);
             }
 
-            Status SkipList::deleteBy(std::string key) {
+            Status SkipList::deleteBy(const char* key) {
                 return pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
             }
 
-            std::pair<std::string, bool> SkipList::get(std::string key) {
+            std::pair<std::string, bool> SkipList::get(const char* key) {
                 return pmem::storage::internal::SkipListIterator(this->header).getBy(key);
             }
 
@@ -44,7 +44,7 @@ namespace pmem {
                 return pmem::storage::internal::SkipListIterator(this->header).multiGet(keys);
             }
 
-            std::vector <KeyValuePair> SkipList::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
+            std::vector <KeyValuePair> SkipList::scan(const char* beginKey, const char* endKey, int64_t maxPairs) {
                 return pmem::storage::internal::SkipListIterator(this->header).scan(beginKey, endKey, maxPairs);
             }
         }
