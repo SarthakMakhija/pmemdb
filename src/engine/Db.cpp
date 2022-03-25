@@ -16,17 +16,17 @@ namespace pmem {
             return db;
         }
 
-        Status Db::put(std::string key, std::string value) {
-            if (key == "" || value == "") {
-                throw std::invalid_argument("key and value can not be blank while putting");
+        Status Db::put(const char* key, const char* value) {
+            if (strlen(key) == 0 || strlen(value) == 0) {
+                    throw std::invalid_argument("key and value can not be blank while putting");
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->put(key, value);
         }
 
-        Status Db::update(std::string key, std::string value) {
-            if (key == "" || value == "") {
+        Status Db::update(const char* key, const char* value) {
+            if (strlen(key) == 0 || strlen(value) == 0) {
                 throw std::invalid_argument("key and value can not be blank while updating");
             }
 
@@ -34,15 +34,15 @@ namespace pmem {
             return this->skipList->update(key, value);
         }
 
-        Status Db::deleteBy(std::string key) {
-            if (key == "") {
+        Status Db::deleteBy(const char* key) {
+            if (strlen(key) == 0) {
                 throw std::invalid_argument("key can not be blank while deleting the corresponding value");
             }
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->deleteBy(key);
         }
 
-        std::pair<std::string, bool> Db::get(std::string key) {
+        std::pair<std::string, bool> Db::get(const char* key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return this->skipList->get(key);
         }
@@ -52,11 +52,11 @@ namespace pmem {
             return this->skipList->multiGet(keys);
         }
 
-        std::vector <pmem::storage::KeyValuePair> Db::scan(std::string beginKey, std::string endKey, int64_t maxPairs) {
+        std::vector <pmem::storage::KeyValuePair> Db::scan(const char* beginKey, const char* endKey, int64_t maxPairs) {
             if (maxPairs <= 0) {
                 throw std::invalid_argument("maxPairs must be greater than 0");
             }
-            if (beginKey == endKey || endKey < beginKey) {
+            if (strcmp(beginKey, endKey) == 0 || strcmp(endKey, beginKey) < 0 ) {
                 throw std::invalid_argument(
                         "beginKey and endKey must be different and endKey must be greater than beginKey");
             }

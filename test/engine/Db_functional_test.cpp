@@ -29,13 +29,13 @@ TEST(Db_Functional, Add500KeyValuePairs) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
 
-        db -> put(key, value);
+        db -> put(key.c_str(), value.c_str());
     }
     for (int count = 1; count <= 500; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         std::string expectedValue = "Value-" + std::to_string(count);
         
-        std::pair<std::string, bool> existenceByValue = db -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key.c_str());
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
@@ -50,7 +50,7 @@ TEST(Db_Functional, DoesAScan) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
 
-        db -> put(key, value);
+        db -> put(key.c_str(), value.c_str());
     }    
     std::string beginKey = "50";
     std::string endKey   = "70";
@@ -61,7 +61,7 @@ TEST(Db_Functional, DoesAScan) {
     }
     expected.push_back(KeyValuePair("7", "7"));
 
-    std::vector<KeyValuePair> pairs = db -> scan(beginKey, endKey, 50);
+    std::vector<KeyValuePair> pairs = db -> scan(beginKey.c_str(), endKey.c_str(), 50);
     ASSERT_EQ(expected, pairs);
 
     closeDb(db);
@@ -74,7 +74,7 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
 
-        db -> put(key, value);
+        db -> put(key.c_str(), value.c_str());
     }    
     std::string beginKey = "50";
     std::string endKey   = "70";
@@ -84,7 +84,7 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
         expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
     }
 
-    std::vector<KeyValuePair> pairs = db -> scan(beginKey, endKey, 5);
+    std::vector<KeyValuePair> pairs = db -> scan(beginKey.c_str(), endKey.c_str(), 5);
     ASSERT_EQ(expected, pairs);
 
     closeDb(db);
@@ -97,19 +97,19 @@ TEST(Db_Functional, Update500KeyValuePairs) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
 
-        db -> put(key, value);
+        db -> put(key.c_str(), value.c_str());
     }
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count*2);
 
-        db -> update(key, value);
+        db -> update(key.c_str(), value.c_str());
     }
     for (int count = 1; count <= 500; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         std::string expectedValue = "Value-" + std::to_string(count*2);
         
-        std::pair<std::string, bool> existenceByValue = db -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key.c_str());
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
@@ -123,32 +123,33 @@ TEST(Db_Functional, DeleteKeys) {
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
-
-        db -> put(key, value);
+        db -> put(key.c_str(), value.c_str());
     }
 
-    db -> deleteBy("Key-"    + std::to_string(1));
+    std::string deleteKey = "Key-"    + std::to_string(1);
+    db -> deleteBy(deleteKey.c_str());
+
     for (int count = 500; count <= 400; count++) {
         std::string key   = "Key-"    + std::to_string(count);
 
-        db -> deleteBy(key);
+        db -> deleteBy(key.c_str());
     }
 
     for (int count = 2; count < 400; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         std::string expectedValue = "Value-" + std::to_string(count);
         
-        std::pair<std::string, bool> existenceByValue = db -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key.c_str());
 
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
 
-    ASSERT_FALSE(db -> get("Key-"    + std::to_string(1)).second);
+    ASSERT_FALSE(db -> get(deleteKey.c_str()).second);
     for (int count = 500; count <= 400; count++) {
         std::string key           = "Key-"   + std::to_string(count);
         
-        std::pair<std::string, bool> existenceByValue = db -> get(key);
+        std::pair<std::string, bool> existenceByValue = db -> get(key.c_str());
 
         ASSERT_EQ("", existenceByValue.first);
         ASSERT_FALSE(existenceByValue.second);

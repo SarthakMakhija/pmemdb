@@ -1,7 +1,6 @@
 #ifndef _Db_
 #define _Db_
 
-#include <string>
 #include <vector>
 #include <mutex>
 #include <shared_mutex>
@@ -22,17 +21,17 @@ namespace pmem {
         public:
             static Db *open(Configuration configuration);
 
-            Status put(std::string key, std::string value);
+            Status put(const char* key, const char* value);
 
-            Status update(std::string key, std::string value);
+            Status update(const char* key, const char* value);
 
-            Status deleteBy(std::string key);
+            Status deleteBy(const char* key);
 
-            std::pair<std::string, bool> get(std::string key);
+            std::pair<std::string, bool> get(const char* key);
 
             std::vector <std::pair<std::string, bool>> multiGet(const std::vector <std::string> &keys);
 
-            std::vector <pmem::storage::KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
+            std::vector <pmem::storage::KeyValuePair> scan(const char* beginKey, const char* endKey, int64_t maxPairs);
 
             void close();
         };

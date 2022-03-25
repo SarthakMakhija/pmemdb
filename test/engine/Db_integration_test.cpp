@@ -65,7 +65,7 @@ TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyPresent) {
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
 
-    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey, endKey, 10);
+    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey.c_str(), endKey.c_str(), 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Memory"), KeyValuePair("RAM", "Random access memory")};
 
     ASSERT_EQ(expected, pairs);
@@ -79,7 +79,7 @@ TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyNotPresent) {
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
 
-    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey, endKey, 10);
+    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey.c_str(), endKey.c_str(), 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("RAM", "Random access memory")};
 
   ASSERT_EQ(expected, pairs);
