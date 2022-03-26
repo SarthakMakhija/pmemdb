@@ -12,14 +12,14 @@ namespace pmem {
         namespace internal {
             class SkipListInternalNode : public SkipListNode {
             private:
-                std::string key;
+                const char* key;
                 SkipListNode *down;
                 std::vector<SkipListInternalNode *> forwards;
 
                 int generateLevel(int maxLevel, double probability);
 
             public:
-                SkipListInternalNode(std::string key, int level);
+                SkipListInternalNode(const char* key, int level);
 
                 bool isLeaf();
 
@@ -37,20 +37,20 @@ namespace pmem {
 
                 void attach(SkipListLeafNode *down);
 
-                std::pair<SkipListNode *, bool> getBy(std::string key);
+                std::pair<SkipListNode *, bool> getBy(const char* key);
 
-                std::pair<SkipListNode *, bool> scan(std::string beginKey);
+                std::pair<SkipListNode *, bool> scan(const char* beginKey);
 
-                PutPosition putPositionOf(std::string key, double withProbability);
+                PutPosition putPositionOf(const char* key, double withProbability);
 
                 SkipListNode *
-                put(std::string key, std::vector<SkipListInternalNode *> positions, int nodeLevel);
+                put(const char* key, std::vector<SkipListInternalNode *> positions, int nodeLevel);
 
-                UpdatePosition updatePositionOf(std::string key);
+                UpdatePosition updatePositionOf(const char* key);
 
-                DeletePosition deletePositionOf(std::string key);
+                DeletePosition deletePositionOf(const char* key);
 
-                void deleteBy(std::string key, std::vector<SkipListInternalNode *> positions, int deleteLevel);
+                void deleteBy(const char* key, std::vector<SkipListInternalNode *> positions, int deleteLevel);
             };
         }
     }

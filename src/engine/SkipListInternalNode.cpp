@@ -4,7 +4,7 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-            SkipListInternalNode::SkipListInternalNode(std::string key, int level) {
+            SkipListInternalNode::SkipListInternalNode(const char* key, int level) {
                 this->key = key;
                 this->down = nullptr;
 
@@ -46,50 +46,48 @@ namespace pmem {
                 this->down = down;
             }
 
-            std::pair<SkipListNode *, bool> SkipListInternalNode::getBy(std::string key) {
+            std::pair<SkipListNode *, bool> SkipListInternalNode::getBy(const char* key) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && current->forwards[level]->key < key) {
+                    while (current->forwards[level] && strcmp(current->forwards[level]->key, key) < 0) {
                         current = current->forwards[level];
                     }
                 }
                 current = current->forwards[0];
 
-                if (current && current->key == key) {
+                if (current && strcmp(current->key, key) == 0) {
                     return std::make_pair(current -> down, true);
                 }
                 return std::make_pair(nullptr, false);
             }
 
-            std::pair<SkipListNode *, bool> SkipListInternalNode::scan(std::string beginKey) {
+            std::pair<SkipListNode *, bool> SkipListInternalNode::scan(const char* beginKey) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && current->forwards[level]->key <= beginKey) {
+                    while (current->forwards[level] && strcmp(current->forwards[level]->key, beginKey) <= 0) {
                         current = current->forwards[level];
                     }
                 }
-                if (current && current -> key < beginKey) {
+                if (current && strcmp(current -> key, beginKey) < 0) {
                     current = current -> forwards[0];
                 }
-
                 if (current != nullptr) {
                     return std::make_pair(current -> down, true);
                 }
                 return std::make_pair(nullptr, false);
             }
 
-            PutPosition SkipListInternalNode::putPositionOf(std::string key, double withProbability) {
+            PutPosition SkipListInternalNode::putPositionOf(const char* key, double withProbability) {
                 SkipListInternalNode *current = this;
                 std::vector < SkipListInternalNode * > positions(this->forwards.size(), nullptr);
-
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && current->forwards[level]->key < key) {
+                    while (current->forwards[level] && strcmp(current->forwards[level]->key, key) < 0) {
                         current = current->forwards[level];
                     }
                     positions[level] = current;
                 }
                 current = current->forwards[0];
-                if (current == nullptr || current->key != key) {
+                if (current == nullptr || strcmp(current->key, key) != 0) {
                     int newLevel = generateLevel(this->forwards.size(), withProbability);
                     return PutPosition{positions, newLevel, this, positions[0]->down};
                 }
@@ -97,7 +95,7 @@ namespace pmem {
                 return PutPosition{empty, -1, nullptr, nullptr};
             }
 
-            SkipListNode *SkipListInternalNode::put(std::string key,
+            SkipListNode *SkipListInternalNode::put(const char* key,
                                                     std::vector<SkipListInternalNode *> positions,
                                                     int nodeLevel) {
 
@@ -109,43 +107,43 @@ namespace pmem {
                 return newNode;
             }
 
-            UpdatePosition SkipListInternalNode::updatePositionOf(std::string key) {
+            UpdatePosition SkipListInternalNode::updatePositionOf(const char* key) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && current->forwards[level]->key < key) {
+                    while (current->forwards[level] && strcmp(current->forwards[level]->key, key) < 0) {
                         current = current->forwards[level];
                     }
                 }
                 current = current->forwards[0];
-                if (current && current->key == key) {
+                if (current && strcmp(current->key, key) == 0) {
                     return UpdatePosition{current, current->down};
                 }
                 return UpdatePosition{nullptr, nullptr};
             }
 
-            DeletePosition SkipListInternalNode::deletePositionOf(std::string key) {
+            DeletePosition SkipListInternalNode::deletePositionOf(const char* key) {
                 SkipListInternalNode *current = this;
                 std::vector < SkipListInternalNode * > positions(this->forwards.size(), nullptr);
 
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && current->forwards[level]->key < key) {
+                    while (current->forwards[level] && strcmp(current->forwards[level]->key, key) < 0) {
                         current = current->forwards[level];
                     }
                     positions[level] = current;
                 }
                 current = current->forwards[0];
-                if (current != nullptr && current->key == key) {
+                if (current != nullptr && strcmp(current->key, key) == 0) {
                     return DeletePosition{positions, (int) this->forwards.size(), current, positions[0]->down};
                 }
                 return DeletePosition{positions, -1, nullptr, nullptr};
             }
 
-            void SkipListInternalNode::deleteBy(std::string key,
+            void SkipListInternalNode::deleteBy(const char* key,
                                                 std::vector<SkipListInternalNode *> positions,
                                                 int deleteLevel) {
 
                 SkipListInternalNode *current = this;
-                if (current != nullptr && current->key == key) {
+                if (current != nullptr && strcmp(current->key, key) == 0) {
                     for (int level = 0; level < deleteLevel; level++) {
                         if (positions[level]->forwards[level] != current) {
                             break;

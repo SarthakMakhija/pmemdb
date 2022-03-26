@@ -35,7 +35,7 @@ namespace pmem {
                 std::sort(keys.begin(), keys.end());
                 for (auto key: keys) {
                     std::pair < SkipListNode * ,
-                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key);
+                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key.c_str()); //TODO: Change later
 
                     if (existenceByNode.second) {
                         result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first) -> getBy(key));

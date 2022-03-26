@@ -24,17 +24,23 @@ void closeDb(Db* db) {
 
 TEST(Db_Functional, Add500KeyValuePairs) {
     Db* db = openDb();
+    std::vector<std::string> keys;
+    std::vector<std::string> values;
 
     for (int count = 1; count <= 500; count++) {
-        std::string key   = "Key-"    + std::to_string(count);
-        std::string value = "Value-"  + std::to_string(count);
+        std::string key   = "Key-"   + std::to_string(count);
+        std::string value = "Value-" + std::to_string(count);
 
-        db -> put(key.c_str(), value.c_str());
+        keys.push_back(key);
+        values.push_back(value);
+    }
+    for (int index = 0; index < 500; index++) {
+        db -> put(keys.at(index).c_str(), values.at(index).c_str());
     }
     for (int count = 1; count <= 500; count++) {
-        std::string key           = "Key-"   + std::to_string(count);
+        std::string key   = "Key-"   + std::to_string(count);
         std::string expectedValue = "Value-" + std::to_string(count);
-        
+
         std::pair<std::string, bool> existenceByValue = db -> get(key.c_str());
         ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
@@ -45,17 +51,23 @@ TEST(Db_Functional, Add500KeyValuePairs) {
 
 TEST(Db_Functional, DoesAScan) {
     Db* db = openDb();
+    std::vector<std::string> keys;
+    std::vector<std::string> values;
 
     for (int count = 1; count <= 500; count+=2) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
 
-        db -> put(key.c_str(), value.c_str());
-    }    
+        keys.push_back(key);
+        values.push_back(value);
+    }
+    for (int index = 0; index < keys.size(); index++) {
+        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+    }
     std::string beginKey = "50";
     std::string endKey   = "70";
-
     std::vector<KeyValuePair> expected;
+
     for (int count = 51; count < 70; count+=2) {
         expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
     }
@@ -69,17 +81,24 @@ TEST(Db_Functional, DoesAScan) {
 
 TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
     Db* db = openDb(100, 0.25);
+    std::vector<std::string> keys;
+    std::vector<std::string> values;
 
     for (int count = 1; count <= 500; count+=2) {
         std::string key   =  std::to_string(count);
         std::string value =  std::to_string(count);
 
-        db -> put(key.c_str(), value.c_str());
-    }    
+        keys.push_back(key);
+        values.push_back(value);
+    }
+    for (int index = 0; index < keys.size(); index++) {
+        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+    }
+
     std::string beginKey = "50";
     std::string endKey   = "70";
-
     std::vector<KeyValuePair> expected;
+
     for (int count = 51; count <= 59; count+=2) {
         expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
     }
@@ -92,18 +111,27 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
 
 TEST(Db_Functional, Update500KeyValuePairs) {
     Db* db = openDb(100, 0.125);
+    std::vector<std::string> keys;
+    std::vector<std::string> values;
 
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
 
-        db -> put(key.c_str(), value.c_str());
+        keys.push_back(key);
+        values.push_back(value);
     }
+    for (int index = 0; index < 500; index++) {
+        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+    }
+    
+    std::vector<std::string> valuesToUpdate;
     for (int count = 1; count <= 500; count++) {
-        std::string key   = "Key-"    + std::to_string(count);
-        std::string value = "Value-"  + std::to_string(count*2);
+        valuesToUpdate.push_back("Value-"  + std::to_string(count*2));
+    }
 
-        db -> update(key.c_str(), value.c_str());
+    for (int index = 0; index < 500; index++) {
+        db -> update(keys.at(index).c_str(), valuesToUpdate.at(index).c_str());
     }
     for (int count = 1; count <= 500; count++) {
         std::string key           = "Key-"   + std::to_string(count);
@@ -119,20 +147,31 @@ TEST(Db_Functional, Update500KeyValuePairs) {
 
 TEST(Db_Functional, DeleteKeys) {
     Db* db = openDb(100, 0.125);
+    std::vector<std::string> keys;
+    std::vector<std::string> values;
 
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"    + std::to_string(count);
         std::string value = "Value-"  + std::to_string(count);
-        db -> put(key.c_str(), value.c_str());
+
+        keys.push_back(key);
+        values.push_back(value);
+    }
+    for (int index = 0; index < 500; index++) {
+        db -> put(keys.at(index).c_str(), values.at(index).c_str());
     }
 
     std::string deleteKey = "Key-"    + std::to_string(1);
     db -> deleteBy(deleteKey.c_str());
 
+    std::vector<std::string> keysToDelete;
     for (int count = 500; count <= 400; count++) {
         std::string key   = "Key-"    + std::to_string(count);
+        keysToDelete.push_back(key);
+    }
 
-        db -> deleteBy(key.c_str());
+    for (int index = 0; index < keysToDelete.size(); index++) {
+        db -> deleteBy(keysToDelete.at(index).c_str());
     }
 
     for (int count = 2; count < 400; count++) {
