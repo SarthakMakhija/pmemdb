@@ -22,9 +22,9 @@ namespace pmem {
 
                 bool isLeaf();
 
-                bool matchesKey(std::string key) const;
+                bool matchesKey(const char* key) const;
 
-                bool isKeyLessEqualTo(std::string key);
+                bool isKeyLessEqualTo(const char* key);
 
                 pmem::storage::KeyValuePair keyValuePair();
 

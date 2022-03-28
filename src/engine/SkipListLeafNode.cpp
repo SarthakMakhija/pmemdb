@@ -23,14 +23,14 @@ namespace pmem {
                 return true;
             }
 
-            bool SkipListLeafNode::matchesKey(std::string key) const {
+            bool SkipListLeafNode::matchesKey(const char* key) const {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return std::string(leaf->key()) == key;
+                return strcmp(leaf->key(), key) == 0;
             }
 
-            bool SkipListLeafNode::isKeyLessEqualTo(std::string key) {
+            bool SkipListLeafNode::isKeyLessEqualTo(const char* key) {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return std::string(leaf->key()) <= key;
+                return strcmp(leaf->key(), key) <= 0;
             }
 
             pmem::storage::KeyValuePair SkipListLeafNode::keyValuePair() {

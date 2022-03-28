@@ -18,20 +18,12 @@ namespace pmem {
                 return false;
             }
 
-            bool SkipListInternalNode::matchesKey(std::string key) const {
-                return this->key == key;
+            bool SkipListInternalNode::matchesKey(const char* key) const {
+                return strcmp(this->key, key) == 0;
             }
 
-            bool SkipListInternalNode::isKeyLessEqualTo(std::string key) {
-                return this->key <= key;
-            }
-
-            bool SkipListInternalNode::isKeyLessThan(std::string key) {
-                return this->key < key;
-            }
-
-            bool SkipListInternalNode::isKeyGreaterEqualTo(std::string key) {
-                return this->key >= key;
+            bool SkipListInternalNode::isKeyLessEqualTo(const char* key) {
+                return strcmp(this->key, key) <= 0;
             }
 
             KeyValuePair SkipListInternalNode::keyValuePair() {

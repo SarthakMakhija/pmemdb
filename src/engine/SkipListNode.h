@@ -12,9 +12,9 @@ namespace pmem {
             public:
                 virtual bool isLeaf() = 0;
 
-                virtual bool matchesKey(std::string key) const = 0;
+                virtual bool matchesKey(const char* key) const = 0;
 
-                virtual bool isKeyLessEqualTo(std::string key) = 0;
+                virtual bool isKeyLessEqualTo(const char* key) = 0;
 
                 virtual pmem::storage::KeyValuePair keyValuePair() = 0;
             };
