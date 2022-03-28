@@ -6,11 +6,12 @@
 #include "./PersistentMemoryPoolFixture.h"
 #include "./SkipListNodeTestUtils.h"
 
+using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhilePuttingAKeyValue) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
+    SkipListIterator iterator = SkipListIterator(sentinel, stringKeyComparator());
 
     iterator.put("HDD", "Hard disk drive", 0.5, [] {throw std::runtime_error("FailsWhilePuttingAKeyValue");});
 
@@ -19,7 +20,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhilePuttingAKeyValue)
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhilePuttingAKeyValueSucceedsWithOther) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
+    SkipListIterator iterator = SkipListIterator(sentinel, stringKeyComparator());
 
     iterator.put("SDD", "Solid state drive", 0.5);
     iterator.put("HDD", "Hard disk drive", 0.5, [] {throw std::runtime_error("FailsWhilePuttingAKeyValueSucceedsWithOther");});
@@ -30,7 +31,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhilePuttingAKeyValueS
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValue) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
+    SkipListIterator iterator = SkipListIterator(sentinel, stringKeyComparator());
 
     iterator.put("HDD", "Hard disk drive", 0.5);
     iterator.update("HDD", "HDD", [] {throw std::runtime_error("FailsWhileUpdatingAKeyValue");});
@@ -40,7 +41,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValue
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValueSucceedsWithOther) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
+    SkipListIterator iterator = SkipListIterator(sentinel, stringKeyComparator());
 
     iterator.put("SDD", "Solid state drive", 0.5);
     iterator.put("HDD", "Hard disk drive", 0.5);
@@ -54,7 +55,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValue
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValue) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
+    SkipListIterator iterator = SkipListIterator(sentinel, stringKeyComparator());
 
     iterator.put("HDD", "Hard disk drive", 0.5);
     iterator.deleteBy("HDD", [] {throw std::runtime_error("FailsWhileDeletingAKeyValue");});
@@ -64,7 +65,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValue
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValueSucceedsWithOther) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
-    SkipListIterator iterator = SkipListIterator(sentinel);
+    SkipListIterator iterator = SkipListIterator(sentinel, stringKeyComparator());
 
     iterator.put("SDD", "Solid state drive", 0.5);
     iterator.put("HDD", "Hard disk drive", 0.5);

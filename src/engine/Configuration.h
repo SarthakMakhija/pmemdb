@@ -1,7 +1,9 @@
 #ifndef _Configuration_
 #define _Configuration_
 
+#include "StringKeyComparator.h"
 #include <stdint.h>
+
 namespace pmem {
     namespace storage {
         class Configuration {
@@ -11,12 +13,14 @@ namespace pmem {
             uint64_t fileSize;
             int skipListTowerSize;
             double probability;
+            KeyComparator *keyComparator;
 
         public:
             Configuration(const char *filePath,
                           uint64_t fileSize,
                           int skipListTowerSize,
-                          double probability);
+                          double probability,
+                          KeyComparator *keyComparator);
 
             const char *getFilePath();
 
@@ -25,6 +29,8 @@ namespace pmem {
             int getSkipListTowerSize();
 
             double getProbability();
+
+            KeyComparator *getKeyComparator();
         };
     }
 }

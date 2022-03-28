@@ -26,3 +26,7 @@ pmem::storage::internal::SkipListInternalNode* newSentinelInternalNode(int level
 
     return node;
 }
+
+pmem::storage::KeyComparator* stringKeyComparator() {
+    return new pmem::storage::StringKeyComparator();
+}

@@ -24,7 +24,10 @@ add_library(SkipList
         Db.h
         Db.cpp
         Configuration.h
-        Configuration.cpp)
+        Configuration.cpp
+        KeyComparator.h
+        StringKeyComparator.h
+        StringKeyComparator.cpp)
 
 target_include_directories(SkipList PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
 target_link_libraries(SkipList PRIVATE ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})

@@ -6,6 +6,7 @@
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "Status.h"
+#include "KeyComparator.h"
 
 namespace pmem {
     namespace storage {
@@ -19,18 +20,19 @@ namespace pmem {
             public:
                 SkipList(int towerSize, double probability);
 
-                Status put(const char* key, const char* value);
+                Status put(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator);
 
-                Status update(const char* key, const char* value);
+                Status update(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator);
 
-                Status deleteBy(const char* key);
+                Status deleteBy(const char *key, pmem::storage::KeyComparator* keyComparator);
 
-                std::pair<std::string, bool> get(const char* key);
+                std::pair<std::string, bool> get(const char *key, pmem::storage::KeyComparator* keyComparator);
 
-                std::vector <std::pair<std::string, bool>> multiGet(const std::vector <const char*> &keys);
+                std::vector <std::pair<std::string, bool>> multiGet(const std::vector<const char *> &keys,
+                                                                    pmem::storage::KeyComparator* keyComparator);
 
                 std::vector <pmem::storage::KeyValuePair>
-                scan(const char* beginKey, const char* endKey, int64_t maxPairs);
+                scan(const char *beginKey, const char *endKey, int64_t maxPairs, pmem::storage::KeyComparator* keyComparator);
             };
         }
     }

@@ -5,6 +5,7 @@
 #include <functional>
 #include "SkipListNode.h"
 #include "Status.h"
+#include "KeyComparator.h"
 
 namespace pmem {
     namespace storage {
@@ -12,22 +13,23 @@ namespace pmem {
             class SkipListIterator {
             private:
                 SkipListNode *startingNode;
+                pmem::storage::KeyComparator* keyComparator;
 
             public:
-                SkipListIterator(SkipListNode *startingNode);
+                SkipListIterator(SkipListNode *startingNode, pmem::storage::KeyComparator* keyComparator);
 
-                Status put(const char* key, const char* value, double probability,
-                         std::function<void(void)> postPutHook = [] {});
+                Status put(const char *key, const char *value, double probability,
+                           std::function<void(void)> postPutHook = [] {});
 
-                std::pair<std::string, bool> getBy(const char* key);
+                std::pair<std::string, bool> getBy(const char *key);
 
-                std::vector <std::pair<std::string, bool>> multiGet(std::vector <const char*> keys);
+                std::vector <std::pair<std::string, bool>> multiGet(std::vector<const char *> keys);
 
-                std::vector <KeyValuePair> scan(const char* beginKey, const char* endKey, int64_t maxPairs);
+                std::vector <KeyValuePair> scan(const char *beginKey, const char *endKey, int64_t maxPairs);
 
-                Status update(const char* key, const char* value, std::function<void(void)> postUpdateHook = [] {});
+                Status update(const char *key, const char *value, std::function<void(void)> postUpdateHook = [] {});
 
-                Status deleteBy(const char* key, std::function<void(void)> postDeleteHook = [] {});
+                Status deleteBy(const char *key, std::function<void(void)> postDeleteHook = [] {});
             };
         }
     }

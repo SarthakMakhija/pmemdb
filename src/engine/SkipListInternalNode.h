@@ -6,6 +6,7 @@
 #include "SkipListNode.h"
 #include "SkipListLeafNode.h"
 #include "WritePosition.h"
+#include "KeyComparator.h"
 
 namespace pmem {
     namespace storage {
@@ -23,13 +24,9 @@ namespace pmem {
 
                 bool isLeaf();
 
-                bool matchesKey(const char* key) const;
+                bool matchesKey(const char* key, KeyComparator* keyComparator) const;
 
-                bool isKeyLessEqualTo(const char* key);
-
-                bool isKeyLessThan(std::string key);
-
-                bool isKeyGreaterEqualTo(std::string key);
+                bool isKeyLessEqualTo(const char* key, KeyComparator* keyComparator);
 
                 KeyValuePair keyValuePair();
 
@@ -37,20 +34,20 @@ namespace pmem {
 
                 void attach(SkipListLeafNode *down);
 
-                std::pair<SkipListNode *, bool> getBy(const char* key);
+                std::pair<SkipListNode *, bool> getBy(const char* key, KeyComparator* keyComparator);
 
-                std::pair<SkipListNode *, bool> scan(const char* beginKey);
+                std::pair<SkipListNode *, bool> scan(const char* beginKey, KeyComparator* keyComparator);
 
-                PutPosition putPositionOf(const char* key, double withProbability);
+                PutPosition putPositionOf(const char* key, double withProbability, KeyComparator* keyComparator);
 
                 SkipListNode *
                 put(const char* key, std::vector<SkipListInternalNode *> positions, int nodeLevel);
 
-                UpdatePosition updatePositionOf(const char* key);
+                UpdatePosition updatePositionOf(const char* key, KeyComparator* keyComparator);
 
-                DeletePosition deletePositionOf(const char* key);
+                DeletePosition deletePositionOf(const char* key, KeyComparator* keyComparator);
 
-                void deleteBy(const char* key, std::vector<SkipListInternalNode *> positions, int deleteLevel);
+                void deleteBy(const char* key, std::vector<SkipListInternalNode *> positions, int deleteLevel, KeyComparator* keyComparator);
             };
         }
     }

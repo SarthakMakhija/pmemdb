@@ -6,6 +6,7 @@
 #include  <string>
 
 #include "../../src/engine/Db.h"
+#include "../../src/engine/StringKeyComparator.h"
 
 using namespace pmem::storage::internal;
 
@@ -21,7 +22,8 @@ public:
                 pmem::storage::Configuration(filePath,
                                              8 * 1024 * 1024,
                                              8,
-                                             0.5));
+                                             0.5,
+                                             new pmem::storage::StringKeyComparator()));
     }
 
     void TearDown() {

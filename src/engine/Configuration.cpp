@@ -5,10 +5,12 @@ namespace pmem {
         Configuration::Configuration(const char *filePath,
                                      uint64_t fileSize,
                                      int skipListTowerSize,
-                                     double probability) : filePath{filePath},
-                                                           fileSize{fileSize},
-                                                           skipListTowerSize{skipListTowerSize},
-                                                           probability{probability} {
+                                     double probability,
+                                     KeyComparator* keyComparator) : filePath{filePath},
+                                                                    fileSize{fileSize},
+                                                                    skipListTowerSize{skipListTowerSize},
+                                                                    probability{probability},
+                                                                    keyComparator{keyComparator} {
         }
 
         const char *Configuration::getFilePath() {
@@ -25,6 +27,10 @@ namespace pmem {
 
         double Configuration::getProbability() {
             return probability;
+        }
+
+        KeyComparator* Configuration::getKeyComparator() {
+            return keyComparator;
         }
     }
 }

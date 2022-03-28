@@ -18,6 +18,7 @@ namespace pmem {
             internal::SkipList *skipList;
             internal::PersistentMemoryPool* persistentMemoryPool;
             std::shared_mutex mutex_;
+            KeyComparator* keyComparator;
 
         public:
             static Db *open(Configuration configuration);

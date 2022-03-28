@@ -3,6 +3,7 @@
 #include  <cstdio>
 
 #include "../../src/engine/Db.h"
+#include "../../src/engine/StringKeyComparator.h"
 
 using namespace pmem::storage;
 
@@ -12,7 +13,8 @@ Db* openDb(int skipListTowerSize = 100, double probability = 0.5) {
     Configuration configuration = Configuration(filePath,
                                                 8 * 1024 * 1024,
                                                 skipListTowerSize,
-                                                probability);
+                                                probability,
+                                                new StringKeyComparator());
 
     return Db::open(configuration);
 }

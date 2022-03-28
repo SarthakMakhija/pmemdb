@@ -24,28 +24,32 @@ namespace pmem {
                 this->probability = probability;
             }
 
-            Status SkipList::put(const char* key, const char* value) {
-                return pmem::storage::internal::SkipListIterator(this->header).put(key, value, this->probability);
+            Status SkipList::put(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator) {
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).put(key, value,
+                                                                                                  this->probability);
             }
 
-            Status SkipList::update(const char* key, const char* value) {
-                return pmem::storage::internal::SkipListIterator(this->header).update(key, value);
+            Status SkipList::update(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator) {
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).update(key, value);
             }
 
-            Status SkipList::deleteBy(const char* key) {
-                return pmem::storage::internal::SkipListIterator(this->header).deleteBy(key);
+            Status SkipList::deleteBy(const char *key, pmem::storage::KeyComparator* keyComparator) {
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).deleteBy(key);
             }
 
-            std::pair<std::string, bool> SkipList::get(const char* key) {
-                return pmem::storage::internal::SkipListIterator(this->header).getBy(key);
+            std::pair<std::string, bool> SkipList::get(const char *key, pmem::storage::KeyComparator* keyComparator) {
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).getBy(key);
             }
 
-            std::vector <std::pair<std::string, bool>> SkipList::multiGet(const std::vector <const char*> &keys) {
-                return pmem::storage::internal::SkipListIterator(this->header).multiGet(keys);
+            std::vector <std::pair<std::string, bool>> SkipList::multiGet(const std::vector<const char *> &keys,
+                                                                          pmem::storage::KeyComparator* keyComparator) {
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).multiGet(keys);
             }
 
-            std::vector <KeyValuePair> SkipList::scan(const char* beginKey, const char* endKey, int64_t maxPairs) {
-                return pmem::storage::internal::SkipListIterator(this->header).scan(beginKey, endKey, maxPairs);
+            std::vector <KeyValuePair> SkipList::scan(const char *beginKey, const char *endKey, int64_t maxPairs,
+                                                      pmem::storage::KeyComparator* keyComparator) {
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).scan(beginKey, endKey,
+                                                                                                   maxPairs);
             }
         }
     }

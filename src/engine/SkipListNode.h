@@ -4,6 +4,7 @@
 #include <string>
 #include <functional>
 #include "KeyValuePair.h"
+#include "KeyComparator.h"
 
 namespace pmem {
     namespace storage {
@@ -12,9 +13,9 @@ namespace pmem {
             public:
                 virtual bool isLeaf() = 0;
 
-                virtual bool matchesKey(const char* key) const = 0;
+                virtual bool matchesKey(const char* key, pmem::storage::KeyComparator* keyComparator) const = 0;
 
-                virtual bool isKeyLessEqualTo(const char* key) = 0;
+                virtual bool isKeyLessEqualTo(const char* key, pmem::storage::KeyComparator* keyComparator) = 0;
 
                 virtual pmem::storage::KeyValuePair keyValuePair() = 0;
             };

@@ -13,6 +13,8 @@ namespace pmem {
             db->skipList = new internal::SkipList(configuration.getSkipListTowerSize(),
                                         configuration.getProbability()
             );
+
+            db->keyComparator = configuration.getKeyComparator();
             return db;
         }
 
@@ -22,7 +24,7 @@ namespace pmem {
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->put(key, value);
+            return this->skipList->put(key, value, this->keyComparator);
         }
 
         Status Db::update(const char* key, const char* value) {
@@ -31,7 +33,7 @@ namespace pmem {
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->update(key, value);
+            return this->skipList->update(key, value, this->keyComparator);
         }
 
         Status Db::deleteBy(const char* key) {
@@ -39,17 +41,17 @@ namespace pmem {
                 throw std::invalid_argument("key can not be blank while deleting the corresponding value");
             }
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->deleteBy(key);
+            return this->skipList->deleteBy(key, this->keyComparator);
         }
 
         std::pair<std::string, bool> Db::get(const char* key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->get(key);
+            return this->skipList->get(key, this->keyComparator);
         }
 
         std::vector <std::pair<std::string, bool>> Db::multiGet(const std::vector <const char*> &keys) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->multiGet(keys);
+            return this->skipList->multiGet(keys, this->keyComparator);
         }
 
         std::vector <pmem::storage::KeyValuePair> Db::scan(const char* beginKey, const char* endKey, int64_t maxPairs) {
@@ -62,7 +64,7 @@ namespace pmem {
             }
 
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->scan(beginKey, endKey, maxPairs);
+            return this->skipList->scan(beginKey, endKey, maxPairs, this->keyComparator);
         }
 
         void Db::close() {
