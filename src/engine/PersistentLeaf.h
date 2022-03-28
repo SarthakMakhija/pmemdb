@@ -30,14 +30,14 @@ namespace pmem {
                     *((uint32_t * )((char *) (p) + sizeof(uint32_t))) = v;
                 }
 
-                void put(const std::string &key, const std::string &value) {
+                void put(const char *key, const char *value) {
                     if (keyValue) {
                         char *p = keyValue.get();
                         delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) +
                                                             valueSizeDirect(p) + 2);
                     }
-                    size_t ksize = key.size();
-                    size_t vsize = value.size();
+                    size_t ksize = strlen(key);
+                    size_t vsize = strlen(value);
                     size_t size = ksize + vsize + 2 + sizeof(uint32_t) + sizeof(uint32_t);
 
                     keyValue = make_persistent<char[]>(size);
@@ -47,9 +47,9 @@ namespace pmem {
                     setValueSizeDirect(p, (uint32_t) vsize);
 
                     char *kvptr = p + sizeof(uint32_t) + sizeof(uint32_t);
-                    memcpy(kvptr, key.data(), ksize);
+                    memcpy(kvptr, key, ksize);
                     kvptr += ksize + 1;
-                    memcpy(kvptr, value.data(), vsize);
+                    memcpy(kvptr, value, vsize);
                 }
 
                 void clear() {
