@@ -50,7 +50,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
                         std::make_pair("Hard disk drive", true), 
                         std::make_pair("Solid state drive", true)
         };
-        std::vector<std::string> keys = {"HDD", "SDD"};
+        std::vector<const char*> keys = {"HDD", "SDD"};
         ASSERT_EQ(expected, DbFixture::getDb() -> multiGet(keys));
     });
 
@@ -59,7 +59,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
                         std::make_pair("Non volatile memory", true), 
                         std::make_pair("Persistent Memory", true)
         };
-        std::vector<std::string> keys = {"Pmem", "Nvm"};
+        std::vector<const char*> keys = {"Pmem", "Nvm"};
         ASSERT_EQ(expected, DbFixture::getDb() -> multiGet(keys));
     });
 
@@ -116,7 +116,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnDifferentKeyV
                         std::make_pair("Persistent Memory", true),
                         std::make_pair("Solid state drive", true)
     };
-    std::vector<std::string> keys = {"Pmem", "Nvm", "HDD", "SDD"};
+    std::vector<const char*> keys = {"Pmem", "Nvm", "HDD", "SDD"};
     ASSERT_EQ(expected, DbFixture::getDb() -> multiGet(keys));
 }
 
@@ -138,7 +138,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnSameKeyValueP
                         std::make_pair("Hard disk drive", true),
                         std::make_pair("Solid state drive", true)
     };
-    std::vector<std::string> keys = {"HDD", "SDD"};
+    std::vector<const char*> keys = {"HDD", "SDD"};
     ASSERT_EQ(expected, DbFixture::getDb() -> multiGet(keys));
 }
 
@@ -160,7 +160,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndUpdate) {
                         std::make_pair("Hard disk", true),
                         std::make_pair("Solid state drive", true)
     };
-    std::vector<std::string> keys = {"HDD", "SDD"};
+    std::vector<const char*> keys = {"HDD", "SDD"};
     ASSERT_EQ(expected, DbFixture::getDb() -> multiGet(keys));
 }
 

@@ -21,7 +21,7 @@ namespace pmem {
 
                 std::pair<std::string, bool> getBy(const char* key);
 
-                std::vector <std::pair<std::string, bool>> multiGet(std::vector <std::string> keys);
+                std::vector <std::pair<std::string, bool>> multiGet(std::vector <const char*> keys);
 
                 std::vector <KeyValuePair> scan(const char* beginKey, const char* endKey, int64_t maxPairs);
 

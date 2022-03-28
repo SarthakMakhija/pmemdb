@@ -29,16 +29,18 @@ namespace pmem {
                 return Status::KeyAlreadyExists;
             }
 
-            std::vector <std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector <std::string> keys) {
+            std::vector <std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector <const char*> keys) {
                 std::vector <std::pair<std::string, bool>> result;
 
-                std::sort(keys.begin(), keys.end());
+                std::sort(keys.begin(), keys.end(), [](const char *c1, const char *c2)  {
+                    return strcmp(c1, c2) < 0;
+                });
                 for (auto key: keys) {
                     std::pair < SkipListNode * ,
-                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key.c_str()); //TODO: Change later
+                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key);
 
                     if (existenceByNode.second) {
-                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first) -> getBy(key.c_str()));
+                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first) -> getBy(key));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }

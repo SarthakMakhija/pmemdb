@@ -44,7 +44,7 @@ TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
     DbFixture::getDb()->put("SDD", "Solid state drive");
 
-    std::vector<std::string> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
+    std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
     std::vector<std::pair<std::string, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("", false),
