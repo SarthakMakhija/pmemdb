@@ -165,7 +165,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   iterator.deleteBy(key.c_str());
 
   ASSERT_FALSE(iterator.getBy(key.c_str()).second);
-  ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
+  ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key.c_str()).second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInEnd) {
@@ -180,7 +180,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   iterator.deleteBy(key.c_str());
 
   ASSERT_FALSE(iterator.getBy(key.c_str()).second);
-  ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
+  ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key.c_str()).second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInBeginning) {
@@ -195,5 +195,5 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   iterator.deleteBy(key.c_str());
 
   ASSERT_FALSE(iterator.getBy(key.c_str()).second);
-  ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key).second);
+  ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key.c_str()).second);
 }

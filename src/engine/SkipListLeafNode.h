@@ -31,15 +31,15 @@ namespace pmem {
                 pmem::storage::KeyValuePair rightKeyValuePair();
 
                 std::pair<SkipListLeafNode *, Status>
-                put(std::string key, std::string value, std::function<void(void)> postPutHook = [] {});
+                put(const char* key, const char* value, std::function<void(void)> postPutHook = [] {});
 
-                std::pair<std::string, bool> getBy(std::string key);
+                std::pair<std::string, bool> getBy(const char* key);
 
-                std::vector <pmem::storage::KeyValuePair> scan(std::string beginKey, std::string endKey, int64_t maxPairs);
+                std::vector <pmem::storage::KeyValuePair> scan(const char* beginKey, const char* endKey, int64_t maxPairs);
 
-                Status update(std::string key, std::string value, std::function<void(void)> postUpdateHook = [] {});
+                Status update(const char* key, const char* value, std::function<void(void)> postUpdateHook = [] {});
 
-                Status deleteBy(std::string key, std::function<void(void)> postDeleteHook = [] {});
+                Status deleteBy(const char* key, std::function<void(void)> postDeleteHook = [] {});
             };
         }
     }

@@ -38,7 +38,7 @@ namespace pmem {
                             bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key.c_str()); //TODO: Change later
 
                     if (existenceByNode.second) {
-                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first) -> getBy(key));
+                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first) -> getBy(key.c_str()));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }
