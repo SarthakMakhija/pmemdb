@@ -1,7 +1,6 @@
 #ifndef _SkipListNode_
 #define _SkipListNode_
 
-#include <string>
 #include <functional>
 #include "KeyValuePair.h"
 #include "KeyComparator.h"

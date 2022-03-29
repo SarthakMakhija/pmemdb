@@ -4,7 +4,6 @@
 #include <vector>
 #include <mutex>
 #include <shared_mutex>
-#include <string>
 
 #include "Status.h"
 #include "SkipList.h"

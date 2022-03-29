@@ -1,7 +1,6 @@
 #ifndef _PersistentLeafNode_
 #define _PersistentLeafNode_
 
-#include <string>
 #include <libpmemobj++/make_persistent.hpp>
 #include <libpmemobj++/make_persistent_array.hpp>
 #include <libpmemobj++/persistent_ptr.hpp>

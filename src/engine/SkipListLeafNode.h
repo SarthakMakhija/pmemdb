@@ -1,7 +1,6 @@
 #ifndef _SkipListLeafNode_
 #define _SkipListLeafNode_
 
-#include <string>
 #include <functional>
 #include "SkipListNode.h"
 #include "PersistentLeaf.h"

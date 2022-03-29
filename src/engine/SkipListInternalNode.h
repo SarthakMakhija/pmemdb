@@ -1,7 +1,6 @@
 #ifndef _SkipListInternalNode_
 #define _SkipListInternalNode_
 
-#include <string>
 #include <vector>
 #include "SkipListNode.h"
 #include "SkipListLeafNode.h"

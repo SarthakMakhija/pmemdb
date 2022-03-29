@@ -1,7 +1,6 @@
 #ifndef _SkipListIterator_
 #define _SkipListIterator_
 
-#include <string>
 #include <functional>
 #include "SkipListNode.h"
 #include "Status.h"
