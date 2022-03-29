@@ -16,9 +16,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutASingleKeyValuePair) {
 
     iterator.put("HDD", "Hard disk drive", 0.5);
 
-    std::pair<std::string, bool> valueByExistence = iterator.getBy("HDD");
+    std::pair<const char*, bool> valueByExistence = iterator.getBy("HDD");
 
-    ASSERT_EQ("Hard disk drive", valueByExistence.first);
+    ASSERT_EQ("Hard disk drive", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutMultipleKeyValuePairs) {
@@ -28,8 +28,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutMultipleKeyValuePairs) {
   iterator.put("HDD", "Hard disk drive", 0.5);
   iterator.put("SDD", "Solid state drive", 0.5);
 
-  ASSERT_EQ("Hard disk drive", iterator.getBy("HDD").first);
-  ASSERT_EQ("Solid state drive", iterator.getBy("SDD").first);
+  ASSERT_EQ("Hard disk drive", std::string(iterator.getBy("HDD").first));
+  ASSERT_EQ("Solid state drive", std::string(iterator.getBy("SDD").first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForAnExistingKey) {
@@ -39,8 +39,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForAnExistingKey) {
   iterator.put("HDD", "Hard disk drive", 0.5);
   iterator.put("SDD", "Solid state drive", 0.5);
 
-  ASSERT_EQ("Hard disk drive",   iterator.getBy("HDD").first);
-  ASSERT_EQ("Solid state drive", iterator.getBy("SDD").first);
+  ASSERT_EQ("Hard disk drive",   std::string(iterator.getBy("HDD").first));
+  ASSERT_EQ("Solid state drive", std::string(iterator.getBy("SDD").first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForANonExistingKey) {
@@ -50,7 +50,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForANonExistingKey)
   iterator.put("HDD", "Hard disk drive", 0.5);
   iterator.put("SDD", "Solid state drive", 0.5);
 
-  ASSERT_EQ("", iterator.getBy("Pmem").first);
+  ASSERT_EQ("", std::string(iterator.getBy("Pmem").first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
@@ -135,9 +135,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKe
 
   iterator.update("HDD", "Hard drive");
 
-  std::pair<std::string, bool> valueByExistence = iterator.getBy("HDD");
+  std::pair<const char*, bool> valueByExistence = iterator.getBy("HDD");
 
-  ASSERT_EQ("Hard drive", valueByExistence.first);
+  ASSERT_EQ("Hard drive", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKeyInLeafNode) {

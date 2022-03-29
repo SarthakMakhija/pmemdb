@@ -45,7 +45,8 @@ namespace pmem {
                             bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key, keyComparator);
 
                     if (existenceByNode.second) {
-                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator));
+                        result.push_back(std::make_pair(
+                                std::string(static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator).first), true));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }
@@ -53,7 +54,7 @@ namespace pmem {
                 return result;
             }
 
-            std::pair<std::string, bool> SkipListIterator::getBy(const char *key) {
+            std::pair<const char*, bool> SkipListIterator::getBy(const char *key) {
                 std::pair < SkipListNode * ,
                         bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key, keyComparator);
 

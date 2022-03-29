@@ -26,7 +26,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhilePuttingAKeyValueS
     iterator.put("HDD", "Hard disk drive", 0.5, [] {throw std::runtime_error("FailsWhilePuttingAKeyValueSucceedsWithOther");});
 
     ASSERT_FALSE(iterator.getBy("HDD").second);
-    ASSERT_EQ("Solid state drive", iterator.getBy("SDD").first);
+    ASSERT_EQ("Solid state drive", std::string(iterator.getBy("SDD").first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValue) {
@@ -36,7 +36,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValue
     iterator.put("HDD", "Hard disk drive", 0.5);
     iterator.update("HDD", "HDD", [] {throw std::runtime_error("FailsWhileUpdatingAKeyValue");});
 
-    ASSERT_EQ("Hard disk drive", iterator.getBy("HDD").first);
+    ASSERT_EQ("Hard disk drive", std::string(iterator.getBy("HDD").first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValueSucceedsWithOther) {
@@ -49,8 +49,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileUpdatingAKeyValue
     iterator.update("HDD", "HDD", [] {throw std::runtime_error("FailsWhileUpdatingAKeyValueSucceedsWithOther");});
     iterator.update("SDD", "SDD");
 
-    ASSERT_EQ("Hard disk drive", iterator.getBy("HDD").first);
-    ASSERT_EQ("SDD", iterator.getBy("SDD").first);
+    ASSERT_EQ("Hard disk drive", std::string(iterator.getBy("HDD").first));
+    ASSERT_EQ("SDD", std::string(iterator.getBy("SDD").first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValue) {
@@ -60,7 +60,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValue
     iterator.put("HDD", "Hard disk drive", 0.5);
     iterator.deleteBy("HDD", [] {throw std::runtime_error("FailsWhileDeletingAKeyValue");});
 
-    ASSERT_EQ("Hard disk drive", iterator.getBy("HDD").first);
+    ASSERT_EQ("Hard disk drive", std::string(iterator.getBy("HDD").first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValueSucceedsWithOther) {
@@ -73,6 +73,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_FailsWhileDeletingAKeyValue
     iterator.deleteBy("HDD", [] {throw std::runtime_error("FailsWhileDeletingAKeyValueSucceedsWithOther");});
     iterator.deleteBy("SDD");
 
-    ASSERT_EQ("Hard disk drive", iterator.getBy("HDD").first);
+    ASSERT_EQ("Hard disk drive", std::string(iterator.getBy("HDD").first));
     ASSERT_FALSE(iterator.getBy("SDD").second);
 }
