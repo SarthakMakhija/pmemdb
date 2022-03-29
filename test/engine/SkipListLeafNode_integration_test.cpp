@@ -78,9 +78,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_PutAKeyValuePair1) {
   sentinel -> put("SDD", "Solid state drive", stringKeyComparator());
 
   std::string key = "SDD";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
   
-  ASSERT_EQ("Solid state drive", valueByExistence.first);
+  ASSERT_EQ("Solid state drive", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_PutAKeyValuePair2) {
@@ -90,9 +90,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_PutAKeyValuePair2) {
   sentinel -> put("Pmem", "Persistent Storage", stringKeyComparator());
 
   std::string key = "Pmem";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
   
-  ASSERT_EQ("Persistent Storage", valueByExistence.first);
+  ASSERT_EQ("Persistent Storage", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForAnExistingKey) {
@@ -101,9 +101,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForAnExistingKey) {
   sentinel -> put("Pmem", "Persistent Storage", stringKeyComparator());
 
   std::string key = "Pmem";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
   
-  ASSERT_EQ("Persistent Storage", valueByExistence.first);
+  ASSERT_EQ("Persistent Storage", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForANonExistingKey) {
@@ -112,9 +112,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForANonExistingKey)
   sentinel -> put("Pmem", "Persistent Storage", stringKeyComparator());
 
   std::string key = "SDD";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
   
-  ASSERT_EQ("", valueByExistence.first);
+  ASSERT_EQ("", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_ScanWithBeginKeyPresent) {
@@ -172,9 +172,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_UpdateValueOfAMatchingKey) 
   sentinel -> update("Pmem", "Persistent Memory", stringKeyComparator());
 
   std::string key = "Pmem";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
   
-  ASSERT_EQ("Persistent Memory", valueByExistence.first);
+  ASSERT_EQ("Persistent Memory", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInTheBeginning) {
@@ -186,9 +186,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyIn
   sentinel -> deleteBy("HDD", stringKeyComparator());
 
   std::string key = "HDD";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
 
-  ASSERT_EQ("", valueByExistence.first);
+  ASSERT_EQ("", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInBetween) {
@@ -200,9 +200,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyIn
   sentinel -> deleteBy("Pmem", stringKeyComparator());
 
   std::string key = "Pmem";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
 
-  ASSERT_EQ("", valueByExistence.first);
+  ASSERT_EQ("", std::string(valueByExistence.first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyInTheEnd) {
@@ -214,7 +214,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyIn
   sentinel -> deleteBy("SDD", stringKeyComparator());
 
   std::string key = "SDD";
-  std::pair<std::string, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
 
-  ASSERT_EQ("", valueByExistence.first);
+  ASSERT_EQ("", std::string(valueByExistence.first));
 }

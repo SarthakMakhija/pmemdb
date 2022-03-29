@@ -80,13 +80,13 @@ namespace pmem {
                 return std::make_pair(newNode, Status::Ok);
             }
 
-            std::pair<std::string, bool> SkipListLeafNode::getBy(const char *key, pmem::storage::KeyComparator* keyComparator) {
+            std::pair<const char*, bool> SkipListLeafNode::getBy(const char *key, pmem::storage::KeyComparator* keyComparator) {
                 pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
                 while (targetLeaf->right.get() && keyComparator->compare(targetLeaf->right.get()->key(), key) <= 0) {
                     targetLeaf = targetLeaf->right.get();
                 }
                 if (keyComparator->compare(targetLeaf->key(), key) == 0) {
-                    return std::make_pair(std::string(targetLeaf->value()), true);
+                    return std::make_pair(targetLeaf->value(), true);
                 }
                 return std::make_pair("", false);
             }

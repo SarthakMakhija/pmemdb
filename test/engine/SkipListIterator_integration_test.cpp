@@ -150,7 +150,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKe
 
   iterator.update("HDD", "Hard drive");
 
-  ASSERT_EQ("Hard drive", static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy("HDD", stringKeyComparator()).first);
+  const char* actual = static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy("HDD", stringKeyComparator()).first;
+  ASSERT_EQ("Hard drive", std::string(actual));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyInBetween) {

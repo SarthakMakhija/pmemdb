@@ -35,7 +35,7 @@ namespace pmem {
                 put(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator,
                     std::function<void(void)> postPutHook = [] {});
 
-                std::pair<std::string, bool> getBy(const char *key, pmem::storage::KeyComparator* keyComparator);
+                std::pair<const char*, bool> getBy(const char *key, pmem::storage::KeyComparator* keyComparator);
 
                 std::vector <pmem::storage::KeyValuePair>
                 scan(const char *beginKey, const char *endKey, int64_t maxPairs,
