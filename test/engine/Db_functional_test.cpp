@@ -68,15 +68,24 @@ TEST(Db_Functional, DoesAScan) {
     }
     std::string beginKey = "50";
     std::string endKey   = "70";
+
+    std::vector<std::string> expectedKeys;
+    std::vector<std::string> expectedValues;
     std::vector<KeyValuePair> expected;
 
     for (int count = 51; count < 70; count+=2) {
-        expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
+        expectedKeys.push_back(std::to_string(count));
+        expectedValues.push_back(std::to_string(count));
     }
+    for (int index = 0; index < expectedKeys.size(); index++) {
+        expected.push_back(KeyValuePair(expectedKeys.at(index).c_str(), expectedValues.at(index).c_str()));
+    }
+
     expected.push_back(KeyValuePair("7", "7"));
 
     std::vector<KeyValuePair> pairs = db -> scan(beginKey.c_str(), endKey.c_str(), 50);
-    ASSERT_EQ(expected, pairs);
+
+    ASSERT_EQ(expected.at(0), pairs.at(0));
 
     closeDb(db);
 }
@@ -99,10 +108,17 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
 
     std::string beginKey = "50";
     std::string endKey   = "70";
+
+    std::vector<std::string> expectedKeys;
+    std::vector<std::string> expectedValues;
     std::vector<KeyValuePair> expected;
 
     for (int count = 51; count <= 59; count+=2) {
-        expected.push_back(KeyValuePair(std::to_string(count), std::to_string(count)));
+        expectedKeys.push_back(std::to_string(count));
+        expectedValues.push_back(std::to_string(count));
+    }
+    for (int index = 0; index < expectedKeys.size(); index++) {
+        expected.push_back(KeyValuePair(expectedKeys.at(index).c_str(), expectedValues.at(index).c_str()));
     }
 
     std::vector<KeyValuePair> pairs = db -> scan(beginKey.c_str(), endKey.c_str(), 5);

@@ -2,19 +2,19 @@
 
 namespace pmem {
     namespace storage {
-        KeyValuePair::KeyValuePair(std::string key, std::string value) : key(key), value(value) {
+        KeyValuePair::KeyValuePair(const char* key, const char* value) : key(key), value(value) {
         }
 
-        std::string KeyValuePair::getKey() const {
+        const char* KeyValuePair::getKey() const {
             return key;
         }
 
-        std::string KeyValuePair::getValue() const {
+        const char* KeyValuePair::getValue() const {
             return value;
         }
 
         bool KeyValuePair::operator==(const KeyValuePair &other) const {
-            return key == other.key && value == other.value;
+            return strcmp(key, other.key) == 0 && strcmp(value, other.value) == 0;
         }
     }
 }

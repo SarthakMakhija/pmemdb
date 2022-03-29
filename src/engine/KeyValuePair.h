@@ -1,21 +1,21 @@
 #ifndef _KeyValuePair_
 #define _KeyValuePair_
 
-#include <string>
+#include <cstring>
 
 namespace pmem {
     namespace storage {
         class KeyValuePair {
         private:
-            std::string key;
-            std::string value;
+            const char* key;
+            const char* value;
 
         public:
-            KeyValuePair(std::string key, std::string value);
+            KeyValuePair(const char* key, const char* value);
             bool operator == (const KeyValuePair &other) const;
 
-            std::string getKey() const ;
-            std::string getValue() const;
+            const char* getKey() const ;
+            const char* getValue() const;
         };
     }
 }

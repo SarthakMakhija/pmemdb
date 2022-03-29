@@ -35,13 +35,13 @@ namespace pmem {
 
             pmem::storage::KeyValuePair SkipListLeafNode::keyValuePair() {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return KeyValuePair(std::string(leaf->key()), std::string(leaf->value()));
+                return KeyValuePair(leaf->key(), leaf->value());
             }
 
             pmem::storage::KeyValuePair SkipListLeafNode::rightKeyValuePair() {
                 pmem::storage::internal::PersistentLeaf *right = this->leaf->right.get();
                 if (right) {
-                    return KeyValuePair(std::string(right->key()), std::string(right->value()));
+                    return KeyValuePair(right->key(), right->value());
                 }
                 return KeyValuePair("", "");
             }
