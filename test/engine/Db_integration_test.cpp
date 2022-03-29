@@ -45,15 +45,19 @@ TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
     DbFixture::getDb()->put("SDD", "Solid state drive");
 
     std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
-    std::vector<std::pair<std::string, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("", false),
                             std::make_pair("Hard disk drive", true),
                             std::make_pair("Persistent Memory", true),
                             std::make_pair("Solid state drive", true)
     };
+    std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
+    std::vector<std::pair<std::string, bool>> resultTransformed;
 
-    ASSERT_EQ(expected, result);
+    for (auto pair : result) {
+        resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
+    }
+    ASSERT_EQ(expected, resultTransformed);
 }
 
 TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyPresent) {

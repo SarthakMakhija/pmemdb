@@ -49,7 +49,7 @@ namespace pmem {
             return this->skipList->get(key, this->keyComparator);
         }
 
-        std::vector <std::pair<std::string, bool>> Db::multiGet(const std::vector <const char*> &keys) {
+        std::vector <std::pair<const char*, bool>> Db::multiGet(const std::vector <const char*> &keys) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return this->skipList->multiGet(keys, this->keyComparator);
         }

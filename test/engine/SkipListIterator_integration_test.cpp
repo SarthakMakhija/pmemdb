@@ -62,8 +62,12 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
   iterator.put("Pmem", "Persistent memory", 0.5);
 
   std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
-  std::vector<std::pair<std::string, bool>> result = iterator.multiGet(keys);
+  std::vector<std::pair<const char*, bool>> result = iterator.multiGet(keys);
+  std::vector<std::pair<std::string, bool>> resultTransformed;
 
+  for (auto pair : result) {
+      resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
+  }
   std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("", false),
                             std::make_pair("Hard disk drive", true),
@@ -71,7 +75,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
                             std::make_pair("Solid state drive", true)
   };
 
-  ASSERT_EQ(expected, result);
+  ASSERT_EQ(expected, resultTransformed);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyPresent) {

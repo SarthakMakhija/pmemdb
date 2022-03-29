@@ -34,8 +34,8 @@ namespace pmem {
                 return Status::KeyAlreadyExists;
             }
 
-            std::vector <std::pair<std::string, bool>> SkipListIterator::multiGet(std::vector<const char *> keys) {
-                std::vector <std::pair<std::string, bool>> result;
+            std::vector <std::pair<const char*, bool>> SkipListIterator::multiGet(std::vector<const char *> keys) {
+                std::vector <std::pair<const char*, bool>> result;
 
                 std::sort(keys.begin(), keys.end(), [&](const char *c1, const char *c2) {
                     return keyComparator->compare(c1, c2) < 0;
@@ -45,8 +45,7 @@ namespace pmem {
                             bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key, keyComparator);
 
                     if (existenceByNode.second) {
-                        result.push_back(std::make_pair(
-                                std::string(static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator).first), true));
+                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }

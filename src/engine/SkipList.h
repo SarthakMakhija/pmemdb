@@ -28,7 +28,7 @@ namespace pmem {
 
                 std::pair<const char*, bool> get(const char *key, pmem::storage::KeyComparator* keyComparator);
 
-                std::vector <std::pair<std::string, bool>> multiGet(const std::vector<const char *> &keys,
+                std::vector <std::pair<const char*, bool>> multiGet(const std::vector<const char *> &keys,
                                                                     pmem::storage::KeyComparator* keyComparator);
 
                 std::vector <pmem::storage::KeyValuePair>
