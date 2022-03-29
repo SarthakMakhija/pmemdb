@@ -44,7 +44,7 @@ namespace pmem {
             return this->skipList->deleteBy(key, this->keyComparator);
         }
 
-        std::pair<std::string, bool> Db::get(const char* key) {
+        std::pair<const char*, bool> Db::get(const char* key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return this->skipList->get(key, this->keyComparator);
         }

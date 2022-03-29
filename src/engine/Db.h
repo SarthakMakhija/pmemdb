@@ -29,7 +29,7 @@ namespace pmem {
 
             Status deleteBy(const char* key);
 
-            std::pair<std::string, bool> get(const char* key);
+            std::pair<const char*, bool> get(const char* key);
 
             std::vector <std::pair<std::string, bool>> multiGet(const std::vector <const char*> &keys);
 

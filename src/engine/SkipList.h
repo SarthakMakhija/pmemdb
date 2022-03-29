@@ -26,7 +26,7 @@ namespace pmem {
 
                 Status deleteBy(const char *key, pmem::storage::KeyComparator* keyComparator);
 
-                std::pair<std::string, bool> get(const char *key, pmem::storage::KeyComparator* keyComparator);
+                std::pair<const char*, bool> get(const char *key, pmem::storage::KeyComparator* keyComparator);
 
                 std::vector <std::pair<std::string, bool>> multiGet(const std::vector<const char *> &keys,
                                                                     pmem::storage::KeyComparator* keyComparator);

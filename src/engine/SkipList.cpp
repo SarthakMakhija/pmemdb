@@ -37,7 +37,7 @@ namespace pmem {
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).deleteBy(key);
             }
 
-            std::pair<std::string, bool> SkipList::get(const char *key, pmem::storage::KeyComparator* keyComparator) {
+            std::pair<const char*, bool> SkipList::get(const char *key, pmem::storage::KeyComparator* keyComparator) {
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).getBy(key);
             }
 

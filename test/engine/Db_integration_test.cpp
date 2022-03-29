@@ -9,15 +9,15 @@ TEST_F(DbFixture, DbIntegration_GetAValueByKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
-    ASSERT_EQ("Hard disk drive", existenceByValue.first);
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
+    ASSERT_EQ("Hard disk drive", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_GetExistenceOfKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_TRUE(existenceByValue.second);
 }
 
@@ -25,16 +25,16 @@ TEST_F(DbFixture, DbIntegration_GetAValueByNonExistentKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
 
-    ASSERT_EQ("", existenceByValue.first);
+    ASSERT_EQ("", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_GetTheExistenceOfNonExistingKey) {
     DbFixture::getDb()->put("HDD", "Hard disk drive");
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
 
     ASSERT_FALSE(existenceByValue.second);
 }
@@ -90,8 +90,8 @@ TEST_F(DbFixture, DbIntegration_UpdateAValue) {
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
     DbFixture::getDb() -> update("HDD", "Hard disk");
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
-    ASSERT_EQ("Hard disk", existenceByValue.first);
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
+    ASSERT_EQ("Hard disk", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_UpdateAValueForNonExistingKey) {
@@ -100,8 +100,8 @@ TEST_F(DbFixture, DbIntegration_UpdateAValueForNonExistingKey) {
 
     DbFixture::getDb() -> update("SDD", "Solid state drive");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
-    ASSERT_EQ("", existenceByValue.first);
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
+    ASSERT_EQ("", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheBeginning) {
@@ -110,8 +110,8 @@ TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheBeginning) {
 
     DbFixture::getDb() -> deleteBy("HDD");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
-    ASSERT_EQ("", existenceByValue.first);
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
+    ASSERT_EQ("", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_DeleteByAKeyInBetween) {
@@ -121,8 +121,8 @@ TEST_F(DbFixture, DbIntegration_DeleteByAKeyInBetween) {
 
     DbFixture::getDb() -> deleteBy("Pmem");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
-    ASSERT_EQ("", existenceByValue.first);
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
+    ASSERT_EQ("", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheEnd) {
@@ -131,6 +131,6 @@ TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheEnd) {
 
     DbFixture::getDb() -> deleteBy("Pmem");
 
-    std::pair<std::string, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
-    ASSERT_EQ("", existenceByValue.first);
+    std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
+    ASSERT_EQ("", std::string(existenceByValue.first));
 }

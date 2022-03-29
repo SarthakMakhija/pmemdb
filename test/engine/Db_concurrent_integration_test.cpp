@@ -11,11 +11,11 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingTheSameKey) {
     DbFixture::getDb()->put("Pmem", "Persistent Memory");
 
     std::thread reader1([&]() {
-        ASSERT_EQ("Hard disk drive", DbFixture::getDb() -> get("HDD").first);
+        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
     });
 
     std::thread reader2([&]() {
-        ASSERT_EQ("Hard disk drive", DbFixture::getDb() -> get("HDD").first);
+        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
     });
 
     reader1.join();
@@ -28,11 +28,11 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingDifferentKeys) {
     DbFixture::getDb() -> put("Pmem", "Persistent Memory");
 
     std::thread reader1([&]() {
-        ASSERT_EQ("Hard disk drive", DbFixture::getDb() -> get("HDD").first);
+        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
     });
 
     std::thread reader2([&]() {
-        ASSERT_EQ("Persistent Memory", DbFixture::getDb() -> get("Pmem").first);
+        ASSERT_EQ("Persistent Memory", std::string(DbFixture::getDb() -> get("Pmem").first));
     });
 
     reader1.join();
