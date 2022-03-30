@@ -5,25 +5,37 @@
 
 using namespace pmem::storage;
 
+void put(Db *db, const char* key, const char* value) {
+    db->put(key, value);
+}
+
+void update(Db *db, const char* key, const char* value) {
+    db->update(key, value);
+}
+
+void deleteBy(Db *db, const char* key) {
+    db->deleteBy(key);
+}
+
 TEST_F(DbFixture, DbIntegration_GetAValueByKey) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_EQ("Hard disk drive", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_GetExistenceOfKey) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_TRUE(existenceByValue.second);
 }
 
 TEST_F(DbFixture, DbIntegration_GetAValueByNonExistentKey) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
 
@@ -31,8 +43,8 @@ TEST_F(DbFixture, DbIntegration_GetAValueByNonExistentKey) {
 }
 
 TEST_F(DbFixture, DbIntegration_GetTheExistenceOfNonExistingKey) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
 
@@ -40,9 +52,9 @@ TEST_F(DbFixture, DbIntegration_GetTheExistenceOfNonExistingKey) {
 }
 
 TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
-    DbFixture::getDb()->put("SDD", "Solid state drive");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "SDD", "Solid state drive");
 
     std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
     std::vector<std::pair<std::string, bool>> expected = {
@@ -61,10 +73,10 @@ TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
 }
 
 TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyPresent) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
-    DbFixture::getDb()->put("SDD", "Solid state drive");
-    DbFixture::getDb() -> put("RAM", "Random access memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "SDD", "Solid state drive");
+    put(DbFixture::getDb(), "RAM", "Random access memory");
 
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
@@ -76,9 +88,9 @@ TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyPresent) {
 }
 
 TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyNotPresent) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("SDD", "Solid state drive");
-    DbFixture::getDb() -> put("RAM", "Random access memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "SDD", "Solid state drive");
+    put(DbFixture::getDb(), "RAM", "Random access memory");
 
     std::string beginKey = "Pmem";
     std::string endKey = "SDD";
@@ -90,50 +102,50 @@ TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyNotPresent) {
 }
 
 TEST_F(DbFixture, DbIntegration_UpdateAValue) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    DbFixture::getDb() -> update("HDD", "Hard disk");
+    update(DbFixture::getDb(), "HDD", "Hard disk");
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_EQ("Hard disk", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_UpdateAValueForNonExistingKey) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    DbFixture::getDb() -> update("SDD", "Solid state drive");
+    (DbFixture::getDb(), "SDD", "Solid state drive");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
     ASSERT_EQ("", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheBeginning) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    DbFixture::getDb() -> deleteBy("HDD");
+    deleteBy(DbFixture::getDb(), "HDD");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("HDD");
     ASSERT_EQ("", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_DeleteByAKeyInBetween) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
-    DbFixture::getDb()->put("SDD", "Solid state drive");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "SDD", "Solid state drive");
 
-    DbFixture::getDb() -> deleteBy("Pmem");
+    deleteBy(DbFixture::getDb(), "Pmem");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
     ASSERT_EQ("", std::string(existenceByValue.first));
 }
 
 TEST_F(DbFixture, DbIntegration_DeleteByAKeyInTheEnd) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    DbFixture::getDb() -> deleteBy("Pmem");
+    deleteBy(DbFixture::getDb(), "Pmem");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("Pmem");
     ASSERT_EQ("", std::string(existenceByValue.first));
