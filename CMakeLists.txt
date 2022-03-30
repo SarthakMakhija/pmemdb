@@ -27,6 +27,8 @@ target_sources(pmemdb_tests
         test/engine/SkipListNodeTestUtils.cpp
         test/engine/PersistentMemoryPoolFixture.h
         test/engine/DbFixture.h
+        test/engine/DbTestsHelper.h
+        test/engine/DbTestsHelper.cpp
 )
 
 find_package(GTest CONFIG REQUIRED)

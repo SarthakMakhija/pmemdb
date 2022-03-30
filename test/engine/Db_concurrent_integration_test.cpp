@@ -3,12 +3,13 @@
 #include <thread>
 
 #include "./DbFixture.h"
+#include "./DbTestsHelper.h"
 
 using namespace pmem::storage;
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingTheSameKey) {
-    DbFixture::getDb()->put("HDD", "Hard disk drive");
-    DbFixture::getDb()->put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::thread reader1([&]() {
         ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
@@ -24,8 +25,8 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingTheSameKey) {
 
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingDifferentKeys) {
-    DbFixture::getDb() -> put("HDD", "Hard disk drive");
-    DbFixture::getDb() -> put("Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::thread reader1([&]() {
         ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
@@ -39,12 +40,11 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingDifferentKeys) {
     reader2.join();
 }
 
-
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
-    DbFixture::getDb() -> put("HDD", "Hard disk drive");
-    DbFixture::getDb() -> put("SDD", "Solid state drive");
-    DbFixture::getDb() -> put("Pmem", "Persistent Memory");
-    DbFixture::getDb() -> put("Nvm", "Non volatile memory");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "SDD", "Solid state drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "Nvm", "Non volatile memory");
 
     std::thread reader1([&]() {
         std::vector<std::pair<std::string, bool>> expected = {
@@ -83,11 +83,11 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
 }
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingScan) {
-    DbFixture::getDb() -> put("A", "A");
-    DbFixture::getDb() -> put("B", "B");
-    DbFixture::getDb() -> put("C", "C");
-    DbFixture::getDb() -> put("D", "D");
-    DbFixture::getDb() -> put("E", "E");
+    put(DbFixture::getDb(), "A", "A");
+    put(DbFixture::getDb(), "B", "B");
+    put(DbFixture::getDb(), "C", "C");
+    put(DbFixture::getDb(), "D", "D");
+    put(DbFixture::getDb(), "E", "E");
 
     std::thread reader1([&]() {
         std::vector<KeyValuePair> expected = {
@@ -113,13 +113,13 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingScan) {
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnDifferentKeyValuePairs) {
     std::thread writer1([&]() {
-        DbFixture::getDb() -> put("HDD", "Hard disk drive");
-        DbFixture::getDb() -> put("SDD", "Solid state drive");
+        put(DbFixture::getDb(), "HDD", "Hard disk drive");
+        put(DbFixture::getDb(), "SDD", "Solid state drive");
     });
 
     std::thread writer2([&]() {
-        DbFixture::getDb() -> put("Pmem", "Persistent Memory");
-        DbFixture::getDb() -> put("Nvm", "Non volatile memory");
+        put(DbFixture::getDb(), "Pmem", "Persistent Memory");
+        put(DbFixture::getDb(), "Nvm", "Non volatile memory");
     });
 
     writer1.join();
@@ -144,13 +144,13 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnDifferentKeyV
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnSameKeyValuePairs) {
     std::thread writer1([&]() {
-        DbFixture::getDb() -> put("HDD", "Hard disk drive");
-        DbFixture::getDb() -> put("SDD", "Solid state drive");
+        put(DbFixture::getDb(), "HDD", "Hard disk drive");
+        put(DbFixture::getDb(), "SDD", "Solid state drive");
     });
 
     std::thread writer2([&]() {
-        DbFixture::getDb() -> put("HDD", "Hard disk drive");
-        DbFixture::getDb() -> put("SDD", "Solid state drive");
+        put(DbFixture::getDb(), "HDD", "Hard disk drive");
+        put(DbFixture::getDb(), "SDD", "Solid state drive");
     });
 
     writer1.join();
@@ -173,14 +173,14 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnSameKeyValueP
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndUpdate) {
     std::thread writer1([&]() {
-        DbFixture::getDb() -> put("HDD", "Hard disk drive");
-        DbFixture::getDb() -> put("SDD", "Solid state drive");
+        put(DbFixture::getDb(), "HDD", "Hard disk drive");
+        put(DbFixture::getDb(), "SDD", "Solid state drive");
     });
     
     writer1.join();
 
     std::thread writer2([&]() {
-        DbFixture::getDb() -> update("HDD", "Hard disk");
+        update(DbFixture::getDb(), "HDD", "Hard disk");
     });
 
     writer2.join();
@@ -201,14 +201,14 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndUpdate) {
 }
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingUpdateOnSameKey) {
-    DbFixture::getDb() -> put("HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
 
     std::thread writer1([&]() {
-        DbFixture::getDb() -> update("HDD", "Hard disk");
+        update(DbFixture::getDb(), "HDD", "Hard disk");
     });
     
     std::thread writer2([&]() {
-        DbFixture::getDb() -> update("HDD", "HDD");
+        update(DbFixture::getDb(), "HDD", "HDD");
     });
 
     writer1.join();
@@ -220,11 +220,11 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingUpdateOnSameKey) {
 
 TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndDeleteOnSameKey) {
     std::thread writer1([&]() {
-        DbFixture::getDb() -> put("HDD", "Hard disk drive");
+        put(DbFixture::getDb(), "HDD", "Hard disk drive");
     });
     
     std::thread writer2([&]() {
-        DbFixture::getDb() -> deleteBy("HDD");
+        deleteBy(DbFixture::getDb(), "HDD");
     });
 
     writer1.join();

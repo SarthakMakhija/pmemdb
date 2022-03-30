@@ -1,21 +1,10 @@
 #include <gtest/gtest.h>
 #include <string>
 #include "./DbFixture.h"
+#include "./DbTestsHelper.h"
 #include "../../src/engine/Db.h"
 
 using namespace pmem::storage;
-
-void put(Db *db, const char* key, const char* value) {
-    db->put(key, value);
-}
-
-void update(Db *db, const char* key, const char* value) {
-    db->update(key, value);
-}
-
-void deleteBy(Db *db, const char* key) {
-    db->deleteBy(key);
-}
 
 TEST_F(DbFixture, DbIntegration_GetAValueByKey) {
     put(DbFixture::getDb(), "HDD", "Hard disk drive");
