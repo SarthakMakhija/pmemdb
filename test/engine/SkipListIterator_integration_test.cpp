@@ -10,11 +10,23 @@
 using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
+void put(SkipListIterator iterator, const char* key, const char* value) {
+    iterator.put(key, value, 0.5);
+}
+
+void update(SkipListIterator iterator, const char* key, const char* value) {
+    iterator.update(key, value);
+}
+
+void deleteBy(SkipListIterator iterator, const char* key) {
+    iterator.deleteBy(key);
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutASingleKeyValuePair) {
     SkipListNode* sentinel    = newSentinelInternalNode(6);
     SkipListIterator iterator = SkipListIterator(sentinel, stringKeyComparator());
 
-    iterator.put("HDD", "Hard disk drive", 0.5);
+    put(iterator, "HDD", "Hard disk drive");
 
     std::pair<const char*, bool> valueByExistence = iterator.getBy("HDD");
 
@@ -25,8 +37,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_PutMultipleKeyValuePairs) {
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
 
   ASSERT_EQ("Hard disk drive", std::string(iterator.getBy("HDD").first));
   ASSERT_EQ("Solid state drive", std::string(iterator.getBy("SDD").first));
@@ -36,8 +48,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForAnExistingKey) {
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
 
   ASSERT_EQ("Hard disk drive",   std::string(iterator.getBy("HDD").first));
   ASSERT_EQ("Solid state drive", std::string(iterator.getBy("SDD").first));
@@ -47,8 +59,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_GetByKeyForANonExistingKey)
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
 
   ASSERT_EQ("", std::string(iterator.getBy("Pmem").first));
 }
@@ -57,9 +69,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
-  iterator.put("Pmem", "Persistent memory", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
   std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
   std::vector<std::pair<const char*, bool>> result = iterator.multiGet(keys);
@@ -82,9 +94,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyPresent) {
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
-  iterator.put("Pmem", "Persistent memory", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
   std::string beginKey = "Pmem";
   std::string endKey = "SDD";
@@ -99,9 +111,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyNotPresent)
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
-  iterator.put("Pmem", "Persistent memory", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
   std::string beginKey = "RAM";
   std::string endKey   = "Tuff";
@@ -116,9 +128,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_ScanWithBeginKeyOutsideTheB
     SkipListInternalNode* sentinel = newSentinelInternalNode(6);
     SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-    iterator.put("HDD", "Hard disk drive", 0.5);
-    iterator.put("SDD", "Solid state drive", 0.5);
-    iterator.put("Pmem", "Persistent memory", 0.5);
+    put(iterator, "HDD", "Hard disk drive");
+    put(iterator, "SDD", "Solid state drive");
+    put(iterator, "Pmem", "Persistent memory");
 
     std::string beginKey = "Tuff";
     std::string endKey   = "Zero";
@@ -133,11 +145,11 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKe
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
-  iterator.put("Pmem", "Persistent memory", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
-  iterator.update("HDD", "Hard drive");
+  update(iterator, "HDD", "Hard drive");
 
   std::pair<const char*, bool> valueByExistence = iterator.getBy("HDD");
 
@@ -148,11 +160,11 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_UpdateTheValueOfAMatchingKe
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.6);
-  iterator.put("SDD", "Solid state drive", 0.6);
-  iterator.put("Pmem", "Persistent memory", 0.6);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
-  iterator.update("HDD", "Hard drive");
+  update(iterator, "HDD", "Hard drive");
 
   const char* actual = static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy("HDD", stringKeyComparator()).first;
   ASSERT_EQ("Hard drive", std::string(actual));
@@ -162,12 +174,12 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
-  iterator.put("Pmem", "Persistent memory", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
   std::string key = "Pmem";
-  iterator.deleteBy(key.c_str());
+  deleteBy(iterator, key.c_str());
 
   ASSERT_FALSE(iterator.getBy(key.c_str()).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key.c_str(), stringKeyComparator()).second);
@@ -177,12 +189,12 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
-  iterator.put("Pmem", "Persistent memory", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
   std::string key = "SDD";
-  iterator.deleteBy(key.c_str());
+  deleteBy(iterator, key.c_str());
 
   ASSERT_FALSE(iterator.getBy(key.c_str()).second);
   ASSERT_FALSE(static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy(key.c_str(), stringKeyComparator()).second);
@@ -192,9 +204,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_DeleteValueOfAMatchingKeyIn
   SkipListInternalNode* sentinel = newSentinelInternalNode(6);
   SkipListIterator iterator      = SkipListIterator(sentinel, stringKeyComparator());
 
-  iterator.put("HDD", "Hard disk drive", 0.5);
-  iterator.put("SDD", "Solid state drive", 0.5);
-  iterator.put("Pmem", "Persistent memory", 0.5);
+  put(iterator, "HDD", "Hard disk drive");
+  put(iterator, "SDD", "Solid state drive");
+  put(iterator, "Pmem", "Persistent memory");
 
   std::string key = "HDD";
   iterator.deleteBy(key.c_str());
