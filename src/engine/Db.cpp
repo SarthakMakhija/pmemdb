@@ -18,22 +18,22 @@ namespace pmem {
             return db;
         }
 
-        Status Db::put(const char* key, const char* value) {
+        Status Db::put(const char* key, const char* value, KeyValueSize keyValueSize) {
             if (strlen(key) == 0 || strlen(value) == 0) {
                     throw std::invalid_argument("key and value can not be blank while putting");
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->put(key, value, this->keyComparator);
+            return this->skipList->put(key, value, keyValueSize, this->keyComparator);
         }
 
-        Status Db::update(const char* key, const char* value) {
+        Status Db::update(const char* key, const char* value, KeyValueSize keyValueSize) {
             if (strlen(key) == 0 || strlen(value) == 0) {
                 throw std::invalid_argument("key and value can not be blank while updating");
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->update(key, value, this->keyComparator);
+            return this->skipList->update(key, value, keyValueSize, this->keyComparator);
         }
 
         Status Db::deleteBy(const char* key) {

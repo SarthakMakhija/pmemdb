@@ -9,6 +9,7 @@
 #include "SkipList.h"
 #include "PersistentMemoryPool.h"
 #include "Configuration.h"
+#include "KeyValueSize.h"
 
 namespace pmem {
     namespace storage {
@@ -22,9 +23,9 @@ namespace pmem {
         public:
             static Db *open(Configuration configuration);
 
-            Status put(const char* key, const char* value);
+            Status put(const char* key, const char* value, KeyValueSize keyValueSize);
 
-            Status update(const char* key, const char* value);
+            Status update(const char* key, const char* value, KeyValueSize keyValueSize);
 
             Status deleteBy(const char* key);
 

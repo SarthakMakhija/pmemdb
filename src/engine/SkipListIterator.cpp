@@ -10,7 +10,10 @@ namespace pmem {
                     : startingNode{startingNode}, keyComparator{keyComparator} {
             }
 
-            Status SkipListIterator::put(const char *key, const char *value, double probability,
+            Status SkipListIterator::put(const char *key,
+                                         const char *value,
+                                         KeyValueSize keyValueSize,
+                                         double probability,
                                          std::function<void(void)> postPutHook) {
 
                 PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
@@ -20,6 +23,7 @@ namespace pmem {
                     std::pair < SkipListLeafNode * ,
                             Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(key,
                                                                                                              value,
+                                                                                                             keyValueSize,
                                                                                                              keyComparator,
                                                                                                              postPutHook);
                     if (statusNodePair.second != Status::Failed) {
@@ -76,12 +80,16 @@ namespace pmem {
             }
 
             Status
-            SkipListIterator::update(const char *key, const char *value, std::function<void(void)> postUpdateHook) {
+            SkipListIterator::update(const char *key,
+                                     const char *value,
+                                     KeyValueSize keyValueSize,
+                                     std::function<void(void)> postUpdateHook) {
+
                 UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(
                         key, keyComparator);
 
                 if (updatePosition.leaf != nullptr) {
-                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key, value, keyComparator, postUpdateHook);
+                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key, value, keyValueSize, keyComparator, postUpdateHook);
                 }
                 return Status::KeyNotFound;
             }

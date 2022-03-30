@@ -15,7 +15,8 @@ namespace pmem {
                 transaction::run(pmpool, [&] {
                     persistent_ptr<pmem::storage::internal::PersistentLeaf> newLeaf = make_persistent<pmem::storage::internal::PersistentLeaf>();
                     this->leaf = newLeaf;
-                    this->leaf.get()->put("", "");
+                    size_t blankSize = strlen("") + 1;
+                    this->leaf.get()->put("", "", KeyValueSize(blankSize, blankSize));
                 });
             }
 
@@ -47,7 +48,9 @@ namespace pmem {
             }
 
             std::pair<SkipListLeafNode *, Status>
-            SkipListLeafNode::put(const char *key, const char *value,
+            SkipListLeafNode::put(const char *key,
+                                  const char *value,
+                                  KeyValueSize keyValueSize,
                                   pmem::storage::KeyComparator* keyComparator,
                                   std::function<void(void)> postPutHook) {
 
@@ -68,7 +71,7 @@ namespace pmem {
                     transaction::run(pmpool, [&] {
                         persistent_ptr<pmem::storage::internal::PersistentLeaf> newLeaf = make_persistent<pmem::storage::internal::PersistentLeaf>();
                         newNode->leaf = newLeaf;
-                        newNode->leaf.get()->put(key, value);
+                        newNode->leaf.get()->put(key, value, keyValueSize);
 
                         newNode->leaf.get()->right = targetLeaf->right;
                         targetLeaf->right = newLeaf;
@@ -92,7 +95,9 @@ namespace pmem {
             }
 
             std::vector <pmem::storage::KeyValuePair>
-            SkipListLeafNode::scan(const char *beginKey, const char *endKey, int64_t maxPairs,
+            SkipListLeafNode::scan(const char *beginKey,
+                                   const char *endKey,
+                                   int64_t maxPairs,
                                    pmem::storage::KeyComparator* keyComparator) {
 
                 pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
@@ -119,7 +124,9 @@ namespace pmem {
             }
 
             Status
-            SkipListLeafNode::update(const char *key, const char *value,
+            SkipListLeafNode::update(const char *key,
+                                     const char *value,
+                                     KeyValueSize keyValueSize,
                                      pmem::storage::KeyComparator* keyComparator,
                                      std::function<void(void)> postUpdateHook) {
                 
@@ -132,7 +139,7 @@ namespace pmem {
                 try {
                     if (keyComparator->compare(targetLeaf->key(), key) == 0) {
                         transaction::run(pmpool, [&] {
-                            targetLeaf->put(key, value);
+                            targetLeaf->put(key, value, keyValueSize);
                             postUpdateHook();
                         });
                     }

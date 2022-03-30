@@ -12,7 +12,11 @@ using namespace pmem::storage::internal;
 void put(SkipListInternalNode* node, const char* key, const char* value, double probability = 0.5) {
   PutPosition putPosition = node -> putPositionOf(key, probability, stringKeyComparator());
   if (putPosition.newLevel != -1) {
-      std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(key, value, stringKeyComparator());
+      std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(
+              key,
+              value,
+              KeyValueSize(strlen(key) + 1, strlen(value) + 1),
+              stringKeyComparator());
       SkipListLeafNode *newLeaf = statusNodePair.first;
       SkipListNode *newInternal =  node -> put(key, putPosition.positions, putPosition.newLevel);
       static_cast<SkipListInternalNode *>(newInternal) -> attach(newLeaf);

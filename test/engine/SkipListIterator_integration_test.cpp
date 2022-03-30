@@ -11,11 +11,11 @@ using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 void put(SkipListIterator iterator, const char* key, const char* value) {
-    iterator.put(key, value, 0.5);
+    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), 0.5);
 }
 
 void update(SkipListIterator iterator, const char* key, const char* value) {
-    iterator.update(key, value);
+    iterator.update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1));
 }
 
 void deleteBy(SkipListIterator iterator, const char* key) {

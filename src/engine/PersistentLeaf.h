@@ -7,6 +7,7 @@
 #include <libpmemobj++/transaction.hpp>
 #include <libpmemobj++/pool.hpp>
 #include <libpmemobj/pool_base.h>
+#include "KeyValueSize.h"
 
 using pmem::obj::delete_persistent;
 using pmem::obj::make_persistent;
@@ -29,15 +30,15 @@ namespace pmem {
                     *((uint32_t * )((char *) (p) + sizeof(uint32_t))) = v;
                 }
 
-                void put(const char *key, const char *value) {
+                void put(const char *key, const char *value, KeyValueSize keyValueSize) {
                     if (keyValue) {
                         char *p = keyValue.get();
                         delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) +
-                                                            valueSizeDirect(p) + 2);
+                                                            valueSizeDirect(p) );
                     }
-                    size_t ksize = strlen(key);
-                    size_t vsize = strlen(value);
-                    size_t size = ksize + vsize + 2 + sizeof(uint32_t) + sizeof(uint32_t);
+                    size_t ksize = keyValueSize.getKeySize(); //strlen(key);
+                    size_t vsize = keyValueSize.getValueSize(); //strlen(value);
+                    size_t size = ksize + vsize + sizeof(uint32_t) + sizeof(uint32_t);
 
                     keyValue = make_persistent<char[]>(size);
 
@@ -47,7 +48,7 @@ namespace pmem {
 
                     char *kvptr = p + sizeof(uint32_t) + sizeof(uint32_t);
                     memcpy(kvptr, key, ksize);
-                    kvptr += ksize + 1;
+                    kvptr += ksize;
                     memcpy(kvptr, value, vsize);
                 }
 
@@ -57,7 +58,7 @@ namespace pmem {
                         //setKeySizeDirect(p, 0);
                         setValueSizeDirect(p, 0);
                         delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) +
-                                                            valueSizeDirect(p) + 2);
+                                                            valueSizeDirect(p) );
                         keyValue = nullptr;
                     }
                 }
@@ -67,7 +68,7 @@ namespace pmem {
                 }
 
                 const char *value() const {
-                    return ((char *) (keyValue.get()) + sizeof(uint32_t) + sizeof(uint32_t) + keySize() + 1);
+                    return ((char *) (keyValue.get()) + sizeof(uint32_t) + sizeof(uint32_t) + keySize() );
                 }
 
                 uint32_t keySize() const {

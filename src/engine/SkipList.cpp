@@ -24,13 +24,23 @@ namespace pmem {
                 this->probability = probability;
             }
 
-            Status SkipList::put(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator) {
-                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).put(key, value,
+            Status SkipList::put(const char *key,
+                                 const char *value,
+                                 KeyValueSize keyValueSize,
+                                 pmem::storage::KeyComparator* keyComparator) {
+
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).put(key,
+                                                                                                  value,
+                                                                                                  keyValueSize,
                                                                                                   this->probability);
             }
 
-            Status SkipList::update(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator) {
-                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).update(key, value);
+            Status SkipList::update(const char *key,
+                                    const char *value,
+                                    KeyValueSize keyValueSize,
+                                    pmem::storage::KeyComparator* keyComparator) {
+
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).update(key, value, keyValueSize);
             }
 
             Status SkipList::deleteBy(const char *key, pmem::storage::KeyComparator* keyComparator) {

@@ -13,19 +13,22 @@ void put(SkipListIterator iterator,
          const char* key,
          const char* value,
          std::function<void(void)> postPutHook = [] {}) {
-    iterator.put(key, value, 0.5, postPutHook);
+
+    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), 0.5, postPutHook);
 }
 
 void update(SkipListIterator iterator,
             const char* key,
             const char* value,
             std::function<void(void)> postUpdateHook = [] {}) {
-    iterator.update(key, value, postUpdateHook);
+
+    iterator.update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), postUpdateHook);
 }
 
 void deleteBy(SkipListIterator iterator,
               const char* key,
               std::function<void(void)> postDeleteHook = [] {}) {
+
     iterator.deleteBy(key, postDeleteHook);
 }
 

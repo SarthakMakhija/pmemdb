@@ -6,6 +6,7 @@
 #include "SkipListInternalNode.h"
 #include "Status.h"
 #include "KeyComparator.h"
+#include "KeyValueSize.h"
 
 namespace pmem {
     namespace storage {
@@ -19,9 +20,15 @@ namespace pmem {
             public:
                 SkipList(int towerSize, double probability);
 
-                Status put(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator);
+                Status put(const char *key,
+                           const char *value,
+                           KeyValueSize keyValueSize,
+                           pmem::storage::KeyComparator* keyComparator);
 
-                Status update(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator);
+                Status update(const char *key,
+                              const char *value,
+                              KeyValueSize keyValueSize,
+                              pmem::storage::KeyComparator* keyComparator);
 
                 Status deleteBy(const char *key, pmem::storage::KeyComparator* keyComparator);
 

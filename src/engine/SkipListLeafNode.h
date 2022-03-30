@@ -6,6 +6,7 @@
 #include "PersistentLeaf.h"
 #include "Status.h"
 #include "KeyComparator.h"
+#include "KeyValueSize.h"
 
 namespace pmem {
     namespace storage {
@@ -31,7 +32,10 @@ namespace pmem {
                 pmem::storage::KeyValuePair rightKeyValuePair();
 
                 std::pair<SkipListLeafNode *, Status>
-                put(const char *key, const char *value, pmem::storage::KeyComparator* keyComparator,
+                put(const char *key,
+                    const char *value,
+                    KeyValueSize keyValueSize,
+                    pmem::storage::KeyComparator* keyComparator,
                     std::function<void(void)> postPutHook = [] {});
 
                 std::pair<const char*, bool> getBy(const char *key, pmem::storage::KeyComparator* keyComparator);
@@ -40,7 +44,9 @@ namespace pmem {
                 scan(const char *beginKey, const char *endKey, int64_t maxPairs,
                      pmem::storage::KeyComparator* keyComparator);
 
-                Status update(const char *key, const char *value,
+                Status update(const char *key,
+                              const char *value,
+                              KeyValueSize keyValueSize,
                               pmem::storage::KeyComparator* keyComparator,
                               std::function<void(void)> postUpdateHook = [] {});
 

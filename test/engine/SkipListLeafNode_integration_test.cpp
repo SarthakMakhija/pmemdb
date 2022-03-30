@@ -9,11 +9,11 @@ using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 std::pair<SkipListLeafNode *, Status> put(SkipListLeafNode* node, const char* key, const char* value) {
-    return node->put(key, value, stringKeyComparator());
+    return node->put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator());
 }
 
 void update(SkipListLeafNode* node, const char* key, const char* value) {
-    node->update(key, value, stringKeyComparator());
+    node->update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator());
 }
 
 void deleteBy(SkipListLeafNode* node, const char* key) {

@@ -5,6 +5,7 @@
 #include "SkipListNode.h"
 #include "Status.h"
 #include "KeyComparator.h"
+#include "KeyValueSize.h"
 
 namespace pmem {
     namespace storage {
@@ -17,7 +18,10 @@ namespace pmem {
             public:
                 SkipListIterator(SkipListNode *startingNode, pmem::storage::KeyComparator* keyComparator);
 
-                Status put(const char *key, const char *value, double probability,
+                Status put(const char *key,
+                           const char *value,
+                           KeyValueSize keyValueSize,
+                           double probability,
                            std::function<void(void)> postPutHook = [] {});
 
                 std::pair<const char*, bool> getBy(const char *key);
@@ -26,7 +30,10 @@ namespace pmem {
 
                 std::vector <KeyValuePair> scan(const char *beginKey, const char *endKey, int64_t maxPairs);
 
-                Status update(const char *key, const char *value, std::function<void(void)> postUpdateHook = [] {});
+                Status update(const char *key,
+                              const char *value,
+                              KeyValueSize keyValueSize,
+                              std::function<void(void)> postUpdateHook = [] {});
 
                 Status deleteBy(const char *key, std::function<void(void)> postDeleteHook = [] {});
             };

@@ -11,11 +11,12 @@ std::pair<SkipListLeafNode *, Status> put(SkipListLeafNode* node,
                                           const char* key,
                                           const char* value,
                                           std::function<void(void)> postPutHook = [] {}) {
-    return node->put(key, value, stringKeyComparator(), postPutHook);
+
+    return node->put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator(), postPutHook);
 }
 
 Status update(SkipListLeafNode* node, const char* key, const char* value, std::function<void(void)> postUpdateHook = [] {}) {
-    return node->update(key, value, stringKeyComparator(), postUpdateHook);
+    return node->update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator(), postUpdateHook);
 }
 
 Status deleteBy(SkipListLeafNode* node, const char* key, std::function<void(void)> postDeleteHook = [] {}) {

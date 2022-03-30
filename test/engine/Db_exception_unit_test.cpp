@@ -1,23 +1,24 @@
 #include <gtest/gtest.h>
 #include <string>
 #include "./DbFixture.h"
+#include "./DbTestsHelper.h"
 
 using namespace pmem::storage;
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenKeyIsBlankWhilePutting) {
-    ASSERT_THROW(DbFixture::getDb()->put("", "Hard disk drive"), std::invalid_argument);
+    ASSERT_THROW(put(DbFixture::getDb(), "", "Hard disk drive"), std::invalid_argument);
 }
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenValueIsBlankWhilePutting) {
-    ASSERT_THROW(DbFixture::getDb()->put("HDD", ""), std::invalid_argument);
+    ASSERT_THROW(put(DbFixture::getDb(), "HDD", ""), std::invalid_argument);
 }
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenKeyIsBlankWhileUpdating) {
-    ASSERT_THROW(DbFixture::getDb()->update("", "Hard disk drive"), std::invalid_argument);
+    ASSERT_THROW(update(DbFixture::getDb(), "", "Hard disk drive"), std::invalid_argument);
 }
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenValueIsBlank) {
-    ASSERT_THROW(DbFixture::getDb()->update("HDD", ""), std::invalid_argument);
+    ASSERT_THROW(update(DbFixture::getDb(), "HDD", ""), std::invalid_argument);
 }
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenMaxPairsIs0) {
