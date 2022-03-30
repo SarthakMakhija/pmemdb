@@ -19,8 +19,9 @@ namespace pmem {
         }
 
         Status Db::put(const char* key, const char* value, KeyValueSize keyValueSize) {
+            //TODO: Change this
             if (strlen(key) == 0 || strlen(value) == 0) {
-                    throw std::invalid_argument("key and value can not be blank while putting");
+                throw std::invalid_argument("key and value can not be blank while putting");
             }
 
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
@@ -28,6 +29,7 @@ namespace pmem {
         }
 
         Status Db::update(const char* key, const char* value, KeyValueSize keyValueSize) {
+            //TODO: Change this
             if (strlen(key) == 0 || strlen(value) == 0) {
                 throw std::invalid_argument("key and value can not be blank while updating");
             }
@@ -37,6 +39,7 @@ namespace pmem {
         }
 
         Status Db::deleteBy(const char* key) {
+            //TODO: Change this
             if (strlen(key) == 0) {
                 throw std::invalid_argument("key can not be blank while deleting the corresponding value");
             }
