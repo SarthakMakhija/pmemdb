@@ -58,7 +58,8 @@ namespace pmem {
             if (maxPairs <= 0) {
                 throw std::invalid_argument("maxPairs must be greater than 0");
             }
-            if (strcmp(beginKey, endKey) == 0 || strcmp(endKey, beginKey) < 0 ) {
+            auto comparisonResult = this->keyComparator->compare(endKey, beginKey);
+            if (comparisonResult == 0 || comparisonResult < 0 ) {
                 throw std::invalid_argument(
                         "beginKey and endKey must be different and endKey must be greater than beginKey");
             }
@@ -69,6 +70,8 @@ namespace pmem {
 
         void Db::close() {
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
+            this->keyComparator = nullptr;
+            delete this->keyComparator;
             delete this->persistentMemoryPool;
         }
     }
