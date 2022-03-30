@@ -4,6 +4,7 @@
 
 #include "../../src/engine/Db.h"
 #include "../../src/engine/StringKeyComparator.h"
+#include "./DbTestsHelper.h"
 
 using namespace pmem::storage;
 
@@ -37,7 +38,7 @@ TEST(Db_Functional, Add500KeyValuePairs) {
         values.push_back(value);
     }
     for (int index = 0; index < 500; index++) {
-        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+        put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
     for (int count = 1; count <= 500; count++) {
         std::string key   = "Key-"   + std::to_string(count);
@@ -64,7 +65,7 @@ TEST(Db_Functional, DoesAScan) {
         values.push_back(value);
     }
     for (int index = 0; index < keys.size(); index++) {
-        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+        put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
     std::string beginKey = "50";
     std::string endKey   = "70";
@@ -102,7 +103,7 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
         values.push_back(value);
     }
     for (int index = 0; index < keys.size(); index++) {
-        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+        put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
 
     std::string beginKey = "50";
@@ -139,7 +140,7 @@ TEST(Db_Functional, Update500KeyValuePairs) {
         values.push_back(value);
     }
     for (int index = 0; index < 500; index++) {
-        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+        put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
     
     std::vector<std::string> valuesToUpdate;
@@ -148,7 +149,7 @@ TEST(Db_Functional, Update500KeyValuePairs) {
     }
 
     for (int index = 0; index < 500; index++) {
-        db -> update(keys.at(index).c_str(), valuesToUpdate.at(index).c_str());
+        update(db, keys.at(index).c_str(), valuesToUpdate.at(index).c_str());
     }
     for (int count = 1; count <= 500; count++) {
         std::string key           = "Key-"   + std::to_string(count);
@@ -175,11 +176,11 @@ TEST(Db_Functional, DeleteKeys) {
         values.push_back(value);
     }
     for (int index = 0; index < 500; index++) {
-        db -> put(keys.at(index).c_str(), values.at(index).c_str());
+        put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
 
     std::string deleteKey = "Key-"    + std::to_string(1);
-    db -> deleteBy(deleteKey.c_str());
+    deleteBy(db, deleteKey.c_str());
 
     std::vector<std::string> keysToDelete;
     for (int count = 500; count <= 400; count++) {
@@ -188,7 +189,7 @@ TEST(Db_Functional, DeleteKeys) {
     }
 
     for (int index = 0; index < keysToDelete.size(); index++) {
-        db -> deleteBy(keysToDelete.at(index).c_str());
+        deleteBy(db, keysToDelete.at(index).c_str());
     }
 
     for (int count = 2; count < 400; count++) {
