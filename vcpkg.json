@@ -4,6 +4,7 @@
     "dependencies": [
       "pmdk",
       "libpmemobj-cpp",
-      "gtest"      
+      "gtest",
+      "benchmark"
     ]
   }
