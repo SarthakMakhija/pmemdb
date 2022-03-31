@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # include engine and dependencies
 add_subdirectory(src/engine)
 
-# Enable testing
+# Enable unit/integration testing
 add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
         PRIVATE
@@ -32,7 +32,14 @@ target_sources(pmemdb_tests
         test/engine/DbTestsHelper.cpp
 )
 
+# Enable benchmark testing
+add_executable(pmemdb_benchmark_tests "")
+target_sources(pmemdb_benchmark_tests
+        PRIVATE
+        test/engine/benchmark/DbBenchmark.cpp)
+
 find_package(GTest CONFIG REQUIRED)
+find_package(benchmark CONFIG REQUIRED)
 
 find_path(LIBPMEMOBJ_INCLUDE_DIR libpmemobj.h)
 find_path(LIBPMEM_INCLUDE_DIR libpmem.h)
@@ -53,4 +60,14 @@ target_link_libraries(pmemdb_tests
 add_test(
         NAME pmemdb_tests
         COMMAND $<TARGET_FILE:pmemdb_tests>
+)
+
+target_link_libraries(pmemdb_benchmark_tests
+        PRIVATE
+        SkipList
+        benchmark::benchmark)
+
+add_test(
+        NAME pmemdb_benchmark_tests
+        COMMAND $<TARGET_FILE:pmemdb_benchmark_tests>
 )
