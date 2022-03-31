@@ -166,12 +166,12 @@ namespace pmem {
             }
 
             int SkipListInternalNode::generateLevel(int maxLevel, double probability) {
-                double random = (double) rand() / RAND_MAX;
-                int level = 1;
-
-                while (random < probability && level < maxLevel) {
-                    level = level + 1;
-                    random = (double) rand() / RAND_MAX;
+                int level = rand() & ((1 << maxLevel) - 1);
+                if (level == 0) {
+                    return 1;
+                }
+                if (level > maxLevel) {
+                    return maxLevel;
                 }
                 return level;
             }
