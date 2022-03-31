@@ -17,10 +17,6 @@ class DbInitFixture : public benchmark::Fixture {
 private:
     pmem::storage::Db *db;
     const char *filePath = "./benchmark.log";
-
-    std::mt19937_64 generator;
-    std::uniform_real_distribution<> distribution;
-
 public:
     void SetUp(const ::benchmark::State &state) {
         db = pmem::storage::Db::open(
@@ -50,7 +46,7 @@ BENCHMARK_F(DbInitFixture, DbPut)(benchmark::State& state) {
         auto randomKey   = new std::string(random_string());
         auto randomValue = new std::string(random_string());
         const char* key   = randomKey->c_str();
-        const char* value = randomKey->c_str();
+        const char* value = randomValue->c_str();
         KeyValueSize keyValueSize = KeyValueSize(strlen(key) + 1, strlen(value) + 1);
         state.ResumeTiming();
 
