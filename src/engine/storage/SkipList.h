@@ -4,9 +4,9 @@
 #include <vector>
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
-#include "Status.h"
-#include "KeyComparator.h"
-#include "KeyValueSize.h"
+#include "../db/Status.h"
+#include "../comparator/KeyComparator.h"
+#include "../db/KeyValueSize.h"
 
 namespace pmem {
     namespace storage {

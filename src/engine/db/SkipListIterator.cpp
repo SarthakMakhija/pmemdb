@@ -1,6 +1,6 @@
 #include "SkipListIterator.h"
-#include "SkipListInternalNode.h"
-#include "SkipListLeafNode.h"
+#include "../storage/SkipListInternalNode.h"
+#include "../storage/SkipListLeafNode.h"
 #include <algorithm>
 
 namespace pmem {

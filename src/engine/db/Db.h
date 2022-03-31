@@ -6,9 +6,9 @@
 #include <shared_mutex>
 
 #include "Status.h"
-#include "SkipList.h"
-#include "PersistentMemoryPool.h"
-#include "Configuration.h"
+#include "../storage/SkipList.h"
+#include "../storage/PersistentMemoryPool.h"
+#include "../configuration/Configuration.h"
 #include "KeyValueSize.h"
 
 namespace pmem {

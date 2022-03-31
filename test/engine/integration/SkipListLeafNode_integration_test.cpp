@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <string>
-#include "../../../src/engine/SkipListLeafNode.h"
-#include "../../../src/engine/KeyValuePair.h"
+#include "../../../src/engine/storage/SkipListLeafNode.h"
+#include "../../../src/engine/db/KeyValuePair.h"
 #include "PersistentMemoryPoolFixture.h"
 #include "../SkipListNodeTestUtils.h"
 

@@ -1,5 +1,5 @@
 #include "SkipListInternalNode.h"
-#include "KeyValuePair.h"
+#include "../db/KeyValuePair.h"
 
 namespace pmem {
     namespace storage {

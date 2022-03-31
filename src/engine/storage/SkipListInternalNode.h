@@ -5,7 +5,7 @@
 #include "SkipListNode.h"
 #include "SkipListLeafNode.h"
 #include "WritePosition.h"
-#include "KeyComparator.h"
+#include "../comparator/KeyComparator.h"
 
 namespace pmem {
     namespace storage {

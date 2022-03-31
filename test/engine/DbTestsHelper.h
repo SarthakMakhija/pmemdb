@@ -1,7 +1,7 @@
 #ifndef _DbTestsHelper_
 #define _DbTestsHelper_
 
-#include "../../src/engine/Db.h"
+#include "../../src/engine/db/Db.h"
 
 using namespace pmem::storage;
 using namespace pmem::storage::internal;

@@ -2,8 +2,8 @@
 #include <string>
 #include  <cstdio>
 
-#include "../../../src/engine/Db.h"
-#include "../../../src/engine/StringKeyComparator.h"
+#include "../../../src/engine/db/Db.h"
+#include "../../../src/engine/comparator/StringKeyComparator.h"
 #include "../DbTestsHelper.h"
 
 using namespace pmem::storage;

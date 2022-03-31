@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <string>
-#include "../../../src/engine/SkipListInternalNode.h"
-#include "../../../src/engine/SkipListLeafNode.h"
-#include "../../../src/engine/SkipListIterator.h"
+#include "../../../src/engine/storage/SkipListInternalNode.h"
+#include "../../../src/engine/storage/SkipListLeafNode.h"
+#include "../../../src/engine/db/SkipListIterator.h"
 #include "PersistentMemoryPoolFixture.h"
 #include "../SkipListNodeTestUtils.h"
 

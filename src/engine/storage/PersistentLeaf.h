@@ -7,7 +7,7 @@
 #include <libpmemobj++/transaction.hpp>
 #include <libpmemobj++/pool.hpp>
 #include <libpmemobj/pool_base.h>
-#include "KeyValueSize.h"
+#include "../db/KeyValueSize.h"
 
 using pmem::obj::delete_persistent;
 using pmem::obj::make_persistent;

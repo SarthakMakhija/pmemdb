@@ -2,7 +2,7 @@
 #include <string>
 #include "../DbFixture.h"
 #include "../DbTestsHelper.h"
-#include "../../../src/engine/Db.h"
+#include "../../../src/engine/db/Db.h"
 
 using namespace pmem::storage;
 

@@ -2,7 +2,7 @@
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
-#include "SkipListIterator.h"
+#include "../db/SkipListIterator.h"
 #include <stdlib.h>
 
 namespace pmem {

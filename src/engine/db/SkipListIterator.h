@@ -2,9 +2,9 @@
 #define _SkipListIterator_
 
 #include <functional>
-#include "SkipListNode.h"
+#include "../storage/SkipListNode.h"
 #include "Status.h"
-#include "KeyComparator.h"
+#include "../comparator/KeyComparator.h"
 #include "KeyValueSize.h"
 
 namespace pmem {

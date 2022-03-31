@@ -5,8 +5,8 @@
 #include  <cstdio>
 #include  <string>
 
-#include "../../src/engine/Db.h"
-#include "../../src/engine/StringKeyComparator.h"
+#include "../../src/engine/db/Db.h"
+#include "../../src/engine/comparator/StringKeyComparator.h"
 
 using namespace pmem::storage::internal;
 
