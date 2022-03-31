@@ -13,20 +13,20 @@ add_subdirectory(src/engine)
 add_executable(pmemdb_tests "")
 target_sources(pmemdb_tests
         PRIVATE
-        test/engine/SkipList_exception_unit_test.cpp
-        test/engine/SkipListInternalNode_integration_test.cpp
-        test/engine/SkipListIterator_integration_test.cpp
-        test/engine/SkipListLeafNode_integration_test.cpp
-        test/engine/SkipListLeafNode_transactional_write_integration_test.cpp
-        test/engine/SkipListIterator_atomic_write_integration_test.cpp
-        test/engine/Db_functional_test.cpp
-        test/engine/Db_concurrent_integration_test.cpp
-        test/engine/Db_integration_test.cpp
-        test/engine/Db_exception_unit_test.cpp
-        test/engine/Db_serialized_key_integration_test.cpp
+        test/engine/unit/SkipList_exception_unit_test.cpp
+        test/engine/unit/Db_exception_unit_test.cpp
+        test/engine/integration/SkipListInternalNode_integration_test.cpp
+        test/engine/integration/SkipListIterator_integration_test.cpp
+        test/engine/integration/SkipListLeafNode_integration_test.cpp
+        test/engine/integration/SkipListLeafNode_transactional_write_integration_test.cpp
+        test/engine/integration/SkipListIterator_atomic_write_integration_test.cpp
+        test/engine/integration/Db_concurrent_integration_test.cpp
+        test/engine/integration/Db_integration_test.cpp
+        test/engine/integration/Db_serialized_key_integration_test.cpp
+        test/engine/functional/Db_functional_test.cpp
         test/engine/SkipListNodeTestUtils.h
         test/engine/SkipListNodeTestUtils.cpp
-        test/engine/PersistentMemoryPoolFixture.h
+        test/engine/integration/PersistentMemoryPoolFixture.h
         test/engine/DbFixture.h
         test/engine/DbTestsHelper.h
         test/engine/DbTestsHelper.cpp

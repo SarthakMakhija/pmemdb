@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <string>
-#include "../../src/engine/SkipListLeafNode.h"
-#include "./PersistentMemoryPoolFixture.h"
-#include "./SkipListNodeTestUtils.h"
+#include "../../../src/engine/SkipListLeafNode.h"
+#include "PersistentMemoryPoolFixture.h"
+#include "../SkipListNodeTestUtils.h"
 
 using namespace pmem::storage;
 using namespace pmem::storage::internal;

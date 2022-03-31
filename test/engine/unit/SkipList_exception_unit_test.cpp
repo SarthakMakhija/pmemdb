@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../../src/engine/SkipList.h"
-#include "./PersistentMemoryPoolFixture.h"
+#include "../../../src/engine/SkipList.h"
+#include "../integration/PersistentMemoryPoolFixture.h"
 
 using namespace pmem::storage;
 

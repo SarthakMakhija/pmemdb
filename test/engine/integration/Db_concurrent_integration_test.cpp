@@ -2,8 +2,8 @@
 #include <string>
 #include <thread>
 
-#include "./DbFixture.h"
-#include "./DbTestsHelper.h"
+#include "../DbFixture.h"
+#include "../DbTestsHelper.h"
 
 using namespace pmem::storage;
 

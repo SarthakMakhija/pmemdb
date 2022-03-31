@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <string>
-#include "./DbFixture.h"
-#include "./DbTestsHelper.h"
-#include "../../src/engine/Db.h"
+#include "../DbFixture.h"
+#include "../DbTestsHelper.h"
+#include "../../../src/engine/Db.h"
 
 using namespace pmem::storage;
 
