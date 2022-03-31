@@ -35,6 +35,8 @@ namespace pmem {
 
             std::vector <pmem::storage::KeyValuePair> scan(const char* beginKey, const char* endKey, int64_t maxPairs);
 
+            unsigned long totalKeys();
+
             void close();
         };
     }

@@ -214,3 +214,25 @@ TEST(Db_Functional, DeleteKeys) {
 
     closeDb(db);
 }
+
+
+TEST(Db_Functional, GetTotalKeys) {
+    Db* db = openDb();
+    std::vector<std::string> keys;
+    std::vector<std::string> values;
+
+    for (int count = 1; count <= 500; count++) {
+        std::string key   = "Key-"   + std::to_string(count);
+        std::string value = "Value-" + std::to_string(count);
+
+        keys.push_back(key);
+        values.push_back(value);
+    }
+    for (int index = 0; index < 500; index++) {
+        put(db, keys.at(index).c_str(), values.at(index).c_str());
+    }
+    unsigned long totalKeys = db->totalKeys();
+
+    ASSERT_EQ(500, totalKeys);
+    closeDb(db);
+}

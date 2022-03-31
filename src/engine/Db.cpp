@@ -71,6 +71,11 @@ namespace pmem {
             return this->skipList->scan(beginKey, endKey, maxPairs, this->keyComparator);
         }
 
+        unsigned long Db::totalKeys() {
+            std::shared_lock <std::shared_mutex> lock(this->mutex_);
+            return this->skipList->totalKeys();
+        }
+
         void Db::close() {
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             this->keyComparator = nullptr;

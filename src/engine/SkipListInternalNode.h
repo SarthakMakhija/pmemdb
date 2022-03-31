@@ -12,20 +12,20 @@ namespace pmem {
         namespace internal {
             class SkipListInternalNode : public SkipListNode {
             private:
-                const char* key;
+                const char *key;
                 SkipListNode *down;
                 std::vector<SkipListInternalNode *> forwards;
 
                 int generateLevel(int maxLevel, double probability);
 
             public:
-                SkipListInternalNode(const char* key, int level);
+                SkipListInternalNode(const char *key, int level);
 
                 bool isLeaf();
 
-                bool matchesKey(const char* key, KeyComparator* keyComparator) const;
+                bool matchesKey(const char *key, KeyComparator *keyComparator) const;
 
-                bool isKeyLessEqualTo(const char* key, KeyComparator* keyComparator);
+                bool isKeyLessEqualTo(const char *key, KeyComparator *keyComparator);
 
                 KeyValuePair keyValuePair();
 
@@ -33,20 +33,23 @@ namespace pmem {
 
                 void attach(SkipListLeafNode *down);
 
-                std::pair<SkipListNode *, bool> getBy(const char* key, KeyComparator* keyComparator);
+                std::pair<SkipListNode *, bool> getBy(const char *key, KeyComparator *keyComparator);
 
-                std::pair<SkipListNode *, bool> scan(const char* beginKey, KeyComparator* keyComparator);
+                std::pair<SkipListNode *, bool> scan(const char *beginKey, KeyComparator *keyComparator);
 
-                PutPosition putPositionOf(const char* key, double withProbability, KeyComparator* keyComparator);
+                PutPosition putPositionOf(const char *key, double withProbability, KeyComparator *keyComparator);
 
                 SkipListNode *
-                put(const char* key, std::vector<SkipListInternalNode *> positions, int nodeLevel);
+                put(const char *key, std::vector<SkipListInternalNode *> positions, int nodeLevel);
 
-                UpdatePosition updatePositionOf(const char* key, KeyComparator* keyComparator);
+                UpdatePosition updatePositionOf(const char *key, KeyComparator *keyComparator);
 
-                DeletePosition deletePositionOf(const char* key, KeyComparator* keyComparator);
+                DeletePosition deletePositionOf(const char *key, KeyComparator *keyComparator);
 
-                void deleteBy(const char* key, std::vector<SkipListInternalNode *> positions, int deleteLevel, KeyComparator* keyComparator);
+                void deleteBy(const char *key, std::vector<SkipListInternalNode *> positions, int deleteLevel,
+                              KeyComparator *keyComparator);
+
+                unsigned long totalKeys();
             };
         }
     }

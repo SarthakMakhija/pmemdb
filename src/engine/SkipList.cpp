@@ -61,6 +61,10 @@ namespace pmem {
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).scan(beginKey, endKey,
                                                                                                    maxPairs);
             }
+
+            unsigned long SkipList::totalKeys() {
+                return pmem::storage::internal::SkipListIterator(this->header, nullptr).totalKeys();
+            }
         }
     }
 }

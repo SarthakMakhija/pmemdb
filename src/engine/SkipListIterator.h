@@ -13,10 +13,10 @@ namespace pmem {
             class SkipListIterator {
             private:
                 SkipListNode *startingNode;
-                pmem::storage::KeyComparator* keyComparator;
+                pmem::storage::KeyComparator *keyComparator;
 
             public:
-                SkipListIterator(SkipListNode *startingNode, pmem::storage::KeyComparator* keyComparator);
+                SkipListIterator(SkipListNode *startingNode, pmem::storage::KeyComparator *keyComparator);
 
                 Status put(const char *key,
                            const char *value,
@@ -24,9 +24,9 @@ namespace pmem {
                            double probability,
                            std::function<void(void)> postPutHook = [] {});
 
-                std::pair<const char*, bool> getBy(const char *key);
+                std::pair<const char *, bool> getBy(const char *key);
 
-                std::vector <std::pair<const char*, bool>> multiGet(std::vector<const char *> keys);
+                std::vector <std::pair<const char *, bool>> multiGet(std::vector<const char *> keys);
 
                 std::vector <KeyValuePair> scan(const char *beginKey, const char *endKey, int64_t maxPairs);
 
@@ -36,6 +36,8 @@ namespace pmem {
                               std::function<void(void)> postUpdateHook = [] {});
 
                 Status deleteBy(const char *key, std::function<void(void)> postDeleteHook = [] {});
+
+                unsigned long totalKeys();
             };
         }
     }

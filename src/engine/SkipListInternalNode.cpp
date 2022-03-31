@@ -4,7 +4,7 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-            SkipListInternalNode::SkipListInternalNode(const char* key, int level) {
+            SkipListInternalNode::SkipListInternalNode(const char *key, int level) {
                 this->key = key;
                 this->down = nullptr;
 
@@ -18,11 +18,11 @@ namespace pmem {
                 return false;
             }
 
-            bool SkipListInternalNode::matchesKey(const char* key, KeyComparator* keyComparator) const {
+            bool SkipListInternalNode::matchesKey(const char *key, KeyComparator *keyComparator) const {
                 return keyComparator->compare(this->key, key) == 0;
             }
 
-            bool SkipListInternalNode::isKeyLessEqualTo(const char* key, KeyComparator* keyComparator) {
+            bool SkipListInternalNode::isKeyLessEqualTo(const char *key, KeyComparator *keyComparator) {
                 return keyComparator->compare(this->key, key) <= 0;
             }
 
@@ -38,7 +38,7 @@ namespace pmem {
                 this->down = down;
             }
 
-            std::pair<SkipListNode *, bool> SkipListInternalNode::getBy(const char* key, KeyComparator* keyComparator) {
+            std::pair<SkipListNode *, bool> SkipListInternalNode::getBy(const char *key, KeyComparator *keyComparator) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
                     while (current->forwards[level] && keyComparator->compare(current->forwards[level]->key, key) < 0) {
@@ -48,28 +48,31 @@ namespace pmem {
                 current = current->forwards[0];
 
                 if (current && keyComparator->compare(current->key, key) == 0) {
-                    return std::make_pair(current -> down, true);
+                    return std::make_pair(current->down, true);
                 }
                 return std::make_pair(nullptr, false);
             }
 
-            std::pair<SkipListNode *, bool> SkipListInternalNode::scan(const char* beginKey, KeyComparator* keyComparator) {
+            std::pair<SkipListNode *, bool>
+            SkipListInternalNode::scan(const char *beginKey, KeyComparator *keyComparator) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && keyComparator->compare(current->forwards[level]->key, beginKey) <= 0) {
+                    while (current->forwards[level] &&
+                           keyComparator->compare(current->forwards[level]->key, beginKey) <= 0) {
                         current = current->forwards[level];
                     }
                 }
-                if (current && keyComparator->compare(current -> key, beginKey) < 0) {
-                    current = current -> forwards[0];
+                if (current && keyComparator->compare(current->key, beginKey) < 0) {
+                    current = current->forwards[0];
                 }
                 if (current != nullptr) {
-                    return std::make_pair(current -> down, true);
+                    return std::make_pair(current->down, true);
                 }
                 return std::make_pair(nullptr, false);
             }
 
-            PutPosition SkipListInternalNode::putPositionOf(const char* key, double withProbability, KeyComparator* keyComparator) {
+            PutPosition
+            SkipListInternalNode::putPositionOf(const char *key, double withProbability, KeyComparator *keyComparator) {
                 SkipListInternalNode *current = this;
                 std::vector < SkipListInternalNode * > positions(this->forwards.size(), nullptr);
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
@@ -87,7 +90,7 @@ namespace pmem {
                 return PutPosition{empty, -1, nullptr, nullptr};
             }
 
-            SkipListNode *SkipListInternalNode::put(const char* key,
+            SkipListNode *SkipListInternalNode::put(const char *key,
                                                     std::vector<SkipListInternalNode *> positions,
                                                     int nodeLevel) {
 
@@ -99,7 +102,7 @@ namespace pmem {
                 return newNode;
             }
 
-            UpdatePosition SkipListInternalNode::updatePositionOf(const char* key, KeyComparator* keyComparator) {
+            UpdatePosition SkipListInternalNode::updatePositionOf(const char *key, KeyComparator *keyComparator) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
                     while (current->forwards[level] && keyComparator->compare(current->forwards[level]->key, key) < 0) {
@@ -113,7 +116,7 @@ namespace pmem {
                 return UpdatePosition{nullptr, nullptr};
             }
 
-            DeletePosition SkipListInternalNode::deletePositionOf(const char* key, KeyComparator* keyComparator) {
+            DeletePosition SkipListInternalNode::deletePositionOf(const char *key, KeyComparator *keyComparator) {
                 SkipListInternalNode *current = this;
                 std::vector < SkipListInternalNode * > positions(this->forwards.size(), nullptr);
 
@@ -130,10 +133,10 @@ namespace pmem {
                 return DeletePosition{positions, -1, nullptr, nullptr};
             }
 
-            void SkipListInternalNode::deleteBy(const char* key,
+            void SkipListInternalNode::deleteBy(const char *key,
                                                 std::vector<SkipListInternalNode *> positions,
                                                 int deleteLevel,
-                                                KeyComparator* keyComparator) {
+                                                KeyComparator *keyComparator) {
 
                 SkipListInternalNode *current = this;
                 if (current != nullptr && keyComparator->compare(current->key, key) == 0) {
@@ -149,6 +152,17 @@ namespace pmem {
                     }
                     delete current;
                 }
+            }
+
+            unsigned long SkipListInternalNode::totalKeys() {
+                SkipListInternalNode *current = this;
+                unsigned long count = 0;
+
+                while (current->forwards[0]) {
+                    current = current->forwards[0];
+                    count = count + 1;
+                }
+                return count;
             }
 
             int SkipListInternalNode::generateLevel(int maxLevel, double probability) {

@@ -110,6 +110,10 @@ namespace pmem {
                 }
                 return Status::KeyNotFound;
             }
+
+            unsigned long SkipListIterator::totalKeys() {
+                return static_cast<SkipListInternalNode *>(this->startingNode)->totalKeys();
+            }
         }
     }
 }
