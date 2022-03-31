@@ -16,7 +16,7 @@ namespace pmem {
                 SkipListNode *down;
                 std::vector<SkipListInternalNode *> forwards;
 
-                int generateLevel(int maxLevel, double probability);
+                int generateLevel(int maxLevel);
 
             public:
                 SkipListInternalNode(const char *key, int level);
@@ -37,7 +37,7 @@ namespace pmem {
 
                 std::pair<SkipListNode *, bool> scan(const char *beginKey, KeyComparator *keyComparator);
 
-                PutPosition putPositionOf(const char *key, double withProbability, KeyComparator *keyComparator);
+                PutPosition putPositionOf(const char *key, KeyComparator *keyComparator);
 
                 SkipListNode *
                 put(const char *key, std::vector<SkipListInternalNode *> positions, int nodeLevel);

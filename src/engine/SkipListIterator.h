@@ -21,7 +21,6 @@ namespace pmem {
                 Status put(const char *key,
                            const char *value,
                            KeyValueSize keyValueSize,
-                           double probability,
                            std::function<void(void)> postPutHook = [] {});
 
                 std::pair<const char *, bool> getBy(const char *key);

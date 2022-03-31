@@ -5,9 +5,9 @@
 using namespace pmem::storage;
 
 TEST(SkipListException, SkipListException_ThrowInvalidArgumentExceptionGivenTowerSizeIsZero) {
-    ASSERT_THROW(new SkipList(0, 0.5), std::invalid_argument);
+    ASSERT_THROW(new SkipList(0), std::invalid_argument);
 }
 
 TEST(SkipListException, SkipListException_ThrowInvalidArgumentExceptionGivenTowerSizeIsLessThanZero) {
-    ASSERT_THROW(new SkipList(-1, 0.5), std::invalid_argument);
+    ASSERT_THROW(new SkipList(-1), std::invalid_argument);
 }

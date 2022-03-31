@@ -14,7 +14,7 @@ void put(SkipListIterator iterator,
          const char* value,
          std::function<void(void)> postPutHook = [] {}) {
 
-    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), 0.5, postPutHook);
+    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), postPutHook);
 }
 
 void update(SkipListIterator iterator,

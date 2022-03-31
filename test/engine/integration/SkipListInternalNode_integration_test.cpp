@@ -9,8 +9,8 @@
 using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
-void put(SkipListInternalNode* node, const char* key, const char* value, double probability = 0.5) {
-  PutPosition putPosition = node -> putPositionOf(key, probability, stringKeyComparator());
+void put(SkipListInternalNode* node, const char* key, const char* value) {
+  PutPosition putPosition = node -> putPositionOf(key, stringKeyComparator());
   if (putPosition.newLevel != -1) {
       std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(
               key,

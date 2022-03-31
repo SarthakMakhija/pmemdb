@@ -22,7 +22,6 @@ public:
                 pmem::storage::Configuration(filePath,
                                              8 * 1024 * 1024,
                                              8,
-                                             0.5,
                                              new pmem::storage::StringKeyComparator()));
     }
 

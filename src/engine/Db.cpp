@@ -10,9 +10,7 @@ namespace pmem {
                     configuration.getFileSize()
             );
 
-            db->skipList = new internal::SkipList(configuration.getSkipListTowerSize(),
-                                        configuration.getProbability()
-            );
+            db->skipList = new internal::SkipList(configuration.getSkipListTowerSize());
 
             db->keyComparator = configuration.getKeyComparator();
             return db;

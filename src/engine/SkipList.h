@@ -15,10 +15,9 @@ namespace pmem {
             class SkipList {
             private:
                 pmem::storage::internal::SkipListInternalNode *header;
-                double probability;
 
             public:
-                SkipList(int towerSize, double probability);
+                SkipList(int towerSize);
 
                 Status put(const char *key,
                            const char *value,

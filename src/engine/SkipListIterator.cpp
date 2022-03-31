@@ -13,11 +13,9 @@ namespace pmem {
             Status SkipListIterator::put(const char *key,
                                          const char *value,
                                          KeyValueSize keyValueSize,
-                                         double probability,
                                          std::function<void(void)> postPutHook) {
 
                 PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
-                                                                                                                 probability,
                                                                                                                  keyComparator);
                 if (putPosition.leaf != nullptr) {
                     std::pair < SkipListLeafNode * ,

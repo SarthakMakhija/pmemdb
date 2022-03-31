@@ -34,11 +34,10 @@ public:
 
 const char* serializedKeyFilePath = "./serializedKey.log";
 
-Db* open(int skipListTowerSize = 100, double probability = 0.5) {
+Db* open(int skipListTowerSize = 100) {
     Configuration configuration = Configuration(serializedKeyFilePath,
                                                 8 * 1024 * 1024,
                                                 skipListTowerSize,
-                                                probability,
                                                 new EmployeeIdComparator());
 
     return Db::open(configuration);

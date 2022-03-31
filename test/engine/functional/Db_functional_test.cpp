@@ -10,11 +10,10 @@ using namespace pmem::storage;
 
 const char* filePath = "./functional.log";
 
-Db* openDb(int skipListTowerSize = 100, double probability = 0.5) {
+Db* openDb(int skipListTowerSize = 100) {
     Configuration configuration = Configuration(filePath,
                                                 8 * 1024 * 1024,
                                                 skipListTowerSize,
-                                                probability,
                                                 new StringKeyComparator());
 
     return Db::open(configuration);
@@ -91,7 +90,7 @@ TEST(Db_Functional, DoesAScan) {
 }
 
 TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
-    Db* db = openDb(100, 0.25);
+    Db* db = openDb(100);
     std::vector<std::string> keys;
     std::vector<std::string> values;
 
@@ -128,7 +127,7 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
 }
 
 TEST(Db_Functional, Update500KeyValuePairs) {
-    Db* db = openDb(100, 0.125);
+    Db* db = openDb(100);
     std::vector<std::string> keys;
     std::vector<std::string> values;
 
@@ -164,7 +163,7 @@ TEST(Db_Functional, Update500KeyValuePairs) {
 }
 
 TEST(Db_Functional, DeleteKeys) {
-    Db* db = openDb(100, 0.125);
+    Db* db = openDb(100);
     std::vector<std::string> keys;
     std::vector<std::string> values;
 

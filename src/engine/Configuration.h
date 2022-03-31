@@ -12,14 +12,12 @@ namespace pmem {
             const char *filePath;
             uint64_t fileSize;
             int skipListTowerSize;
-            double probability;
             KeyComparator *keyComparator;
 
         public:
             Configuration(const char *filePath,
                           uint64_t fileSize,
                           int skipListTowerSize,
-                          double probability,
                           KeyComparator *keyComparator);
 
             const char *getFilePath();
@@ -27,8 +25,6 @@ namespace pmem {
             uint64_t getFileSize();
 
             int getSkipListTowerSize();
-
-            double getProbability();
 
             KeyComparator *getKeyComparator();
         };

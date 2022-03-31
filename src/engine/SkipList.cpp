@@ -9,19 +9,16 @@ namespace pmem {
     namespace storage {
         namespace internal {
 
-            SkipList::SkipList(int towerSize, double probability) {
+            SkipList::SkipList(int towerSize) {
                 if (towerSize < 1) {
                     throw std::invalid_argument("towerSize has to be greater than or equal to one");
                 }
-                if (probability < 0 || probability > 1) {
-                    throw std::invalid_argument("probability must be less than 1 and greater than zero");
-                }
+
                 auto *sentinelLeafNode = new pmem::storage::internal::SkipListLeafNode();
                 sentinelLeafNode->persist();
 
                 this->header = new pmem::storage::internal::SkipListInternalNode("", towerSize);
                 this->header->attach(sentinelLeafNode);
-                this->probability = probability;
             }
 
             Status SkipList::put(const char *key,
@@ -31,8 +28,7 @@ namespace pmem {
 
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).put(key,
                                                                                                   value,
-                                                                                                  keyValueSize,
-                                                                                                  this->probability);
+                                                                                                  keyValueSize);
             }
 
             Status SkipList::update(const char *key,
