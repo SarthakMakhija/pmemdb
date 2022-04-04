@@ -7,7 +7,7 @@
 
 using namespace pmem::storage;
 
-const char *filePath = "./benchmark.log";
+const char *dbFilePath = "./DB_Benchmark.log";
 
 class UInt32KeyComparator : public KeyComparator {
     int compare(char const *a, char const *b) const {
@@ -24,16 +24,15 @@ class UInt32KeyComparator : public KeyComparator {
 };
 
 static Db *SetupDB() {
-    return Db::open(Configuration(filePath, 512 * 1024 * 1024, 1000, new UInt32KeyComparator()));
+    return Db::open(Configuration(dbFilePath, 512 * 1024 * 1024, 1000, new UInt32KeyComparator()));
 }
 
 static void TeardownDB(Db *db) {
     db->close();
-    remove(filePath);
+    remove(dbFilePath);
 }
 
 static void DbPut(benchmark::State &state) {
-
     uint64_t maximumNumberOfKeys = state.range(0);
     uint64_t perKeySize = state.range(1);
 
@@ -86,14 +85,14 @@ static void DBGet(benchmark::State &state) {
     static Db *db;
     if (state.thread_index() == 0) {
         db = SetupDB();
-        for (uint64_t i = 0; i < numberOfKeys; i++) {
+        for (uint64_t count = 0; count < numberOfKeys; count++) {
             Slice slice = kg.Next();
             char *key = slice.buff;
             char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
             KeyValueSize keyValueSize = KeyValueSize(slice.keySize, strlen(value) + 1);
-            Status s = db->put(key, value, keyValueSize);
+            Status status = db->put(key, value, keyValueSize);
 
-            if (s == Status::Failed) {
+            if (status == Status::Failed) {
                 state.SkipWithError("failed while loading db");
             }
         }
@@ -124,6 +123,6 @@ static void DBGetArguments(benchmark::internal::Benchmark *b) {
 }
 
 BENCHMARK(DbPut)->Apply(DBPutArguments);
-BENCHMARK(DBGet)->Apply(DBGetArguments);
+//BENCHMARK(DBGet)->Apply(DBGetArguments);
 
 BENCHMARK_MAIN();

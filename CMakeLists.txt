@@ -39,7 +39,10 @@ target_sources(pmemdb_benchmark_tests
         test/engine/benchmark/Random.h
         test/engine/benchmark/Random.cc
         test/engine/benchmark/KeyGenerator.h
-        test/engine/benchmark/DbBenchmark.cpp)
+        test/engine/benchmark/DbBenchmark.cpp
+        test/engine/benchmark/SkipListInternalNodeBenchmark.cpp
+        test/engine/SkipListNodeTestUtils.h
+        test/engine/SkipListNodeTestUtils.cpp)
 
 find_package(GTest CONFIG REQUIRED)
 find_package(benchmark CONFIG REQUIRED)
@@ -68,7 +71,8 @@ add_test(
 target_link_libraries(pmemdb_benchmark_tests
         PRIVATE
         SkipList
-        benchmark::benchmark)
+        benchmark::benchmark
+        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
 
 add_test(
         NAME pmemdb_benchmark_tests

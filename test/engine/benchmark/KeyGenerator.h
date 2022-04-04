@@ -2,7 +2,6 @@
 #define _KeyGenerator_
 
 #include "Random.h"
-#include <iostream>
 
 struct Slice {
     char *buff;
