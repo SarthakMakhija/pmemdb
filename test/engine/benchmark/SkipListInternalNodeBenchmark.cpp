@@ -103,7 +103,7 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
             char *key = slice.buff;
 
             PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
-            if (putPosition.leaf != nullptr) {
+            if (putPosition.newLevel != -1) {
                 SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
                 if (newInternal == nullptr) {
                     state.SkipWithError("Returned nullptr as the new node");
@@ -158,7 +158,7 @@ static void SkipListInternalNodePut(benchmark::State &state) {
         state.ResumeTiming();
 
         PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
-        if (putPosition.leaf != nullptr) {
+        if (putPosition.newLevel != -1) {
             SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
             if (newInternal == nullptr) {
                 state.SkipWithError("Returned nullptr as the new node");
