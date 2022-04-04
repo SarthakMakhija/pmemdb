@@ -34,8 +34,8 @@ static void TeardownDB(Db *db) {
 
 static void DbPut(benchmark::State &state) {
 
-    uint64_t max_data = state.range(0);
-    uint64_t per_key_size = state.range(1);
+    uint64_t maximumNumberOfKeys = state.range(0);
+    uint64_t perKeySize = state.range(1);
 
     auto rnd = Random(301 + state.thread_index());
     KeyGenerator kg(&rnd);
@@ -49,7 +49,7 @@ static void DbPut(benchmark::State &state) {
         state.PauseTiming();
         Slice slice = kg.Next();
         char *key = slice.buff;
-        char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(per_key_size))))->data();
+        char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
         KeyValueSize keyValueSize = KeyValueSize(slice.keySize, strlen(value) + 1);
         state.ResumeTiming();
 
@@ -65,30 +65,31 @@ static void DbPut(benchmark::State &state) {
 }
 
 static void DBPutArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t max_data: {100l << 30}) {
-        for (int64_t per_key_size: {256, 1024}) {
-            b->Args({max_data, per_key_size});
+    for (int64_t maximumNumberOfKeys: {100l << 30}) {
+        for (int64_t perKeySize: {256, 1024}) {
+            b->Args({maximumNumberOfKeys, perKeySize});
         }
     }
-    b->ArgNames({"max_data", "per_key_size"});
+    b->ArgNames({"maximumNumberOfKeys", "perKeySize"});
 }
 
 static void DBGet(benchmark::State &state) {
-    uint64_t max_data = state.range(0);
-    uint64_t per_key_size = state.range(1);
-    bool negative_query = state.range(2);
-    uint64_t key_num = max_data / per_key_size;
+    uint64_t maximumNumberOfKeys = state.range(0);
+    uint64_t perKeySize = state.range(1);
+    bool negativeQuery = state.range(2);
+
+    uint64_t numberOfKeys = maximumNumberOfKeys / perKeySize;
 
     auto rnd = Random(301 + state.thread_index());
-    KeyGenerator kg(&rnd, key_num);
+    KeyGenerator kg(&rnd, numberOfKeys);
 
     static Db *db;
     if (state.thread_index() == 0) {
         db = SetupDB();
-        for (uint64_t i = 0; i < key_num; i++) {
+        for (uint64_t i = 0; i < numberOfKeys; i++) {
             Slice slice = kg.Next();
             char *key = slice.buff;
-            char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(per_key_size))))->data();
+            char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
             KeyValueSize keyValueSize = KeyValueSize(slice.keySize, strlen(value) + 1);
             Status s = db->put(key, value, keyValueSize);
 
@@ -113,14 +114,14 @@ static void DBGet(benchmark::State &state) {
 }
 
 static void DBGetArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t max_data: {512l << 20}) {
-        for (int64_t per_key_size: {1024}) {
-            for (bool negative_query: {false}) {
-                b->Args({max_data, per_key_size, negative_query});
+    for (int64_t maximumNumberOfKeys: {512l << 20}) {
+        for (int64_t perKeySize: {1024}) {
+            for (bool negativeQuery: {false}) {
+                b->Args({maximumNumberOfKeys, perKeySize, negativeQuery});
             }
         }
     }
-    b->ArgNames({"max_data", "per_key_size", "negative_query"});
+    b->ArgNames({"maximumNumberOfKeys", "perKeySize", "negativeQuery"});
 }
 
 BENCHMARK(DbPut)->Apply(DBPutArguments);
