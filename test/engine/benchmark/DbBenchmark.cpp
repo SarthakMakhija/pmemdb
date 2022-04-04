@@ -33,7 +33,7 @@ static void TeardownDB(Db *db) {
 }
 
 static void DbPut(benchmark::State &state) {
-    uint64_t maximumNumberOfKeys = state.range(0);
+    uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
 
     auto rnd = Random(301 + state.thread_index());
@@ -64,20 +64,20 @@ static void DbPut(benchmark::State &state) {
 }
 
 static void DBPutArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maximumNumberOfKeys: {100l << 30}) {
+    for (int64_t maxKey: {100l << 30}) {
         for (int64_t perKeySize: {256, 1024}) {
-            b->Args({maximumNumberOfKeys, perKeySize});
+            b->Args({maxKey, perKeySize});
         }
     }
-    b->ArgNames({"maximumNumberOfKeys", "perKeySize"});
+    b->ArgNames({"maxKey", "perKeySize"});
 }
 
 static void DBGet(benchmark::State &state) {
-    uint64_t maximumNumberOfKeys = state.range(0);
+    uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
     bool negativeQuery = state.range(2);
 
-    uint64_t numberOfKeys = maximumNumberOfKeys / perKeySize;
+    uint64_t numberOfKeys = maxKey / perKeySize;
 
     auto rnd = Random(301 + state.thread_index());
     KeyGenerator kg(&rnd, numberOfKeys);
@@ -112,14 +112,14 @@ static void DBGet(benchmark::State &state) {
 }
 
 static void DBGetArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maximumNumberOfKeys: {512l << 20}) {
+    for (int64_t maxKey: {512l << 20}) {
         for (int64_t perKeySize: {1024}) {
             for (bool negativeQuery: {false}) {
-                b->Args({maximumNumberOfKeys, perKeySize, negativeQuery});
+                b->Args({maxKey, perKeySize, negativeQuery});
             }
         }
     }
-    b->ArgNames({"maximumNumberOfKeys", "perKeySize", "negativeQuery"});
+    b->ArgNames({"maxKey", "perKeySize", "negativeQuery"});
 }
 
 BENCHMARK(DbPut)->Apply(DBPutArguments);

@@ -37,7 +37,7 @@ static void TearDownSkipListInternalNode(PersistentMemoryPool *pool) {
 }
 
 static void SkipListInternalNodePutPosition(benchmark::State &state) {
-    uint64_t maximumNumberOfKeys = state.range(0);
+    uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
     KeyComparator *keyComparator = new UInt32KeyComparator();
 
@@ -70,21 +70,21 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
 }
 
 static void SkipListInternalNodePutPositionArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maximumNumberOfKeys: {100l << 30}) {
+    for (int64_t maxKey: {100l << 30}) {
         for (int64_t perKeySize: {256, 1024}) {
-            b->Args({maximumNumberOfKeys, perKeySize});
+            b->Args({maxKey, perKeySize});
         }
     }
-    b->ArgNames({"maximumNumberOfKeys", "perKeySize"});
+    b->ArgNames({"maxKey", "perKeySize"});
 }
 
 
 static void SkipListInternalNodeGet(benchmark::State &state) {
-    uint64_t maximumNumberOfKeys = state.range(0);
+    uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
     bool negativeQuery = state.range(2);
 
-    uint64_t numberOfKeys = maximumNumberOfKeys / perKeySize;
+    uint64_t numberOfKeys = maxKey / perKeySize;
 
     auto rnd = Random(301 + state.thread_index());
     KeyGenerator kg(&rnd, numberOfKeys);
@@ -125,18 +125,18 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
 }
 
 static void SkipListInternalNodeGetArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maximumNumberOfKeys: {512l << 20}) {
+    for (int64_t maxKey: {512l << 20}) {
         for (int64_t perKeySize: {1024}) {
             for (bool negativeQuery: {false}) {
-                b->Args({maximumNumberOfKeys, perKeySize, negativeQuery});
+                b->Args({maxKey, perKeySize, negativeQuery});
             }
         }
     }
-    b->ArgNames({"maximumNumberOfKeys", "perKeySize", "negativeQuery"});
+    b->ArgNames({"maxKey", "perKeySize", "negativeQuery"});
 }
 
 static void SkipListInternalNodePut(benchmark::State &state) {
-    uint64_t maximumNumberOfKeys = state.range(0);
+    uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
     KeyComparator *keyComparator = new UInt32KeyComparator();
 
@@ -172,12 +172,12 @@ static void SkipListInternalNodePut(benchmark::State &state) {
 }
 
 static void SkipListInternalNodePutArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maximumNumberOfKeys: {100l << 30}) {
+    for (int64_t maxKey: {100l << 30}) {
         for (int64_t perKeySize: {256, 1024}) {
-            b->Args({maximumNumberOfKeys, perKeySize});
+            b->Args({maxKey, perKeySize});
         }
     }
-    b->ArgNames({"maximumNumberOfKeys", "perKeySize"});
+    b->ArgNames({"maxKey", "perKeySize"});
 }
 
 
