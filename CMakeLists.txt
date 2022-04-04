@@ -36,6 +36,9 @@ target_sources(pmemdb_tests
 add_executable(pmemdb_benchmark_tests "")
 target_sources(pmemdb_benchmark_tests
         PRIVATE
+        test/engine/benchmark/Random.h
+        test/engine/benchmark/Random.cc
+        test/engine/benchmark/KeyGenerator.h
         test/engine/benchmark/DbBenchmark.cpp)
 
 find_package(GTest CONFIG REQUIRED)

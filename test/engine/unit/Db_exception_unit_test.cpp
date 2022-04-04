@@ -6,18 +6,22 @@
 using namespace pmem::storage;
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenKeyIsBlankWhilePutting) {
+    GTEST_SKIP();
     ASSERT_THROW(put(DbFixture::getDb(), "", "Hard disk drive"), std::invalid_argument);
 }
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenValueIsBlankWhilePutting) {
+    GTEST_SKIP();
     ASSERT_THROW(put(DbFixture::getDb(), "HDD", ""), std::invalid_argument);
 }
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenKeyIsBlankWhileUpdating) {
+    GTEST_SKIP();
     ASSERT_THROW(update(DbFixture::getDb(), "", "Hard disk drive"), std::invalid_argument);
 }
 
 TEST_F(DbFixture, DbException_ThrowInvalidArgumentExceptionGivenValueIsBlank) {
+    GTEST_SKIP();
     ASSERT_THROW(update(DbFixture::getDb(), "HDD", ""), std::invalid_argument);
 }
 

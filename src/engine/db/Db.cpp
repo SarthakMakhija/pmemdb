@@ -17,30 +17,19 @@ namespace pmem {
         }
 
         Status Db::put(const char* key, const char* value, KeyValueSize keyValueSize) {
-            //TODO: Change this
-            if (strlen(key) == 0 || strlen(value) == 0) {
-                throw std::invalid_argument("key and value can not be blank while putting");
-            }
-
+            //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->put(key, value, keyValueSize, this->keyComparator);
         }
 
         Status Db::update(const char* key, const char* value, KeyValueSize keyValueSize) {
-            //TODO: Change this
-            if (strlen(key) == 0 || strlen(value) == 0) {
-                throw std::invalid_argument("key and value can not be blank while updating");
-            }
-
+            //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->update(key, value, keyValueSize, this->keyComparator);
         }
 
         Status Db::deleteBy(const char* key) {
-            //TODO: Change this
-            if (strlen(key) == 0) {
-                throw std::invalid_argument("key can not be blank while deleting the corresponding value");
-            }
+            //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->deleteBy(key, this->keyComparator);
         }
