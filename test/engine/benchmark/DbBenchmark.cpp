@@ -100,7 +100,10 @@ static void DBGet(benchmark::State &state) {
     size_t notFound = 0;
 
     for (auto _: state) {
-        std::pair<const char *, bool> pair = db->get(kg.Next().buff);
+        state.PauseTiming();
+        char *key = kg.Next().buff;
+        state.ResumeTiming();
+        std::pair<const char *, bool> pair = db->get(key);
         if (!pair.second) {
             notFound++;
         }
