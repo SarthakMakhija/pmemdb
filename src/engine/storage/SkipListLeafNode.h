@@ -34,7 +34,7 @@ namespace pmem {
                 std::pair<SkipListLeafNode *, Status>
                 put(const char *key,
                     const char *value,
-                    KeyValueSize keyValueSize,
+                    const KeyValueSize& keyValueSize,
                     pmem::storage::KeyComparator* keyComparator,
                     std::function<void(void)> postPutHook = [] {});
 
@@ -46,7 +46,7 @@ namespace pmem {
 
                 Status update(const char *key,
                               const char *value,
-                              KeyValueSize keyValueSize,
+                              const KeyValueSize& keyValueSize,
                               pmem::storage::KeyComparator* keyComparator,
                               std::function<void(void)> postUpdateHook = [] {});
 

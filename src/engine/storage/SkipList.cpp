@@ -23,7 +23,7 @@ namespace pmem {
 
             Status SkipList::put(const char *key,
                                  const char *value,
-                                 KeyValueSize keyValueSize,
+                                 const KeyValueSize& keyValueSize,
                                  pmem::storage::KeyComparator* keyComparator) {
 
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).put(key,
@@ -33,7 +33,7 @@ namespace pmem {
 
             Status SkipList::update(const char *key,
                                     const char *value,
-                                    KeyValueSize keyValueSize,
+                                    const KeyValueSize& keyValueSize,
                                     pmem::storage::KeyComparator* keyComparator) {
 
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).update(key, value, keyValueSize);

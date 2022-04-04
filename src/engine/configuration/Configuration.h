@@ -20,13 +20,13 @@ namespace pmem {
                           int skipListTowerSize,
                           KeyComparator *keyComparator);
 
-            const char *getFilePath();
+            const char *getFilePath() const;
 
-            uint64_t getFileSize();
+            uint64_t getFileSize() const;
 
-            int getSkipListTowerSize();
+            int getSkipListTowerSize() const;
 
-            KeyComparator *getKeyComparator();
+            KeyComparator *getKeyComparator() const;
         };
     }
 }

@@ -11,19 +11,19 @@ namespace pmem {
                                                                     keyComparator{keyComparator} {
         }
 
-        const char *Configuration::getFilePath() {
+        const char *Configuration::getFilePath() const {
             return filePath;
         }
 
-        uint64_t Configuration::getFileSize() {
+        uint64_t Configuration::getFileSize() const {
             return fileSize;
         }
 
-        int Configuration::getSkipListTowerSize() {
+        int Configuration::getSkipListTowerSize() const {
             return skipListTowerSize;
         }
 
-        KeyComparator* Configuration::getKeyComparator() {
+        KeyComparator* Configuration::getKeyComparator() const {
             return keyComparator;
         }
     }

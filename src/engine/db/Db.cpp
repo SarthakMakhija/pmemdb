@@ -2,7 +2,7 @@
 
 namespace pmem {
     namespace storage {
-        Db *Db::open(Configuration configuration) {
+        Db *Db::open(const Configuration& configuration) {
             Db *db = new Db();
 
             db->persistentMemoryPool = internal::PersistentMemoryPool::initialize(
@@ -16,13 +16,13 @@ namespace pmem {
             return db;
         }
 
-        Status Db::put(const char* key, const char* value, KeyValueSize keyValueSize) {
+        Status Db::put(const char* key, const char* value, const KeyValueSize& keyValueSize) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->put(key, value, keyValueSize, this->keyComparator);
         }
 
-        Status Db::update(const char* key, const char* value, KeyValueSize keyValueSize) {
+        Status Db::update(const char* key, const char* value, const KeyValueSize& keyValueSize) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->update(key, value, keyValueSize, this->keyComparator);

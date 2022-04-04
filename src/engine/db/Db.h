@@ -21,11 +21,11 @@ namespace pmem {
             KeyComparator* keyComparator;
 
         public:
-            static Db *open(Configuration configuration);
+            static Db *open(const Configuration& configuration);
 
-            Status put(const char* key, const char* value, KeyValueSize keyValueSize);
+            Status put(const char* key, const char* value, const KeyValueSize& keyValueSize);
 
-            Status update(const char* key, const char* value, KeyValueSize keyValueSize);
+            Status update(const char* key, const char* value, const KeyValueSize& keyValueSize);
 
             Status deleteBy(const char* key);
 

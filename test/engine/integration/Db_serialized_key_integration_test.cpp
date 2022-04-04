@@ -310,4 +310,6 @@ TEST(DbSerializedKeyIntegration, Delete) {
     ASSERT_EQ(11, fourth->id);
     ASSERT_EQ("Mark", fourth->firstName);
     ASSERT_EQ("Johnson", fourth->lastName);
+
+    close(db);
 }

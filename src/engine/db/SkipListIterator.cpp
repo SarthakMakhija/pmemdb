@@ -12,7 +12,7 @@ namespace pmem {
 
             Status SkipListIterator::put(const char *key,
                                          const char *value,
-                                         KeyValueSize keyValueSize,
+                                         const KeyValueSize& keyValueSize,
                                          std::function<void(void)> postPutHook) {
 
                 PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
@@ -80,7 +80,7 @@ namespace pmem {
             Status
             SkipListIterator::update(const char *key,
                                      const char *value,
-                                     KeyValueSize keyValueSize,
+                                     const KeyValueSize& keyValueSize,
                                      std::function<void(void)> postUpdateHook) {
 
                 UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(

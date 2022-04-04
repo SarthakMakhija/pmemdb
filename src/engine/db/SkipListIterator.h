@@ -20,7 +20,7 @@ namespace pmem {
 
                 Status put(const char *key,
                            const char *value,
-                           KeyValueSize keyValueSize,
+                           const KeyValueSize& keyValueSize,
                            std::function<void(void)> postPutHook = [] {});
 
                 std::pair<const char *, bool> getBy(const char *key);
@@ -31,7 +31,7 @@ namespace pmem {
 
                 Status update(const char *key,
                               const char *value,
-                              KeyValueSize keyValueSize,
+                              const KeyValueSize& keyValueSize,
                               std::function<void(void)> postUpdateHook = [] {});
 
                 Status deleteBy(const char *key, std::function<void(void)> postDeleteHook = [] {});

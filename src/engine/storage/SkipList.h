@@ -21,12 +21,12 @@ namespace pmem {
 
                 Status put(const char *key,
                            const char *value,
-                           KeyValueSize keyValueSize,
+                           const KeyValueSize& keyValueSize,
                            pmem::storage::KeyComparator* keyComparator);
 
                 Status update(const char *key,
                               const char *value,
-                              KeyValueSize keyValueSize,
+                              const KeyValueSize& keyValueSize,
                               pmem::storage::KeyComparator* keyComparator);
 
                 Status deleteBy(const char *key, pmem::storage::KeyComparator* keyComparator);
