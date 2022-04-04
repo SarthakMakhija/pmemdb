@@ -91,7 +91,7 @@ namespace pmem {
             }
 
             SkipListNode *SkipListInternalNode::put(const char *key,
-                                                    std::vector<SkipListInternalNode *> positions,
+                                                    const std::vector<SkipListInternalNode *>& positions,
                                                     int nodeLevel) {
 
                 SkipListInternalNode *newNode = new SkipListInternalNode(key, nodeLevel);
@@ -134,7 +134,7 @@ namespace pmem {
             }
 
             void SkipListInternalNode::deleteBy(const char *key,
-                                                std::vector<SkipListInternalNode *> positions,
+                                                const std::vector<SkipListInternalNode *>& positions,
                                                 int deleteLevel,
                                                 KeyComparator *keyComparator) {
 

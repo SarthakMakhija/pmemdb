@@ -40,13 +40,17 @@ namespace pmem {
                 PutPosition putPositionOf(const char *key, KeyComparator *keyComparator);
 
                 SkipListNode *
-                put(const char *key, std::vector<SkipListInternalNode *> positions, int nodeLevel);
+                put(const char *key,
+                    const std::vector<SkipListInternalNode *>& positions,
+                    int nodeLevel);
 
                 UpdatePosition updatePositionOf(const char *key, KeyComparator *keyComparator);
 
                 DeletePosition deletePositionOf(const char *key, KeyComparator *keyComparator);
 
-                void deleteBy(const char *key, std::vector<SkipListInternalNode *> positions, int deleteLevel,
+                void deleteBy(const char *key,
+                              const std::vector<SkipListInternalNode *>& positions,
+                              int deleteLevel,
                               KeyComparator *keyComparator);
 
                 unsigned long totalKeys();
