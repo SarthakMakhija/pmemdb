@@ -98,13 +98,12 @@ static void DBGet(benchmark::State &state) {
             }
         }
     }
-    size_t not_found = 0;
+    size_t notFound = 0;
 
     for (auto _: state) {
-        std::string val;
         std::pair<const char *, bool> pair = db->get(kg.Next().buff);
         if (!pair.second) {
-            not_found++;
+            notFound++;
         }
     }
 
