@@ -114,7 +114,10 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
 
     size_t notFound = 0;
     for (auto _: state) {
-        std::pair<SkipListNode*, bool> pair = skipListInternalNode->getBy(kg.Next().buff, keyComparator);
+        state.PauseTiming();
+        char *key = kg.Next().buff;
+        state.ResumeTiming();
+        std::pair<SkipListNode*, bool> pair = skipListInternalNode->getBy(key, keyComparator);
         if (!pair.second) {
             notFound++;
         }
