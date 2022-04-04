@@ -243,7 +243,7 @@ static void SkipListInternalNodeScanArguments(benchmark::internal::Benchmark *b)
 }
 
 
-BENCHMARK(SkipListInternalNodePutPosition)->Apply(SkipListInternalNodePutPositionArguments);
-BENCHMARK(SkipListInternalNodePut)->Apply(SkipListInternalNodePutArguments);
-BENCHMARK(SkipListInternalNodeGet)->Apply(SkipListInternalNodeGetArguments);
-BENCHMARK(SkipListInternalNodeScan)->Apply(SkipListInternalNodeScanArguments);
+BENCHMARK(SkipListInternalNodePutPosition)->Apply(SkipListInternalNodePutPositionArguments)->MinTime(2.0)->Unit(benchmark::kMillisecond);
+BENCHMARK(SkipListInternalNodePut)->Apply(SkipListInternalNodePutArguments)->MinTime(2.0)->Unit(benchmark::kMillisecond);
+BENCHMARK(SkipListInternalNodeGet)->Apply(SkipListInternalNodeGetArguments)->Unit(benchmark::kMillisecond);
+BENCHMARK(SkipListInternalNodeScan)->Apply(SkipListInternalNodeScanArguments)->Unit(benchmark::kMillisecond);
