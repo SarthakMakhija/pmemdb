@@ -125,7 +125,7 @@ static void DBGetArguments(benchmark::internal::Benchmark *b) {
     b->ArgNames({"maxKey", "perKeySize", "negativeQuery"});
 }
 
-BENCHMARK(DbPut)->Apply(DBPutArguments)->Unit(benchmark::kMillisecond);;
-//BENCHMARK(DBGet)->Apply(DBGetArguments)->Unit(benchmark::kMillisecond);;
+BENCHMARK(DbPut)->Apply(DBPutArguments);
+//BENCHMARK(DBGet)->Apply(DBGetArguments);
 
 BENCHMARK_MAIN();
