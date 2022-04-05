@@ -39,6 +39,8 @@ static void TearDownSkipListInternalNode(PersistentMemoryPool *pool) {
 static void SkipListInternalNodePutPosition(benchmark::State &state) {
     uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
+    uint64_t numberOfKeys = maxKey / perKeySize;
+
     KeyComparator *keyComparator = new UInt32KeyComparator();
 
     auto rnd = Random(301 + state.thread_index());
@@ -50,6 +52,19 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
         auto nodePoolPair = SetUpSkipListInternalNode();
         skipListInternalNode = nodePoolPair.first;
         pool = nodePoolPair.second;
+
+        for (uint64_t count = 0; count < numberOfKeys; count++) {
+            Slice slice = kg.Next();
+            char *key = slice.buff;
+
+            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
+            if (putPosition.newLevel != -1) {
+                SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
+                if (newInternal == nullptr) {
+                    state.SkipWithError("Returned nullptr as the new node");
+                }
+            }
+        }
     }
 
     for (auto _: state) {
@@ -59,9 +74,7 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
         state.ResumeTiming();
 
         PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
-        if (putPosition.newLevel == -1) {
-            state.SkipWithError("Returned -1 as the new level");
-        }
+        benchmark::DoNotOptimize(putPosition);
     }
 
     if (state.thread_index() == 0) {
@@ -70,7 +83,7 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
 }
 
 static void SkipListInternalNodePutPositionArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maxKey: {100l << 30}) {
+    for (int64_t maxKey: {100l << 20}) {
         for (int64_t perKeySize: {256, 1024}) {
             b->Args({maxKey, perKeySize});
         }
