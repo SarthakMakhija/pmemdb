@@ -93,7 +93,7 @@ static void DBGet(benchmark::State &state) {
             Status status = db->put(key, value, keyValueSize);
 
             if (status == Status::Failed) {
-                state.SkipWithError("failed while loading db");
+                state.SkipWithError("failed while loading db in get");
             }
         }
     }
@@ -125,7 +125,70 @@ static void DBGetArguments(benchmark::internal::Benchmark *b) {
     b->ArgNames({"maxKey", "perKeySize", "negativeQuery"});
 }
 
+
+static void DBScan(benchmark::State &state) {
+    uint64_t maxKey = state.range(0);
+    uint64_t perKeySize = state.range(1);
+    int64_t maxPairs = state.range(2);
+
+    uint64_t numberOfKeys = maxKey / perKeySize;
+
+    auto rnd = Random(301 + state.thread_index());
+    KeyGenerator kg(&rnd, numberOfKeys);
+
+    static Db *db;
+    if (state.thread_index() == 0) {
+        db = SetupDB();
+        for (uint64_t count = 0; count < numberOfKeys; count++) {
+            Slice slice = kg.Next();
+            char *key = slice.buff;
+            char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
+            KeyValueSize keyValueSize = KeyValueSize(slice.keySize, strlen(value) + 1);
+            Status status = db->put(key, value, keyValueSize);
+
+            if (status == Status::Failed) {
+                state.SkipWithError("failed while loading db in scan");
+            }
+        }
+    }
+    size_t notFound = 0;
+
+    for (auto _: state) {
+        state.PauseTiming();
+        char *beginKey = kg.Next().buff;
+        char *endKey = kg.Next().buff;
+
+        std::vector <KeyValuePair> result;
+        if (*(uint32_t *) beginKey > *(uint32_t *) endKey) {
+            state.ResumeTiming();
+            result = db->scan(endKey, beginKey, maxPairs);
+        } else {
+            state.ResumeTiming();
+            result = db->scan(beginKey, endKey, maxPairs);
+        }
+        if (result.empty()) {
+            notFound++;
+        }
+    }
+
+    if (state.thread_index() == 0) {
+        TeardownDB(db);
+    }
+}
+
+static void DBScanArguments(benchmark::internal::Benchmark *b) {
+    for (int64_t maxKey: {512l << 20}) {
+        for (int64_t perKeySize: {1024}) {
+            for (int64_t maxPairs : {1000}) {
+                b->Args({maxKey, perKeySize, maxPairs});
+            }
+        }
+    }
+    b->ArgNames({"maxKey", "perKeySize", "maxPairs"});
+}
+
 BENCHMARK(DbPut)->Apply(DBPutArguments);
 //BENCHMARK(DBGet)->Apply(DBGetArguments);
+//BENCHMARK(DBScan)->Apply(DBScanArguments);
 
 BENCHMARK_MAIN();
