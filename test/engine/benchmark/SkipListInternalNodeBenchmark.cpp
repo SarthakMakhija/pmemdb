@@ -128,7 +128,7 @@ static void SkipListInternalNodePut(benchmark::State &state) {
 }
 
 static void SkipListInternalNodePutArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maxKey: {100l << 30}) {
+    for (int64_t maxKey: {100l << 20}) {
         for (int64_t perKeySize: {256, 1024}) {
             b->Args({maxKey, perKeySize});
         }
@@ -185,8 +185,8 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
 }
 
 static void SkipListInternalNodeGetArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maxKey: {512l << 20}) {
-        for (int64_t perKeySize: {1024}) {
+    for (int64_t maxKey: {100l << 20}) {
+        for (int64_t perKeySize: {256, 1024}) {
             for (bool negativeQuery: {false}) {
                 b->Args({maxKey, perKeySize, negativeQuery});
             }
@@ -245,8 +245,8 @@ static void SkipListInternalNodeScan(benchmark::State &state) {
 }
 
 static void SkipListInternalNodeScanArguments(benchmark::internal::Benchmark *b) {
-    for (int64_t maxKey: {512l << 20}) {
-        for (int64_t perKeySize: {1024}) {
+    for (int64_t maxKey: {100l << 20}) {
+        for (int64_t perKeySize: {256, 1024}) {
             for (bool negativeQuery: {false}) {
                 b->Args({maxKey, perKeySize, negativeQuery});
             }
