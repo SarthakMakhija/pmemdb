@@ -6,6 +6,7 @@
 #include "SkipListLeafNode.h"
 #include "WritePosition.h"
 #include "../comparator/KeyComparator.h"
+#include "./utils/LevelGenerator.h"
 
 namespace pmem {
     namespace storage {
@@ -37,7 +38,7 @@ namespace pmem {
 
                 std::pair<SkipListNode *, bool> scan(const char *beginKey, KeyComparator *keyComparator);
 
-                PutPosition putPositionOf(const char *key, KeyComparator *keyComparator);
+                PutPosition putPositionOf(const char *key, KeyComparator *keyComparator, LevelGenerator *levelGenerator);
 
                 SkipListNode *
                 put(const char *key,

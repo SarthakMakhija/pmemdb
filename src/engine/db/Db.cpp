@@ -1,4 +1,5 @@
 #include "Db.h"
+#include "../storage/utils/LevelGenerator.h"
 
 namespace pmem {
     namespace storage {
@@ -10,8 +11,7 @@ namespace pmem {
                     configuration.getFileSize()
             );
 
-            db->skipList = new internal::SkipList(configuration.getSkipListTowerSize());
-
+            db->skipList = new internal::SkipList(new internal::LevelGenerator(configuration.getSkipListTowerSize()));
             db->keyComparator = configuration.getKeyComparator();
             return db;
         }

@@ -72,7 +72,7 @@ namespace pmem {
             }
 
             PutPosition
-            SkipListInternalNode::putPositionOf(const char *key, KeyComparator *keyComparator) {
+            SkipListInternalNode::putPositionOf(const char *key, KeyComparator *keyComparator, LevelGenerator* levelGenerator) {
                 SkipListInternalNode *current = this;
                 std::vector < SkipListInternalNode * > positions(this->forwards.size(), nullptr);
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
@@ -83,7 +83,7 @@ namespace pmem {
                 }
                 current = current->forwards[0];
                 if (current == nullptr || keyComparator->compare(current->key, key) != 0) {
-                    int newLevel = generateLevel(this->forwards.size());
+                    int newLevel = levelGenerator->generate();
                     return PutPosition{positions, newLevel, this, positions[0]->down};
                 }
                 std::vector < SkipListInternalNode * > empty;
@@ -163,18 +163,6 @@ namespace pmem {
                     count = count + 1;
                 }
                 return count;
-            }
-
-            int SkipListInternalNode::generateLevel(int maxLevel) {
-                double random = (double) rand() / RAND_MAX;
-                double probability = 0.95;
-                int level = 1;
-
-                while (random < probability && level < maxLevel) {
-                    level = level + 1;
-                    random = (double) rand() / RAND_MAX;
-                }
-                return level;
             }
         }
     }

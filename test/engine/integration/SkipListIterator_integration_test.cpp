@@ -2,6 +2,7 @@
 #include <string>
 #include "../../../src/engine/storage/SkipListInternalNode.h"
 #include "../../../src/engine/storage/SkipListLeafNode.h"
+#include "../../../src/engine/storage/utils/LevelGenerator.h"
 #include "../../../src/engine/db/KeyValuePair.h"
 #include "../../../src/engine/db/SkipListIterator.h"
 #include "PersistentMemoryPoolFixture.h"
@@ -11,7 +12,7 @@ using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 void put(SkipListIterator iterator, const char* key, const char* value) {
-    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1));
+    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), new LevelGenerator(6));
 }
 
 void update(SkipListIterator iterator, const char* key, const char* value) {

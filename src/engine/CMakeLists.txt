@@ -25,6 +25,8 @@ add_library(SkipList
         storage/PersistentMemoryPool.cpp
         storage/PersistentLeaf.h
         storage/WritePosition.h
+        storage/utils/LevelGenerator.h
+        storage/utils/LevelGenerator.cpp
         configuration/Configuration.h
         configuration/Configuration.cpp
         comparator/KeyComparator.h

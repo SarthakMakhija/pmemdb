@@ -6,11 +6,14 @@
 #include "./KeyGenerator.h"
 
 #include "../../../src/engine/storage/PersistentMemoryPool.h"
+#include "../../../src/engine/storage/utils/LevelGenerator.h"
 
 using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 const char *skipListInternalNodeFilePath = "./SkipListInternalNode_benchmark.log";
+
+LevelGenerator* levelGenerator = new LevelGenerator(1000);
 
 class UInt32KeyComparator : public KeyComparator {
     int compare(char const *a, char const *b) const {
@@ -28,7 +31,7 @@ class UInt32KeyComparator : public KeyComparator {
 
 static std::pair<SkipListInternalNode *, PersistentMemoryPool *> SetUpSkipListInternalNode() {
     auto pool = PersistentMemoryPool::initialize(skipListInternalNodeFilePath, 512 * 1024 * 1024);
-    return std::pair(newSentinelInternalNode(1000), pool);
+    return std::pair(newSentinelInternalNode(levelGenerator->getMaxLevel()), pool);
 }
 
 static void TearDownSkipListInternalNode(PersistentMemoryPool *pool) {
@@ -57,7 +60,7 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
             Slice slice = kg.Next();
             char *key = slice.buff;
 
-            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
+            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
                 SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
                 if (newInternal == nullptr) {
@@ -73,7 +76,7 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
         char *key = slice.buff;
         state.ResumeTiming();
 
-        PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
+        PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
         benchmark::DoNotOptimize(putPosition);
     }
 
@@ -113,7 +116,7 @@ static void SkipListInternalNodePut(benchmark::State &state) {
         char *key = slice.buff;
         state.ResumeTiming();
 
-        PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
+        PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
         if (putPosition.newLevel != -1) {
             SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
             if (newInternal == nullptr) {
@@ -159,7 +162,7 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
             Slice slice = kg.Next();
             char *key = slice.buff;
 
-            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
+            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
                 SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
                 if (newInternal == nullptr) {
@@ -219,7 +222,7 @@ static void SkipListInternalNodeScan(benchmark::State &state) {
             Slice slice = kg.Next();
             char *key = slice.buff;
 
-            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator);
+            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
                 SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
                 if (newInternal == nullptr) {

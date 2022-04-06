@@ -1,24 +1,24 @@
+#include <stdlib.h>
 #include "SkipList.h"
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
 #include "../db/SkipListIterator.h"
-#include <stdlib.h>
 
 namespace pmem {
     namespace storage {
         namespace internal {
 
-            SkipList::SkipList(int towerSize) {
-                if (towerSize < 1) {
+            SkipList::SkipList(LevelGenerator* levelGenerator) {
+                if (levelGenerator->getMaxLevel() < 1) {
                     throw std::invalid_argument("towerSize has to be greater than or equal to one");
                 }
-
                 auto *sentinelLeafNode = new pmem::storage::internal::SkipListLeafNode();
                 sentinelLeafNode->persist();
 
-                this->header = new pmem::storage::internal::SkipListInternalNode("", towerSize);
+                this->header = new pmem::storage::internal::SkipListInternalNode("", levelGenerator->getMaxLevel());
                 this->header->attach(sentinelLeafNode);
+                this->levelGenerator = levelGenerator;
             }
 
             Status SkipList::put(const char *key,
@@ -28,7 +28,8 @@ namespace pmem {
 
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).put(key,
                                                                                                   value,
-                                                                                                  keyValueSize);
+                                                                                                  keyValueSize,
+                                                                                                  this->levelGenerator);
             }
 
             Status SkipList::update(const char *key,

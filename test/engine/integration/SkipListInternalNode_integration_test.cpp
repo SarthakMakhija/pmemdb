@@ -10,13 +10,14 @@ using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 void put(SkipListInternalNode* node, const char* key, const char* value) {
-  PutPosition putPosition = node -> putPositionOf(key, stringKeyComparator());
+  PutPosition putPosition = node -> putPositionOf(key, stringKeyComparator(), new LevelGenerator(6));
   if (putPosition.newLevel != -1) {
       std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(
               key,
               value,
               KeyValueSize(strlen(key) + 1, strlen(value) + 1),
               stringKeyComparator());
+
       SkipListLeafNode *newLeaf = statusNodePair.first;
       SkipListNode *newInternal =  node -> put(key, putPosition.positions, putPosition.newLevel);
       static_cast<SkipListInternalNode *>(newInternal) -> attach(newLeaf);
@@ -31,7 +32,7 @@ void deleteBy(SkipListInternalNode* node, const char* key) {
 }
 
 TEST(SkipListInternalNode, UpdateDownPointer) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 6);
   SkipListLeafNode *down     = new SkipListLeafNode();
   node -> attach(down);
 
@@ -39,35 +40,35 @@ TEST(SkipListInternalNode, UpdateDownPointer) {
 }
 
 TEST(SkipListInternalNode, MatchKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 6);
   bool matches = node -> matchesKey("HDD", stringKeyComparator());
 
   ASSERT_TRUE(matches);
 }
 
 TEST(SkipListInternalNode, DoesNotMatchKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("SDD", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("SDD", 6);
   bool matches = node -> matchesKey("HDD", stringKeyComparator());
 
   ASSERT_FALSE(matches);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsLessThanGivenKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 6);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("SDD", stringKeyComparator());
 
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsEqualToGivenKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("HDD", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("HDD", 6);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD", stringKeyComparator());
 
   ASSERT_TRUE(isKeyLessOrEqual);
 }
 
 TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
-  SkipListInternalNode *node = new SkipListInternalNode("SDD", 4);
+  SkipListInternalNode *node = new SkipListInternalNode("SDD", 6);
   bool isKeyLessOrEqual = node -> isKeyLessEqualTo("HDD", stringKeyComparator());
 
   ASSERT_FALSE(isKeyLessOrEqual);

@@ -2,6 +2,7 @@
 #include <string>
 #include "../../../src/engine/storage/SkipListInternalNode.h"
 #include "../../../src/engine/storage/SkipListLeafNode.h"
+#include "../../../src/engine/storage/utils/LevelGenerator.h"
 #include "../../../src/engine/db/SkipListIterator.h"
 #include "PersistentMemoryPoolFixture.h"
 #include "../SkipListNodeTestUtils.h"
@@ -14,7 +15,7 @@ void put(SkipListIterator iterator,
          const char* value,
          std::function<void(void)> postPutHook = [] {}) {
 
-    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), postPutHook);
+    iterator.put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), new LevelGenerator(6), postPutHook);
 }
 
 void update(SkipListIterator iterator,

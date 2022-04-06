@@ -6,6 +6,7 @@
 #include "Status.h"
 #include "../comparator/KeyComparator.h"
 #include "KeyValueSize.h"
+#include "../storage/utils/LevelGenerator.h"
 
 namespace pmem {
     namespace storage {
@@ -21,6 +22,7 @@ namespace pmem {
                 Status put(const char *key,
                            const char *value,
                            const KeyValueSize& keyValueSize,
+                           LevelGenerator* levelGenerator,
                            std::function<void(void)> postPutHook = [] {});
 
                 std::pair<const char *, bool> getBy(const char *key);

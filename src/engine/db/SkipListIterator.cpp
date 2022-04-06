@@ -13,10 +13,12 @@ namespace pmem {
             Status SkipListIterator::put(const char *key,
                                          const char *value,
                                          const KeyValueSize& keyValueSize,
+                                         LevelGenerator* levelGenerator,
                                          std::function<void(void)> postPutHook) {
 
                 PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
-                                                                                                                 keyComparator);
+                                                                                                                 keyComparator,
+                                                                                                                 levelGenerator);
                 if (putPosition.leaf != nullptr) {
                     std::pair < SkipListLeafNode * ,
                             Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(key,
