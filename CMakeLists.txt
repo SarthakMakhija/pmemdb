@@ -74,7 +74,7 @@ target_link_libraries(pmemdb_benchmark_tests
         benchmark::benchmark
         ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
 
-add_test(
-        NAME pmemdb_benchmark_tests
-        COMMAND $<TARGET_FILE:pmemdb_benchmark_tests>
-)
+#add_test(
+#        NAME pmemdb_benchmark_tests
+#        COMMAND $<TARGET_FILE:pmemdb_benchmark_tests>
+#)
