@@ -24,7 +24,7 @@ class UInt32KeyComparator : public KeyComparator {
 };
 
 static Db *SetupDB() {
-    return Db::open(Configuration(dbFilePath, 512 * 1024 * 1024, 1000, new UInt32KeyComparator()));
+    return Db::open(Configuration(dbFilePath, 512 * 1024 * 1024, 18, new UInt32KeyComparator()));
 }
 
 static void TeardownDB(Db *db) {

@@ -13,7 +13,7 @@ using namespace pmem::storage::internal;
 
 const char *skipListInternalNodeFilePath = "./SkipListInternalNode_benchmark.log";
 
-LevelGenerator* levelGenerator = new LevelGenerator(1000);
+LevelGenerator* levelGenerator = new LevelGenerator(18);
 
 class UInt32KeyComparator : public KeyComparator {
     int compare(char const *a, char const *b) const {

@@ -13,7 +13,7 @@ namespace pmem {
             int LevelGenerator::generate() {
                 double random = (double) rand() / RAND_MAX;
                 int level = 1;
-                while (level <= maxLevel && random < (1.0) / this->skipFactor) {
+                while (level < maxLevel && random < (1.0) / this->skipFactor) {
                     level = level + 1;
                     random = (double) rand() / RAND_MAX;
                 }
