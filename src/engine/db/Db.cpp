@@ -11,7 +11,7 @@ namespace pmem {
                     configuration.getFileSize()
             );
 
-            db->skipList = new internal::SkipList(new internal::LevelGenerator(configuration.getSkipListTowerSize()));
+            db->skipList = new internal::SkipList(new internal::LevelGenerator(configuration.getSkipListMaxLevel()));
             db->keyComparator = configuration.getKeyComparator();
             return db;
         }

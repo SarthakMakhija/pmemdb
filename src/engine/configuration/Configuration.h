@@ -11,20 +11,20 @@ namespace pmem {
         private:
             const char *filePath;
             uint64_t fileSize;
-            int skipListTowerSize;
+            int skipListMaxLevel;
             KeyComparator *keyComparator;
 
         public:
             Configuration(const char *filePath,
                           uint64_t fileSize,
-                          int skipListTowerSize,
+                          int skipListMaxLevel,
                           KeyComparator *keyComparator);
 
             const char *getFilePath() const;
 
             uint64_t getFileSize() const;
 
-            int getSkipListTowerSize() const;
+            int getSkipListMaxLevel() const;
 
             KeyComparator *getKeyComparator() const;
         };
