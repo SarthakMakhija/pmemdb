@@ -16,7 +16,7 @@ const char *skipListInternalNodeFilePath = "./SkipListInternalNode_benchmark.log
 LevelGenerator* levelGenerator = new LevelGenerator(18);
 
 class UInt32KeyComparator : public KeyComparator {
-    int compare(char const *a, char const *b) const {
+    int compare(char const *a, char const *b) const override {
         uint32_t *first = (uint32_t *) a;
         uint32_t *second = (uint32_t *) b;
         if (*first == *second) {
@@ -47,7 +47,7 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
     KeyComparator *keyComparator = new UInt32KeyComparator();
 
     auto rnd = Random(301 + state.thread_index());
-    KeyGenerator kg(&rnd);
+    KeyGenerator kg(&rnd, numberOfKeys);
 
     static SkipListInternalNode *skipListInternalNode = nullptr;
     static PersistentMemoryPool *pool = nullptr;
@@ -97,10 +97,12 @@ static void SkipListInternalNodePutPositionArguments(benchmark::internal::Benchm
 static void SkipListInternalNodePut(benchmark::State &state) {
     uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
+    uint64_t numberOfKeys = maxKey / perKeySize;
+
     KeyComparator *keyComparator = new UInt32KeyComparator();
 
     auto rnd = Random(301 + state.thread_index());
-    KeyGenerator kg(&rnd);
+    KeyGenerator kg(&rnd, numberOfKeys);
 
     static SkipListInternalNode *skipListInternalNode = nullptr;
     static PersistentMemoryPool *pool = nullptr;
@@ -142,8 +144,6 @@ static void SkipListInternalNodePutArguments(benchmark::internal::Benchmark *b) 
 static void SkipListInternalNodeGet(benchmark::State &state) {
     uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
-    bool negativeQuery = state.range(2);
-
     uint64_t numberOfKeys = maxKey / perKeySize;
 
     auto rnd = Random(301 + state.thread_index());
@@ -202,8 +202,6 @@ static void SkipListInternalNodeGetArguments(benchmark::internal::Benchmark *b) 
 static void SkipListInternalNodeScan(benchmark::State &state) {
     uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
-    bool negativeQuery = state.range(2);
-
     uint64_t numberOfKeys = maxKey / perKeySize;
 
     auto rnd = Random(301 + state.thread_index());

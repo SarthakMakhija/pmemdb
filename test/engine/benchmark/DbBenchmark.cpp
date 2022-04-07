@@ -10,7 +10,7 @@ using namespace pmem::storage;
 const char *dbFilePath = "./DB_Benchmark.log";
 
 class UInt32KeyComparator : public KeyComparator {
-    int compare(char const *a, char const *b) const {
+    int compare(char const *a, char const *b) const override {
         uint32_t *first = (uint32_t *) a;
         uint32_t *second = (uint32_t *) b;
         if (*first == *second) {
