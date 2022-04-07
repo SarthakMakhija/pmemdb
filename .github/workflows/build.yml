@@ -1,14 +1,26 @@
 name: PmemCI
-on: [push, workflow_dispatch]
+on: [ push, workflow_dispatch ]
 
 jobs:
-  job:
-    name: ${{ matrix.os }}-${{ github.workflow }}
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: cppcheck
+        uses: deep5050/cppcheck-action@main
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+
+  build-and-test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
+        os: [ windows-latest ]
 
     steps:
       - uses: actions/checkout@v2
@@ -16,17 +28,6 @@ jobs:
           submodules: true
 
       - uses: lukka/get-cmake@latest
-
-      - name: cppcheck
-        uses: deep5050/cppcheck-action@main
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-
-      - name: publish cppcheck report
-        uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: 'main'
 
       - name: Restore artifacts, or setup vcpkg for building artifacts
         uses: lukka/run-vcpkg@v10
