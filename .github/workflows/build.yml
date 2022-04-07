@@ -29,4 +29,4 @@ jobs:
         with:
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-multi-vcpkg-release'
-          testPreset: 'ninja-multi-vcpkg-debug'
+          testPreset: 'ninja-multi-vcpkg-release'
