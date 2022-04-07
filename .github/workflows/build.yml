@@ -28,5 +28,5 @@ jobs:
         id: runcmake
         with:
           configurePreset: 'ninja-multi-vcpkg'
-          buildPreset: 'ninja-multi-vcpkg-debug'
+          buildPreset: 'ninja-multi-vcpkg-release'
           testPreset: 'ninja-multi-vcpkg-debug'
