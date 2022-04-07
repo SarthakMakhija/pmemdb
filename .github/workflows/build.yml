@@ -20,7 +20,7 @@ jobs:
           exclude_check: ./vcpkg/
           std: c++17
           output_file: ./CppCheckReport.txt
-          other_options: -v
+          other_options: -v --suppress=missingIncludeSystem
 
       - name: publish report
         uses: mikeal/publish-to-github-action@master
