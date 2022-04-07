@@ -26,7 +26,7 @@ jobs:
         uses: mikeal/publish-to-github-action@master
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: 'cpp-check-reports'
+          BRANCH_NAME: 'main'
 
   build-and-test:
     runs-on: ${{ matrix.os }}
