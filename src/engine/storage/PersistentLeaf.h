@@ -22,11 +22,11 @@ namespace pmem {
                 persistent_ptr <PersistentLeaf> right;
                 persistent_ptr<char[]> keyValue;
 
-                void setKeySizeDirect(char *p, uint32_t v) {
+                static void setKeySizeDirect(char *p, uint32_t v) {
                     *((uint32_t * )(p)) = v;
                 }
 
-                void setValueSizeDirect(char *p, uint32_t v) {
+                static void setValueSizeDirect(char *p, uint32_t v) {
                     *((uint32_t * )((char *) (p) + sizeof(uint32_t))) = v;
                 }
 
@@ -79,11 +79,11 @@ namespace pmem {
                     return *((uint32_t * )((char *) (keyValue.get()) + sizeof(uint32_t)));
                 }
 
-                uint32_t keySizeDirect(char *p) {
+                static uint32_t keySizeDirect(char *p) {
                     return *((uint32_t * )(p));
                 }
 
-                uint32_t valueSizeDirect(char *p) {
+                static uint32_t valueSizeDirect(char *p) {
                     return *((uint32_t * )((char *) (p) + sizeof(uint32_t)));
                 }
             };
