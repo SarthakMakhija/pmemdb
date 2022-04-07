@@ -60,6 +60,8 @@ tasks:
           - task: check deleteRange with respect to rollback again. In delete, we have to revert the in-memory changes on failure. We might need something of 
                   this sort in deleteRange (Important). Currently, all the tests are passing without any change under catch block for delteRange
           - status: pending
+          - task: Check for destructors in all the objects (Important)
+          - status: pending 
 later:
   items:
     - name: Skiplist iterator
