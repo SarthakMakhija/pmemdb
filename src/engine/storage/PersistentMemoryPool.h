@@ -19,7 +19,7 @@ namespace pmem {
 
                 static PersistentMemoryPool *getInstance();
 
-                pmem::obj::pool_base getPmpool();
+                pmem::obj::pool_base getPmpool() const;
 
                 ~PersistentMemoryPool() {
                     try {
@@ -58,7 +58,7 @@ namespace pmem {
                 }
 
                 pmem::obj::pool<Root>
-                createOrFail(const char *path, const std::size_t size, const std::string &layout) {
+                static createOrFail(const char *path, const std::size_t size, const std::string &layout) {
                     try {
                         return pmem::obj::pool<Root>::create(path, layout, size);
                     } catch (pmem::pool_invalid_argument &e) {

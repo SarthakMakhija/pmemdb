@@ -10,7 +10,7 @@ namespace pmem {
                 srand((unsigned) time(0));
             }
 
-            int LevelGenerator::generate() {
+            int LevelGenerator::generate() const {
                 double random = (double) rand() / RAND_MAX;
                 int level = 1;
                 while (level < maxLevel && random < (1.0) / this->skipFactor) {
@@ -20,7 +20,7 @@ namespace pmem {
                 return level;
             }
 
-            int LevelGenerator::getMaxLevel() {
+            int LevelGenerator::getMaxLevel() const {
                 return this->maxLevel;
             }
         }

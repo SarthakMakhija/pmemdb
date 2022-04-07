@@ -4,11 +4,11 @@ namespace pmem {
     namespace storage {
         KeyValueSize::KeyValueSize(size_t keySize, size_t valueSize) : keySize(keySize), valueSize(valueSize) {}
 
-        size_t KeyValueSize::getKeySize() {
+        size_t KeyValueSize::getKeySize() const {
             return keySize;
         }
 
-        size_t KeyValueSize::getValueSize() {
+        size_t KeyValueSize::getValueSize() const {
             return valueSize;
         }
     }

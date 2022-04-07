@@ -10,8 +10,8 @@ namespace pmem {
                 int skipFactor;
             public:
                 explicit LevelGenerator(int maxLevel);
-                int generate();
-                int getMaxLevel();
+                int generate() const;
+                int getMaxLevel() const;
             };
         }
     }

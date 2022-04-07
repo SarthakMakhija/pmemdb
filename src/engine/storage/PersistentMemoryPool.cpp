@@ -19,7 +19,7 @@ namespace pmem {
                 return instance;
             }
 
-            pmem::obj::pool_base PersistentMemoryPool::getPmpool() {
+            pmem::obj::pool_base PersistentMemoryPool::getPmpool() const {
                 return this->pmpool;
             }
         }

@@ -14,9 +14,9 @@ namespace pmem {
         public:
             KeyValueSize(size_t keySize, size_t valueSize);
 
-            size_t getKeySize();
+            size_t getKeySize() const;
 
-            size_t getValueSize();
+            size_t getValueSize() const;
         };
     }
 }
