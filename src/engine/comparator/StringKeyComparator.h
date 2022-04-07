@@ -8,7 +8,7 @@ namespace pmem {
     namespace storage {
         class StringKeyComparator : public KeyComparator {
         public:
-            int compare(char const* a, char const* b) const;
+            int compare(char const* a, char const* b) const override;
         };
     }
 }

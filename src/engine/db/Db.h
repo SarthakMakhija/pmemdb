@@ -15,6 +15,7 @@ namespace pmem {
     namespace storage {
         class Db {
         private:
+            Db();
             internal::SkipList *skipList;
             internal::PersistentMemoryPool* persistentMemoryPool;
             std::shared_mutex mutex_;

@@ -3,6 +3,12 @@
 
 namespace pmem {
     namespace storage {
+        Db::Db() {
+            this->keyComparator = nullptr;
+            this->persistentMemoryPool = nullptr;
+            this->skipList = nullptr;
+        }
+
         Db *Db::open(const Configuration& configuration) {
             Db *db = new Db();
 

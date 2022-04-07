@@ -41,7 +41,7 @@ namespace pmem {
             private:
                 static PersistentMemoryPool *instance;
 
-                PersistentMemoryPool(const char *filePath, uint64_t size = 8 * 1024 * 1024) {
+                explicit PersistentMemoryPool(const char *filePath, uint64_t size = 8 * 1024 * 1024) {
                     bool openFailed = false;
                     std::string layout = "skiplist";
 
