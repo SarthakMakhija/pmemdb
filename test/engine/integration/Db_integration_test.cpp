@@ -53,10 +53,11 @@ TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
                             std::make_pair("Solid state drive", true)
     };
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
-    std::vector<std::pair<std::string, bool>> resultTransformed;
-    for (auto pair : result) {
-        resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
-    }
+    std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
+        return std::make_pair(std::string(pair.first), pair.second);
+    });
+
     ASSERT_EQ(expected, resultTransformed);
 }
 
