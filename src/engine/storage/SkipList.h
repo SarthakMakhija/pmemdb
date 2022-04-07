@@ -17,7 +17,7 @@ namespace pmem {
             private:
                 pmem::storage::internal::SkipListInternalNode *header;
                 pmem::storage::internal::LevelGenerator *levelGenerator;
-
+                SkipList(const SkipList &copy); // not implemented
             public:
                 explicit SkipList(LevelGenerator *levelGenerator);
 
