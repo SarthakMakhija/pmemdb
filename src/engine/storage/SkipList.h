@@ -19,7 +19,7 @@ namespace pmem {
                 pmem::storage::internal::LevelGenerator *levelGenerator;
 
             public:
-                SkipList(LevelGenerator *levelGenerator);
+                explicit SkipList(LevelGenerator *levelGenerator);
 
                 Status put(const char *key,
                            const char *value,

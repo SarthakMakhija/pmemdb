@@ -21,13 +21,13 @@ namespace pmem {
 
                 void persist();
 
-                bool isLeaf();
+                bool isLeaf() override;
 
-                bool matchesKey(const char *key, pmem::storage::KeyComparator* keyComparator) const;
+                bool matchesKey(const char *key, pmem::storage::KeyComparator* keyComparator) const override;
 
-                bool isKeyLessEqualTo(const char *key, pmem::storage::KeyComparator* keyComparator);
+                bool isKeyLessEqualTo(const char *key, pmem::storage::KeyComparator* keyComparator) override;
 
-                pmem::storage::KeyValuePair keyValuePair();
+                pmem::storage::KeyValuePair keyValuePair() override;
 
                 pmem::storage::KeyValuePair rightKeyValuePair();
 
