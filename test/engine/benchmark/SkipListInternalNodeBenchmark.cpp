@@ -17,8 +17,9 @@ LevelGenerator* levelGenerator = new LevelGenerator(18);
 
 class UInt32KeyComparator : public KeyComparator {
     int compare(char const *a, char const *b) const override {
-        uint32_t *first = (uint32_t *) a;
-        uint32_t *second = (uint32_t *) b;
+        const uint32_t* first = reinterpret_cast<const uint32_t *>(a);
+        const uint32_t* second = reinterpret_cast<const uint32_t *>(b);
+
         if (*first == *second) {
             return 0;
         }

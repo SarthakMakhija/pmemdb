@@ -18,9 +18,9 @@ struct Employee {
 
 class EmployeeIdComparator : public KeyComparator {
 public:
-    int compare(const char* a, const char* b) const {
-        EmployeeId* first = (EmployeeId*)a;
-        EmployeeId* other = (EmployeeId*)b;
+    int compare(const char* a, const char* b) const override {
+        const EmployeeId* first = reinterpret_cast<const EmployeeId*>(a);
+        const EmployeeId* other = reinterpret_cast<const EmployeeId*>(b);
 
         if (first->id == other->id) {
             return 0;
@@ -75,7 +75,7 @@ TEST(DbSerializedKeyIntegration, GetValueByKey) {
         memcpy(key, (char*)employeeId, sizeof(*employeeId));
 
         std::pair<const char*, bool> existenceByValue = db->get(key);
-        Employee *saved = (Employee*)existenceByValue.first;
+        const Employee* saved = reinterpret_cast<const Employee*>(existenceByValue.first);
 
         ASSERT_EQ(employee->id, saved->id);
         ASSERT_EQ(employee->firstName, saved->firstName);
@@ -143,12 +143,12 @@ TEST(DbSerializedKeyIntegration, Scan) {
 
     ASSERT_EQ(2, result.size());
 
-    Employee* first = (Employee*)result.at(0).getValue();
+    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).getValue());
     ASSERT_EQ(-7, first->id);
     ASSERT_EQ("John", first->firstName);
     ASSERT_EQ("", first->lastName);
 
-    Employee* second = (Employee*)result.at(1).getValue();
+    const Employee* second = reinterpret_cast<const Employee*>(result.at(1).getValue());
     ASSERT_EQ(5, second->id);
     ASSERT_EQ("Kartik", second->firstName);
     ASSERT_EQ("Rajan", second->lastName);
@@ -189,12 +189,12 @@ TEST(DbSerializedKeyIntegration, MultiGet) {
 
     ASSERT_EQ(2, result.size());
 
-    Employee* first = (Employee*)result.at(0).first;
+    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).first);
     ASSERT_EQ(5, first->id);
     ASSERT_EQ("Kartik", first->firstName);
     ASSERT_EQ("Rajan", first->lastName);
 
-    Employee* second = (Employee*)result.at(1).first;
+    const Employee* second = reinterpret_cast<const Employee*>(result.at(1).first);
     ASSERT_EQ(10, second->id);
     ASSERT_EQ("Rahul", second->firstName);
     ASSERT_EQ("Jain", second->lastName);
@@ -238,7 +238,7 @@ TEST(DbSerializedKeyIntegration, Update) {
 
     std::pair<const char*, bool> result = db->get(getKey10);
 
-    Employee* first = (Employee*)result.first;
+    const Employee* first = reinterpret_cast<const Employee*>(result.first);
     ASSERT_EQ(-7, first->id);
     ASSERT_EQ("John", first->firstName);
     ASSERT_EQ("Mathews", first->lastName);
@@ -294,19 +294,19 @@ TEST(DbSerializedKeyIntegration, Delete) {
 
     ASSERT_EQ(4, result.size());
 
-    Employee* first = (Employee*)result.at(0).first;
+    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).first);
     ASSERT_EQ(-7, first->id);
     ASSERT_EQ("John", first->firstName);
     ASSERT_EQ("", first->lastName);
 
-    ASSERT_FALSE((Employee*)result.at(1).second);
+    ASSERT_FALSE(result.at(1).second);
 
-    Employee* third = (Employee*)result.at(2).first;
+    const Employee* third = reinterpret_cast<const Employee*>(result.at(2).first);
     ASSERT_EQ(10, third->id);
     ASSERT_EQ("Rahul", third->firstName);
     ASSERT_EQ("Jain", third->lastName);
 
-    Employee* fourth = (Employee*)result.at(3).first;
+    const Employee* fourth = reinterpret_cast<const Employee*>(result.at(3).first);
     ASSERT_EQ(11, fourth->id);
     ASSERT_EQ("Mark", fourth->firstName);
     ASSERT_EQ("Johnson", fourth->lastName);
