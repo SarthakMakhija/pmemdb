@@ -54,11 +54,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
 
         std::vector<const char*> keys = {"HDD", "SDD"};
         std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
-        std::vector<std::pair<std::string, bool>> resultTransformed;
-
-        for (auto pair : result) {
-            resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
-        }
+        std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
+        std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
+            return std::make_pair(std::string(pair.first), pair.second);
+        });
         ASSERT_EQ(expected, resultTransformed);
     });
 
@@ -69,11 +68,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
         };
         std::vector<const char*> keys = {"Pmem", "Nvm"};
         std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
-        std::vector<std::pair<std::string, bool>> resultTransformed;
-
-        for (auto pair : result) {
-            resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
-        }
+        std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
+        std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
+            return std::make_pair(std::string(pair.first), pair.second);
+        });
 
         ASSERT_EQ(expected, resultTransformed);
     });
@@ -133,11 +131,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnDifferentKeyV
     };
     std::vector<const char*> keys = {"Pmem", "Nvm", "HDD", "SDD"};
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
-    std::vector<std::pair<std::string, bool>> resultTransformed;
-
-    for (auto pair : result) {
-        resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
-    }
+    std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
+        return std::make_pair(std::string(pair.first), pair.second);
+    });
 
     ASSERT_EQ(expected, resultTransformed);
 }
@@ -162,11 +159,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnSameKeyValueP
     };
     std::vector<const char*> keys = {"HDD", "SDD"};
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
-    std::vector<std::pair<std::string, bool>> resultTransformed;
-
-    for (auto pair : result) {
-        resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
-    }
+    std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
+        return std::make_pair(std::string(pair.first), pair.second);
+    });
 
     ASSERT_EQ(expected, resultTransformed);
 }
@@ -191,11 +187,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndUpdate) {
     };
     std::vector<const char*> keys = {"HDD", "SDD"};
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
-    std::vector<std::pair<std::string, bool>> resultTransformed;
-
-    for (auto pair : result) {
-        resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
-    }
+    std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
+        return std::make_pair(std::string(pair.first), pair.second);
+    });
 
     ASSERT_EQ(expected, resultTransformed);
 }
