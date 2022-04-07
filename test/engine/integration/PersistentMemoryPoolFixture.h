@@ -16,6 +16,9 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
     const char* filePath = "./tests.log";
 
     public:
+    PersistentMemoryPoolFixture() {
+        pool = nullptr;
+    }
     void SetUp() {
         pool = PersistentMemoryPool::initialize(filePath, 8 * 1024 * 1024);
     }

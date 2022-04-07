@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <string>
+#include <algorithm>
 #include "../../../src/engine/storage/SkipListInternalNode.h"
 #include "../../../src/engine/storage/SkipListLeafNode.h"
 #include "../../../src/engine/storage/utils/LevelGenerator.h"
@@ -76,11 +77,11 @@ TEST_F(PersistentMemoryPoolFixture, SkipListIterator_MultiGet) {
 
   std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
   std::vector<std::pair<const char*, bool>> result = iterator.multiGet(keys);
-  std::vector<std::pair<std::string, bool>> resultTransformed;
+  std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
+  std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<std::string, bool> pair){
+        return std::make_pair(std::string(pair.first), pair.second);
+  });
 
-  for (auto pair : result) {
-      resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
-  }
   std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("", false),
                             std::make_pair("Hard disk drive", true),

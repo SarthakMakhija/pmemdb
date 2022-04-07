@@ -34,7 +34,6 @@ static void TeardownDB(Db *db) {
 }
 
 static void DbPut(benchmark::State &state) {
-    uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
 
     auto rnd = Random(301 + state.thread_index());
@@ -76,7 +75,6 @@ static void DBPutArguments(benchmark::internal::Benchmark *b) {
 static void DBGet(benchmark::State &state) {
     uint64_t maxKey = state.range(0);
     uint64_t perKeySize = state.range(1);
-    bool negativeQuery = state.range(2);
 
     uint64_t numberOfKeys = maxKey / perKeySize;
 

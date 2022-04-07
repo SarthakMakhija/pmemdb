@@ -17,6 +17,9 @@ private:
     const char *filePath = "./tests.log";
 
 public:
+    DbFixture() {
+        db = nullptr;
+    }
     void SetUp() {
         db = pmem::storage::Db::open(
                 pmem::storage::Configuration(filePath,
