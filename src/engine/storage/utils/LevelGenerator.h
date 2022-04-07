@@ -9,7 +9,7 @@ namespace pmem {
                 int maxLevel;
                 int skipFactor;
             public:
-                LevelGenerator(int maxLevel);
+                explicit LevelGenerator(int maxLevel);
                 int generate();
                 int getMaxLevel();
             };
