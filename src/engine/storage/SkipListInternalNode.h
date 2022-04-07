@@ -22,13 +22,13 @@ namespace pmem {
             public:
                 SkipListInternalNode(const char *key, int level);
 
-                bool isLeaf();
+                bool isLeaf() override;
 
-                bool matchesKey(const char *key, KeyComparator *keyComparator) const;
+                bool matchesKey(const char *key, KeyComparator *keyComparator) const override;
 
-                bool isKeyLessEqualTo(const char *key, KeyComparator *keyComparator);
+                bool isKeyLessEqualTo(const char *key, KeyComparator *keyComparator) override;
 
-                KeyValuePair keyValuePair();
+                KeyValuePair keyValuePair() override;
 
                 SkipListNode *getDown();
 
