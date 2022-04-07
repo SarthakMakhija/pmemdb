@@ -7,7 +7,6 @@
 #include "../../src/engine/comparator/StringKeyComparator.h"
 
 pmem::storage::KeyComparator* stringKeyComparator();
-pmem::storage::KeyValuePair downKeyValuePairOf(pmem::storage::internal::SkipListInternalNode* node);
 pmem::storage::internal::SkipListLeafNode* newSentinelLeafNode();
 pmem::storage::internal::SkipListInternalNode* newSentinelInternalNode(int level);
 
