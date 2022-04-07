@@ -24,9 +24,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenDownP
   SkipListLeafNode* sentinel = newSentinelLeafNode();
 
   SkipListLeafNode *node = put(sentinel, "HDD", "Hard disk drive").first;
-  SkipListLeafNode *right = put(sentinel, "SDD", "Solid state drive").first;
+  put(sentinel, "SDD", "Solid state drive");
   
-  KeyValuePair pair = node -> rightKeyValuePair();
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), node -> rightKeyValuePair());
 }
 
@@ -34,7 +33,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenRight
   SkipListLeafNode* sentinel = newSentinelLeafNode();
   SkipListLeafNode *node = put(sentinel, "HDD", "Hard disk drive").first;
 
-  KeyValuePair pair = node -> rightKeyValuePair();  
   ASSERT_EQ(KeyValuePair("", ""), node -> rightKeyValuePair());
 }
 

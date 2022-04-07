@@ -54,7 +54,6 @@ TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
     };
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed;
-
     for (auto pair : result) {
         resultTransformed.push_back(std::make_pair(std::string(pair.first), pair.second));
     }
@@ -103,7 +102,7 @@ TEST_F(DbFixture, DbIntegration_UpdateAValueForNonExistingKey) {
     put(DbFixture::getDb(), "HDD", "Hard disk drive");
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    (DbFixture::getDb(), "SDD", "Solid state drive");
+    update(DbFixture::getDb(), "SDD", "Solid state drive");
 
     std::pair<const char*, bool> existenceByValue = DbFixture::getDb() -> get("SDD");
     ASSERT_EQ("", std::string(existenceByValue.first));
