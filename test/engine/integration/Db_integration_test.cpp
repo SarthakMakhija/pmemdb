@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <string>
+#include <algorithm>
 #include "../DbFixture.h"
 #include "../DbTestsHelper.h"
 #include "../../../src/engine/db/Db.h"
