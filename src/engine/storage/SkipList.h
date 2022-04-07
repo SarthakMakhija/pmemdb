@@ -17,8 +17,11 @@ namespace pmem {
             private:
                 pmem::storage::internal::SkipListInternalNode *header;
                 pmem::storage::internal::LevelGenerator *levelGenerator;
-                SkipList(const SkipList &copy); // not implemented
             public:
+                // No copying allowed
+                SkipList(const SkipList &copy) = delete;
+                void operator=(const SkipList&) = delete;
+
                 explicit SkipList(LevelGenerator *levelGenerator);
 
                 Status put(const char *key,
