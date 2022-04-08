@@ -21,6 +21,7 @@ namespace pmem {
 
             public:
                 SkipListInternalNode(const char *key, int level);
+                ~SkipListInternalNode();
 
                 bool matchesKey(const char *key, KeyComparator *keyComparator) const override;
 
@@ -53,6 +54,8 @@ namespace pmem {
                               KeyComparator *keyComparator);
 
                 unsigned long totalKeys();
+
+                void close();
             };
         }
     }

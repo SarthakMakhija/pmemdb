@@ -8,8 +8,7 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-
-            SkipList::SkipList(LevelGenerator* levelGenerator) {
+            SkipList::SkipList(LevelGenerator *levelGenerator) {
                 if (levelGenerator->getMaxLevel() < 1) {
                     throw std::invalid_argument("towerSize has to be greater than or equal to one");
                 }
@@ -21,10 +20,15 @@ namespace pmem {
                 this->levelGenerator = levelGenerator;
             }
 
+            SkipList::~SkipList() {
+                this->header->close();
+                delete this->levelGenerator;
+            }
+
             Status SkipList::put(const char *key,
                                  const char *value,
-                                 const KeyValueSize& keyValueSize,
-                                 pmem::storage::KeyComparator* keyComparator) {
+                                 const KeyValueSize &keyValueSize,
+                                 pmem::storage::KeyComparator *keyComparator) {
 
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).put(key,
                                                                                                   value,
@@ -34,33 +38,38 @@ namespace pmem {
 
             Status SkipList::update(const char *key,
                                     const char *value,
-                                    const KeyValueSize& keyValueSize,
-                                    pmem::storage::KeyComparator* keyComparator) {
+                                    const KeyValueSize &keyValueSize,
+                                    pmem::storage::KeyComparator *keyComparator) {
 
-                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).update(key, value, keyValueSize);
+                return pmem::storage::internal::SkipListIterator(this->header, keyComparator).update(key, value,
+                                                                                                     keyValueSize);
             }
 
-            Status SkipList::deleteBy(const char *key, pmem::storage::KeyComparator* keyComparator) {
+            Status SkipList::deleteBy(const char *key, pmem::storage::KeyComparator *keyComparator) {
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).deleteBy(key);
             }
 
-            std::pair<const char*, bool> SkipList::get(const char *key, pmem::storage::KeyComparator* keyComparator) {
+            std::pair<const char *, bool> SkipList::get(const char *key, pmem::storage::KeyComparator *keyComparator) {
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).getBy(key);
             }
 
-            std::vector <std::pair<const char*, bool>> SkipList::multiGet(const std::vector<const char *> &keys,
-                                                                          pmem::storage::KeyComparator* keyComparator) {
+            std::vector <std::pair<const char *, bool>> SkipList::multiGet(const std::vector<const char *> &keys,
+                                                                           pmem::storage::KeyComparator *keyComparator) {
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).multiGet(keys);
             }
 
             std::vector <KeyValuePair> SkipList::scan(const char *beginKey, const char *endKey, int64_t maxPairs,
-                                                      pmem::storage::KeyComparator* keyComparator) {
+                                                      pmem::storage::KeyComparator *keyComparator) {
                 return pmem::storage::internal::SkipListIterator(this->header, keyComparator).scan(beginKey, endKey,
                                                                                                    maxPairs);
             }
 
             unsigned long SkipList::totalKeys() {
                 return pmem::storage::internal::SkipListIterator(this->header, nullptr).totalKeys();
+            }
+
+            void SkipList::close() {
+                delete this;
             }
         }
     }

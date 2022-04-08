@@ -9,6 +9,10 @@ namespace pmem {
                 this->right = nullptr;
             }
 
+            SkipListLeafNode::~SkipListLeafNode() {
+                this->right = nullptr;
+            }
+
             void SkipListLeafNode::persist() {
                 pmem::obj::pool_base pmpool = PersistentMemoryPool::getInstance()->getPmpool();
 

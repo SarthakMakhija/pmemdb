@@ -22,6 +22,7 @@ namespace pmem {
             KeyComparator* keyComparator;
 
         public:
+            ~Db();
             static Db *open(const Configuration& configuration);
 
             Status put(const char* key, const char* value, const KeyValueSize& keyValueSize);

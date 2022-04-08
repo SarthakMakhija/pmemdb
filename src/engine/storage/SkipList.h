@@ -23,6 +23,7 @@ namespace pmem {
                 void operator=(const SkipList&) = delete;
 
                 explicit SkipList(LevelGenerator *levelGenerator);
+                ~SkipList();
 
                 Status put(const char *key,
                            const char *value,
@@ -46,6 +47,8 @@ namespace pmem {
                      pmem::storage::KeyComparator *keyComparator);
 
                 unsigned long totalKeys();
+
+                void close();
             };
         }
     }

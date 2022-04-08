@@ -18,6 +18,7 @@ namespace pmem {
 
             public:
                 SkipListLeafNode();
+                ~SkipListLeafNode();
 
                 void persist();
 

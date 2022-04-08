@@ -36,8 +36,8 @@ namespace pmem {
                         delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) +
                                                             valueSizeDirect(p) );
                     }
-                    size_t ksize = keyValueSize.getKeySize(); //strlen(key);
-                    size_t vsize = keyValueSize.getValueSize(); //strlen(value);
+                    size_t ksize = keyValueSize.getKeySize();
+                    size_t vsize = keyValueSize.getValueSize();
                     size_t size = ksize + vsize + sizeof(uint32_t) + sizeof(uint32_t);
 
                     keyValue = make_persistent<char[]>(size);
