@@ -13,10 +13,6 @@ namespace pmem {
                 }
             }
 
-            bool SkipListInternalNode::isLeaf() {
-                return false;
-            }
-
             bool SkipListInternalNode::matchesKey(const char *key, KeyComparator *keyComparator) const {
                 return keyComparator->compare(this->key, key) == 0;
             }

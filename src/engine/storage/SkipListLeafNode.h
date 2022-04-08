@@ -21,8 +21,6 @@ namespace pmem {
 
                 void persist();
 
-                bool isLeaf() override;
-
                 bool matchesKey(const char *key, pmem::storage::KeyComparator* keyComparator) const override;
 
                 bool isKeyLessEqualTo(const char *key, pmem::storage::KeyComparator* keyComparator) override;

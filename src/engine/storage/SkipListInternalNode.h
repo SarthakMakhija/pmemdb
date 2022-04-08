@@ -22,8 +22,6 @@ namespace pmem {
             public:
                 SkipListInternalNode(const char *key, int level);
 
-                bool isLeaf() override;
-
                 bool matchesKey(const char *key, KeyComparator *keyComparator) const override;
 
                 bool isKeyLessEqualTo(const char *key, KeyComparator *keyComparator) override;

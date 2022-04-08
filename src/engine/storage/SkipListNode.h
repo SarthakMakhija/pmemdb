@@ -10,8 +10,6 @@ namespace pmem {
         namespace internal {
             class SkipListNode {
             public:
-                virtual bool isLeaf() = 0;
-
                 virtual bool matchesKey(const char* key, pmem::storage::KeyComparator* keyComparator) const = 0;
 
                 virtual bool isKeyLessEqualTo(const char* key, pmem::storage::KeyComparator* keyComparator) = 0;

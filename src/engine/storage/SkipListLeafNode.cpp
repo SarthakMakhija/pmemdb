@@ -20,10 +20,6 @@ namespace pmem {
                 });
             }
 
-            bool SkipListLeafNode::isLeaf() {
-                return true;
-            }
-
             bool SkipListLeafNode::matchesKey(const char *key, pmem::storage::KeyComparator* keyComparator) const {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
                 return keyComparator->compare(leaf->key(), key) == 0;
