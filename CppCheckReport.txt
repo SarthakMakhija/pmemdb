@@ -10,6 +10,3 @@ test/engine/benchmark/DbBenchmark.cpp:128:0: style: The function 'DBScan' is nev
 test/engine/benchmark/DbBenchmark.cpp:178:0: style: The function 'DBScanArguments' is never used. [unusedFunction]
 
 ^
-src/engine/storage/SkipListInternalNode.cpp:16:0: style: The function 'isLeaf' is never used. [unusedFunction]
-
-^
