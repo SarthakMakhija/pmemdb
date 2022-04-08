@@ -19,7 +19,8 @@ namespace pmem {
                 }
                 this->forwards.clear();
                 delete static_cast<SkipListLeafNode*>(this->down);
-                //delete this->key; //TODO: Need to figure out the issue where deleting this char* causes a delete issue in Valgrind
+                //TODO: Need to figure out the issue where deleting this char* causes a delete issue in Valgrind
+                //delete this->key;
             }
 
             bool SkipListInternalNode::matchesKey(const char *key, KeyComparator *keyComparator) const {
@@ -150,12 +151,9 @@ namespace pmem {
                         }
                         positions[level]->forwards[level] = current->forwards[level];
                     }
+                    //we nullify the down-pointer and invoke SkipListInternalNode's destructor.
+                    //actual SkipListLeafNode gets deleted in SkipListLeafNode -> delete(..) method
                     current->down = nullptr;
-                    current->key = nullptr;
-                    for (int level = 0; level < current->forwards.size(); level++) {
-                        current->forwards[level] = nullptr;
-                    }
-                    delete current->key;
                     delete current;
                 }
             }
