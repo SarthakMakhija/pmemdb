@@ -30,7 +30,7 @@ target_sources(pmemdb_tests
         test/engine/DbFixture.h
         test/engine/DbTestsHelper.h
         test/engine/DbTestsHelper.cpp
-)
+        )
 
 # Enable benchmark testing
 add_executable(pmemdb_benchmark_tests "")
@@ -44,25 +44,8 @@ target_sources(pmemdb_benchmark_tests
         test/engine/SkipListNodeTestUtils.h
         test/engine/SkipListNodeTestUtils.cpp)
 
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG        release-1.11.0
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
-FetchContent_Declare(
-        googlebenchmark
-        GIT_REPOSITORY https://github.com/google/benchmark.git
-        GIT_TAG        v1.6.1
-)
-FetchContent_MakeAvailable(googlebenchmark)
-
-#find_package(GTest CONFIG REQUIRED)
-#find_package(benchmark CONFIG REQUIRED)
+find_package(GTest CONFIG REQUIRED)
+find_package(benchmark CONFIG REQUIRED)
 
 find_path(LIBPMEMOBJ_INCLUDE_DIR libpmemobj.h)
 find_path(LIBPMEM_INCLUDE_DIR libpmem.h)
@@ -76,26 +59,22 @@ target_include_directories(pmemdb_tests PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBP
 target_link_libraries(pmemdb_tests
         PRIVATE
         SkipList
-        gtest_main benchmark::benchmark benchmark::benchmark_main ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
+        GTest::gtest
+        GTest::gtest_main
+        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
 
 add_test(
         NAME pmemdb_tests
         COMMAND $<TARGET_FILE:pmemdb_tests>
 )
 
-#target_link_libraries(pmemdb_benchmark_tests
-#        PRIVATE
-#        SkipList
-#        benchmark::benchmark
-#        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
-#
+target_link_libraries(pmemdb_benchmark_tests
+        PRIVATE
+        SkipList
+        benchmark::benchmark
+        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
+
 #add_test(
 #        NAME pmemdb_benchmark_tests
 #        COMMAND $<TARGET_FILE:pmemdb_benchmark_tests>
 #)
-
-#target_include_directories(main PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
-#target_link_libraries(main
-#        PRIVATE
-#        SkipList
-#        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})

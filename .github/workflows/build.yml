@@ -13,14 +13,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Installs dependencies
-        run: |
-          chmod +x "${GITHUB_WORKSPACE}/.github/workflows/install_dependencies.sh"
-          "${GITHUB_WORKSPACE}/.github/workflows/install_dependencies.sh"
-
-      - name: Set up cmake
-        run: mkdir build; cd build; cmake ../
-
       - name: cppcheck
         uses: deep5050/cppcheck-action@main
         with:
@@ -36,8 +28,30 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN }}
           BRANCH_NAME: 'main'
 
-      - name: Run cmake
-        run: cd build; cmake --build .
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest ]
 
-      - name: Run tests
-        run: cd build; ctest -R pmemdb_tests
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - uses: lukka/get-cmake@latest
+
+      - name: Restore artifacts, or setup vcpkg for building artifacts
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgJsonGlob: 'vcpkg.json'
+
+      - name: Run CMake+vcpkg+Ninja+CTest to generate/build/test
+        uses: lukka/run-cmake@v10
+        id: runcmake
+        with:
+          configurePreset: 'ninja-multi-vcpkg'
+          buildPreset: 'ninja-multi-vcpkg-release'
+          testPreset: 'ninja-multi-vcpkg-release'
