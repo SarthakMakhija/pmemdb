@@ -15,8 +15,8 @@ jobs:
 
       - name: Installs dependencies
         run: |
-          chmod +x "${GITHUB_WORKSPACE}/.github/install_dependencies.sh"
-          "${GITHUB_WORKSPACE}/.github/install_dependencies.sh"
+          chmod +x "${GITHUB_WORKSPACE}/.github/workflows/install_dependencies.sh"
+          "${GITHUB_WORKSPACE}/.github/workflows/install_dependencies.sh"
 
       - name: Set up cmake
         run: mkdir build; cd build; cmake ../
