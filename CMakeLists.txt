@@ -72,7 +72,7 @@ find_library(LIBPMEMOBJ_LIBRARY NAMES pmemobj libpmemobj)
 
 enable_testing()
 
-target_include_directories(pmemdb_tests PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
+#target_include_directories(pmemdb_tests PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
 target_link_libraries(pmemdb_tests
         PRIVATE
         SkipList
@@ -83,19 +83,19 @@ add_test(
         COMMAND $<TARGET_FILE:pmemdb_tests>
 )
 
-target_link_libraries(pmemdb_benchmark_tests
-        PRIVATE
-        SkipList
-        benchmark::benchmark
-        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
+#target_link_libraries(pmemdb_benchmark_tests
+#        PRIVATE
+#        SkipList
+#        benchmark::benchmark
+#        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
+#
+#add_test(
+#        NAME pmemdb_benchmark_tests
+#        COMMAND $<TARGET_FILE:pmemdb_benchmark_tests>
+#)
 
-add_test(
-        NAME pmemdb_benchmark_tests
-        COMMAND $<TARGET_FILE:pmemdb_benchmark_tests>
-)
-
-target_include_directories(main PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
-target_link_libraries(main
-        PRIVATE
-        SkipList
-        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
+#target_include_directories(main PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
+#target_link_libraries(main
+#        PRIVATE
+#        SkipList
+#        ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
