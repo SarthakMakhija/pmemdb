@@ -64,15 +64,15 @@ FetchContent_MakeAvailable(googlebenchmark)
 #find_package(GTest CONFIG REQUIRED)
 #find_package(benchmark CONFIG REQUIRED)
 
-#find_path(LIBPMEMOBJ_INCLUDE_DIR libpmemobj.h)
-#find_path(LIBPMEM_INCLUDE_DIR libpmem.h)
+find_path(LIBPMEMOBJ_INCLUDE_DIR libpmemobj.h)
+find_path(LIBPMEM_INCLUDE_DIR libpmem.h)
 
 find_library(LIBPMEM_LIBRARY NAMES pmem libpmem)
 find_library(LIBPMEMOBJ_LIBRARY NAMES pmemobj libpmemobj)
 
 enable_testing()
 
-#target_include_directories(pmemdb_tests PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
+target_include_directories(pmemdb_tests PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
 target_link_libraries(pmemdb_tests
         PRIVATE
         SkipList
