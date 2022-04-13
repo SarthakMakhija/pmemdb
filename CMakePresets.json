@@ -49,7 +49,11 @@
     {
       "name": "ninja-multi-vcpkg-release",
       "configurePreset": "ninja-multi-vcpkg",
-      "configuration": "RelWithDebInfo"
+      "configuration": "RelWithDebInfo",
+      "output": {
+        "verbosity": "verbose",
+        "outputOnFailure": true
+      }
     }
   ]
 }
