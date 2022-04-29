@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # include engine and dependencies
+include_directories(src/engine)
 add_subdirectory(src/engine)
 
 # Enable unit/integration testing
