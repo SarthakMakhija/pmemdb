@@ -4,10 +4,10 @@
 #include <vector>
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
-#include "../db/Status.h"
-#include "../comparator/KeyComparator.h"
-#include "../db/KeyValueSize.h"
-#include "./utils/LevelGenerator.h"
+#include "db/Status.h"
+#include "comparator/KeyComparator.h"
+#include "db/KeyValueSize.h"
+#include "utils/LevelGenerator.h"
 
 namespace pmem {
     namespace storage {

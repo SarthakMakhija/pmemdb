@@ -1,7 +1,7 @@
 #ifndef _Configuration_
 #define _Configuration_
 
-#include "../comparator/StringKeyComparator.h"
+#include "comparator/StringKeyComparator.h"
 #include <stdint.h>
 
 namespace pmem {

@@ -3,7 +3,7 @@
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
-#include "../db/SkipListIterator.h"
+#include "db/SkipListIterator.h"
 
 namespace pmem {
     namespace storage {

@@ -2,11 +2,11 @@
 #define _SkipListIterator_
 
 #include <functional>
-#include "../storage/SkipListNode.h"
+#include "storage/SkipListNode.h"
 #include "Status.h"
-#include "../comparator/KeyComparator.h"
+#include "comparator/KeyComparator.h"
 #include "KeyValueSize.h"
-#include "../storage/utils/LevelGenerator.h"
+#include "storage/utils/LevelGenerator.h"
 
 namespace pmem {
     namespace storage {

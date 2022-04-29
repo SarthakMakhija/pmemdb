@@ -1,5 +1,4 @@
 #include "SkipListLeafNode.h"
-#include "../db/KeyValuePair.h"
 #include "PersistentMemoryPool.h"
 
 namespace pmem {

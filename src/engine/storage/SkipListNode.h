@@ -2,8 +2,8 @@
 #define _SkipListNode_
 
 #include <functional>
-#include "../db/KeyValuePair.h"
-#include "../comparator/KeyComparator.h"
+#include "db/KeyValuePair.h"
+#include "comparator/KeyComparator.h"
 
 namespace pmem {
     namespace storage {
