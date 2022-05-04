@@ -4,6 +4,7 @@
 #include <libpmemobj++/pool.hpp>
 #include <string>
 #include "PersistentLeaf.h"
+#include <iostream>
 
 namespace pmem {
     namespace storage {
@@ -43,7 +44,7 @@ namespace pmem {
 
                 explicit PersistentMemoryPool(const char *filePath, uint64_t size = 8 * 1024 * 1024) {
                     bool openFailed = false;
-                    std::string layout = "skiplist";
+                    std::string layout = strstr(filePath, "/") + 1;
 
                     try {
                         pmpool = pmem::obj::pool<Root>::open(filePath, layout);
