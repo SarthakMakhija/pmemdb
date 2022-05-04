@@ -4,7 +4,6 @@
 #include <libpmemobj++/pool.hpp>
 #include <string>
 #include "PersistentLeaf.h"
-#include <iostream>
 
 namespace pmem {
     namespace storage {

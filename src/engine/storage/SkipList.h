@@ -5,8 +5,9 @@
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "db/Status.h"
-#include "comparator/KeyComparator.h"
+#include "db/SkipListArena.h"
 #include "db/KeyValueSize.h"
+#include "comparator/KeyComparator.h"
 #include "utils/LevelGenerator.h"
 
 namespace pmem {
@@ -17,34 +18,31 @@ namespace pmem {
             private:
                 pmem::storage::internal::SkipListInternalNode *header;
                 pmem::storage::internal::LevelGenerator *levelGenerator;
+                pmem::storage::internal::SkipListArena *arena;
             public:
                 // No copying allowed
                 SkipList(const SkipList &copy) = delete;
                 void operator=(const SkipList&) = delete;
 
-                explicit SkipList(LevelGenerator *levelGenerator);
+                 SkipList(LevelGenerator *levelGenerator, pmem::storage::KeyComparator *keyComparator);
                 ~SkipList();
 
                 Status put(const char *key,
                            const char *value,
-                           const KeyValueSize &keyValueSize,
-                           pmem::storage::KeyComparator *keyComparator);
+                           const KeyValueSize &keyValueSize);
 
                 Status update(const char *key,
                               const char *value,
-                              const KeyValueSize &keyValueSize,
-                              pmem::storage::KeyComparator *keyComparator);
+                              const KeyValueSize &keyValueSize);
 
-                Status deleteBy(const char *key, pmem::storage::KeyComparator *keyComparator);
+                Status deleteBy(const char *key);
 
-                std::pair<const char *, bool> get(const char *key, pmem::storage::KeyComparator *keyComparator);
+                std::pair<const char *, bool> get(const char *key);
 
-                std::vector <std::pair<const char *, bool>> multiGet(const std::vector<const char *> &keys,
-                                                                     pmem::storage::KeyComparator *keyComparator);
+                std::vector <std::pair<const char *, bool>> multiGet(const std::vector<const char *> &keys);
 
                 std::vector <pmem::storage::KeyValuePair>
-                scan(const char *beginKey, const char *endKey, int64_t maxPairs,
-                     pmem::storage::KeyComparator *keyComparator);
+                scan(const char *beginKey, const char *endKey, int64_t maxPairs);
 
                 unsigned long totalKeys();
 

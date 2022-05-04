@@ -24,37 +24,38 @@ namespace pmem {
                     configuration.getFileSize()
             );
 
-            db->skipList = new internal::SkipList(new internal::LevelGenerator(configuration.getSkipListMaxLevel()));
             db->keyComparator = configuration.getKeyComparator();
+            db->skipList = new internal::SkipList(new internal::LevelGenerator(configuration.getSkipListMaxLevel()),
+                                                  db->keyComparator);
             return db;
         }
 
         Status Db::put(const char *key, const char *value, const KeyValueSize &keyValueSize) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->put(key, value, keyValueSize, this->keyComparator);
+            return this->skipList->put(key, value, keyValueSize);
         }
 
         Status Db::update(const char *key, const char *value, const KeyValueSize &keyValueSize) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->update(key, value, keyValueSize, this->keyComparator);
+            return this->skipList->update(key, value, keyValueSize);
         }
 
         Status Db::deleteBy(const char *key) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->deleteBy(key, this->keyComparator);
+            return this->skipList->deleteBy(key);
         }
 
         std::pair<const char *, bool> Db::get(const char *key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->get(key, this->keyComparator);
+            return this->skipList->get(key);
         }
 
         std::vector <std::pair<const char *, bool>> Db::multiGet(const std::vector<const char *> &keys) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->multiGet(keys, this->keyComparator);
+            return this->skipList->multiGet(keys);
         }
 
         std::vector <pmem::storage::KeyValuePair> Db::scan(const char *beginKey, const char *endKey, int64_t maxPairs) {
@@ -68,7 +69,7 @@ namespace pmem {
             }
 
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->scan(beginKey, endKey, maxPairs, this->keyComparator);
+            return this->skipList->scan(beginKey, endKey, maxPairs);
         }
 
         unsigned long Db::totalKeys() {
