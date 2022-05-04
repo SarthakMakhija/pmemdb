@@ -1,4 +1,4 @@
-#include "SkipListIterator.h"
+#include "SkipListArena.h"
 #include "storage/SkipListInternalNode.h"
 #include "storage/SkipListLeafNode.h"
 #include <algorithm>
@@ -6,11 +6,11 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-            SkipListIterator::SkipListIterator(SkipListNode *startingNode, KeyComparator* keyComparator)
+            SkipListArena::SkipListArena(SkipListNode *startingNode, KeyComparator* keyComparator)
                     : startingNode{startingNode}, keyComparator{keyComparator} {
             }
 
-            Status SkipListIterator::put(const char *key,
+            Status SkipListArena::put(const char *key,
                                          const char *value,
                                          const KeyValueSize& keyValueSize,
                                          LevelGenerator* levelGenerator,
@@ -38,7 +38,7 @@ namespace pmem {
                 return Status::KeyAlreadyExists;
             }
 
-            std::vector <std::pair<const char*, bool>> SkipListIterator::multiGet(std::vector<const char *> keys) {
+            std::vector <std::pair<const char*, bool>> SkipListArena::multiGet(std::vector<const char *> keys) {
                 std::vector <std::pair<const char*, bool>> result;
 
                 std::sort(keys.begin(), keys.end(), [&](const char *c1, const char *c2) {
@@ -57,7 +57,7 @@ namespace pmem {
                 return result;
             }
 
-            std::pair<const char*, bool> SkipListIterator::getBy(const char *key) {
+            std::pair<const char*, bool> SkipListArena::getBy(const char *key) {
                 std::pair < SkipListNode * ,
                         bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key, keyComparator);
 
@@ -68,7 +68,7 @@ namespace pmem {
             }
 
             std::vector <KeyValuePair>
-            SkipListIterator::scan(const char *beginKey, const char *endKey, int64_t maxPairs) {
+            SkipListArena::scan(const char *beginKey, const char *endKey, int64_t maxPairs) {
                 std::pair < SkipListNode * ,
                         bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->scan(
                                 beginKey, keyComparator);
@@ -80,7 +80,7 @@ namespace pmem {
             }
 
             Status
-            SkipListIterator::update(const char *key,
+            SkipListArena::update(const char *key,
                                      const char *value,
                                      const KeyValueSize& keyValueSize,
                                      std::function<void(void)> postUpdateHook) {
@@ -94,7 +94,7 @@ namespace pmem {
                 return Status::KeyNotFound;
             }
 
-            Status SkipListIterator::deleteBy(const char *key, std::function<void(void)> postDeleteHook) {
+            Status SkipListArena::deleteBy(const char *key, std::function<void(void)> postDeleteHook) {
                 DeletePosition deletePosition = static_cast<SkipListInternalNode *>(this->startingNode)->deletePositionOf(
                         key, keyComparator);
 
@@ -111,7 +111,7 @@ namespace pmem {
                 return Status::KeyNotFound;
             }
 
-            unsigned long SkipListIterator::totalKeys() {
+            unsigned long SkipListArena::totalKeys() {
                 return static_cast<SkipListInternalNode *>(this->startingNode)->totalKeys();
             }
         }

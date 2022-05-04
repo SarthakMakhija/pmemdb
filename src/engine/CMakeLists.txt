@@ -7,8 +7,8 @@ find_library(LIBPMEMOBJ_LIBRARY NAMES pmemobj libpmemobj)
 add_library(SkipList
         db/KeyValuePair.h
         db/KeyValuePair.cpp
-        db/SkipListIterator.h
-        db/SkipListIterator.cpp
+        db/SkipListArena.h
+        db/SkipListArena.cpp
         db/Status.h
         db/Db.h
         db/Db.cpp

@@ -17,10 +17,10 @@ target_sources(pmemdb_tests
         test/engine/unit/SkipList_exception_unit_test.cpp
         test/engine/unit/Db_exception_unit_test.cpp
         test/engine/integration/SkipListInternalNode_integration_test.cpp
-        test/engine/integration/SkipListIterator_integration_test.cpp
+        test/engine/integration/SkipListArena_integration_test.cpp
         test/engine/integration/SkipListLeafNode_integration_test.cpp
         test/engine/integration/SkipListLeafNode_transactional_write_integration_test.cpp
-        test/engine/integration/SkipListIterator_atomic_write_integration_test.cpp
+        test/engine/integration/SkipListArena_atomic_write_integration_test.cpp
         test/engine/integration/Db_concurrent_integration_test.cpp
         test/engine/integration/Db_integration_test.cpp
         test/engine/integration/Db_serialized_key_integration_test.cpp

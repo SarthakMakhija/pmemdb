@@ -1,5 +1,5 @@
-#ifndef _SkipListIterator_
-#define _SkipListIterator_
+#ifndef _SkipListArena_
+#define _SkipListArena_
 
 #include <functional>
 #include "storage/SkipListNode.h"
@@ -11,13 +11,13 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-            class SkipListIterator {
+            class SkipListArena {
             private:
                 SkipListNode *startingNode;
                 pmem::storage::KeyComparator *keyComparator;
 
             public:
-                SkipListIterator(SkipListNode *startingNode, pmem::storage::KeyComparator *keyComparator);
+                SkipListArena(SkipListNode *startingNode, pmem::storage::KeyComparator *keyComparator);
 
                 Status put(const char *key,
                            const char *value,
