@@ -7,17 +7,20 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-            SkipList::SkipList(LevelGenerator *levelGenerator, pmem::storage::KeyComparator *keyComparator) {
+            SkipList::SkipList(LevelGenerator *levelGenerator,
+                               pmem::storage::KeyComparator *keyComparator,
+                               internal::PersistentMemoryPool *persistentMemoryPool) {
+
                 if (levelGenerator->getMaxLevel() < 1) {
                     throw std::invalid_argument("towerSize has to be greater than or equal to one");
                 }
                 auto *sentinelLeafNode = new pmem::storage::internal::SkipListLeafNode();
-                sentinelLeafNode->persist();
+                sentinelLeafNode->persist(persistentMemoryPool);
 
                 this->header = new pmem::storage::internal::SkipListInternalNode("", levelGenerator->getMaxLevel());
                 this->header->attach(sentinelLeafNode);
                 this->levelGenerator = levelGenerator;
-                this->arena = new pmem::storage::internal::SkipListArena(this->header, keyComparator);
+                this->arena = new pmem::storage::internal::SkipListArena(this->header, keyComparator, persistentMemoryPool);
             }
 
             SkipList::~SkipList() {

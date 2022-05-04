@@ -26,7 +26,8 @@ namespace pmem {
 
             db->keyComparator = configuration.getKeyComparator();
             db->skipList = new internal::SkipList(new internal::LevelGenerator(configuration.getSkipListMaxLevel()),
-                                                  db->keyComparator);
+                                                  db->keyComparator,
+                                                  db->persistentMemoryPool);
             return db;
         }
 

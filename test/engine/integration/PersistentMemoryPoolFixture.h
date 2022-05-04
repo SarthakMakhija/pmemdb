@@ -27,6 +27,10 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
         remove(filePath);
         delete pool;
     }
+
+    PersistentMemoryPool* getPersistentMemoryPool() {
+        return this->pool;
+    }
 };
 
 #endif

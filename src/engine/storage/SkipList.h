@@ -9,6 +9,7 @@
 #include "db/KeyValueSize.h"
 #include "comparator/KeyComparator.h"
 #include "utils/LevelGenerator.h"
+#include "storage/PersistentMemoryPool.h"
 
 namespace pmem {
     namespace storage {
@@ -22,9 +23,13 @@ namespace pmem {
             public:
                 // No copying allowed
                 SkipList(const SkipList &copy) = delete;
-                void operator=(const SkipList&) = delete;
 
-                 SkipList(LevelGenerator *levelGenerator, pmem::storage::KeyComparator *keyComparator);
+                void operator=(const SkipList &) = delete;
+
+                SkipList(LevelGenerator *levelGenerator,
+                         pmem::storage::KeyComparator *keyComparator,
+                         pmem::storage::internal::PersistentMemoryPool *persistentMemoryPool);
+
                 ~SkipList();
 
                 Status put(const char *key,

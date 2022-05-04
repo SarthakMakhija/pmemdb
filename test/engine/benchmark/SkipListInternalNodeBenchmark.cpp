@@ -32,7 +32,7 @@ class UInt32KeyComparator : public KeyComparator {
 
 static std::pair<SkipListInternalNode *, PersistentMemoryPool *> SetUpSkipListInternalNode() {
     auto pool = PersistentMemoryPool::initialize(skipListInternalNodeFilePath, 512 * 1024 * 1024);
-    return std::pair(newSentinelInternalNode(levelGenerator->getMaxLevel()), pool);
+    return std::pair(newSentinelInternalNode(levelGenerator->getMaxLevel(), pool), pool);
 }
 
 static void TearDownSkipListInternalNode(PersistentMemoryPool *pool) {

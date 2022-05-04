@@ -17,13 +17,10 @@ namespace pmem {
 
                 static PersistentMemoryPool *initialize(const char *filePath, uint64_t size);
 
-                static PersistentMemoryPool *getInstance();
-
                 pmem::obj::pool_base getPmpool() const;
 
                 ~PersistentMemoryPool() {
                     try {
-                        instance = nullptr;
                         pmpool.close();
                     } catch (const std::logic_error &e) {
                         std::terminate();
@@ -39,7 +36,6 @@ namespace pmem {
                 PMEMoid *root_oid;
 
             private:
-                static PersistentMemoryPool *instance;
 
                 explicit PersistentMemoryPool(const char *filePath, uint64_t size = 8 * 1024 * 1024) {
                     bool openFailed = false;

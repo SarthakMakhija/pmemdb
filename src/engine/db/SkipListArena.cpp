@@ -6,15 +6,19 @@
 namespace pmem {
     namespace storage {
         namespace internal {
-            SkipListArena::SkipListArena(SkipListNode *startingNode, KeyComparator* keyComparator)
-                    : startingNode{startingNode}, keyComparator{keyComparator} {
+            SkipListArena::SkipListArena(SkipListNode *startingNode,
+                                         KeyComparator *keyComparator,
+                                         PersistentMemoryPool *persistentMemoryPool)
+                    : startingNode{startingNode},
+                      keyComparator{keyComparator},
+                      persistentMemoryPool{persistentMemoryPool} {
             }
 
             Status SkipListArena::put(const char *key,
-                                         const char *value,
-                                         const KeyValueSize& keyValueSize,
-                                         LevelGenerator* levelGenerator,
-                                         std::function<void(void)> postPutHook) {
+                                      const char *value,
+                                      const KeyValueSize &keyValueSize,
+                                      LevelGenerator *levelGenerator,
+                                      std::function<void(void)> postPutHook) {
 
                 PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
                                                                                                                  keyComparator,
@@ -25,6 +29,7 @@ namespace pmem {
                                                                                                              value,
                                                                                                              keyValueSize,
                                                                                                              keyComparator,
+                                                                                                             this->persistentMemoryPool,
                                                                                                              postPutHook);
                     if (statusNodePair.second != Status::Failed) {
                         SkipListLeafNode *newLeaf = statusNodePair.first;
@@ -38,18 +43,20 @@ namespace pmem {
                 return Status::KeyAlreadyExists;
             }
 
-            std::vector <std::pair<const char*, bool>> SkipListArena::multiGet(std::vector<const char *> keys) {
-                std::vector <std::pair<const char*, bool>> result;
+            std::vector <std::pair<const char *, bool>> SkipListArena::multiGet(std::vector<const char *> keys) {
+                std::vector <std::pair<const char *, bool>> result;
 
                 std::sort(keys.begin(), keys.end(), [&](const char *c1, const char *c2) {
                     return keyComparator->compare(c1, c2) < 0;
                 });
                 for (auto key: keys) {
                     std::pair < SkipListNode * ,
-                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key, keyComparator);
+                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key,
+                                                                                                              keyComparator);
 
                     if (existenceByNode.second) {
-                        result.push_back(static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator));
+                        result.push_back(
+                                static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }
@@ -57,9 +64,10 @@ namespace pmem {
                 return result;
             }
 
-            std::pair<const char*, bool> SkipListArena::getBy(const char *key) {
+            std::pair<const char *, bool> SkipListArena::getBy(const char *key) {
                 std::pair < SkipListNode * ,
-                        bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key, keyComparator);
+                        bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key,
+                                                                                                                keyComparator);
 
                 if (existenceByNode.second) {
                     return static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator);
@@ -74,22 +82,28 @@ namespace pmem {
                                 beginKey, keyComparator);
 
                 if (existenceByNode.second) {
-                    return static_cast<SkipListLeafNode *>(existenceByNode.first)->scan(beginKey, endKey, maxPairs, keyComparator);
+                    return static_cast<SkipListLeafNode *>(existenceByNode.first)->scan(beginKey, endKey, maxPairs,
+                                                                                        keyComparator);
                 }
                 return std::vector<KeyValuePair>();
             }
 
             Status
             SkipListArena::update(const char *key,
-                                     const char *value,
-                                     const KeyValueSize& keyValueSize,
-                                     std::function<void(void)> postUpdateHook) {
+                                  const char *value,
+                                  const KeyValueSize &keyValueSize,
+                                  std::function<void(void)> postUpdateHook) {
 
                 UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(
                         key, keyComparator);
 
                 if (updatePosition.leaf != nullptr) {
-                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key, value, keyValueSize, keyComparator, postUpdateHook);
+                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key,
+                                                                                        value,
+                                                                                        keyValueSize,
+                                                                                        keyComparator,
+                                                                                        this->persistentMemoryPool,
+                                                                                        postUpdateHook);
                 }
                 return Status::KeyNotFound;
             }
@@ -99,7 +113,10 @@ namespace pmem {
                         key, keyComparator);
 
                 if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
-                    Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteBy(key, keyComparator, postDeleteHook);
+                    Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteBy(key,
+                                                                                                   keyComparator,
+                                                                                                   this->persistentMemoryPool,
+                                                                                                   postDeleteHook);
                     if (status != Status::Failed) {
                         static_cast<SkipListInternalNode *>(deletePosition.internal)->deleteBy(key,
                                                                                                deletePosition.positions,
