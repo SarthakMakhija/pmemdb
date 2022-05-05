@@ -88,6 +88,19 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForAnExistingKe
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), static_cast<SkipListInternalNode*>(existenceByNode.first)->getDown() -> keyValuePair());
 }
 
+TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_NextInInternalNode) {
+  SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  std::string hdd = "HDD";
+  std::string sdd = "SDD";
+
+  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+
+  SkipListNode* node = sentinelInternal->next();
+
+  ASSERT_EQ("HDD", std::string(node->keyValuePair().getKey()));
+}
+
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExistingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
   std::string hdd = "HDD";
