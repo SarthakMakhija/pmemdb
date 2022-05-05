@@ -7,13 +7,13 @@ src/engine/iterator/SkipListIterator.cpp:9:15: note: Member variable 'SkipListIt
 src/engine/iterator/SkipListIterator.h:12:60: note: Member variable 'SkipListIterator::currentNode' is in the wrong place in the initializer list.
             pmem::storage::internal::SkipListInternalNode *currentNode;
                                                            ^
-src/engine/iterator/SkipListIterator.h:17:18: style:inconclusive: The member function 'pmem::storage::SkipListIterator::isValid' can be made a const function. Making this function 'const' should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state? [functionConst]
+src/engine/iterator/SkipListIterator.h:21:18: style:inconclusive: The member function 'pmem::storage::SkipListIterator::isValid' can be made a const function. Making this function 'const' should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state? [functionConst]
             bool isValid();
                  ^
 src/engine/iterator/SkipListIterator.cpp:12:32: note: Technically the member function 'pmem::storage::SkipListIterator::isValid' can be const.
         bool SkipListIterator::isValid() {
                                ^
-src/engine/iterator/SkipListIterator.h:17:18: note: Technically the member function 'pmem::storage::SkipListIterator::isValid' can be const.
+src/engine/iterator/SkipListIterator.h:21:18: note: Technically the member function 'pmem::storage::SkipListIterator::isValid' can be const.
             bool isValid();
                  ^
 src/engine/storage/SkipListLeafNode.cpp:156:69: style:inconclusive: Function 'deleteBy' argument 3 names different: declaration 'pool' definition 'persistentMemoryPool'. [funcArgNamesDifferent]
