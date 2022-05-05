@@ -24,14 +24,14 @@ target_sources(pmemdb_tests
         test/engine/integration/Db_concurrent_integration_test.cpp
         test/engine/integration/Db_integration_test.cpp
         test/engine/integration/Db_serialized_key_integration_test.cpp
+        test/engine/integration/SkipListIterator_integration_test.cpp
         test/engine/functional/Db_functional_test.cpp
         test/engine/SkipListNodeTestUtils.h
         test/engine/SkipListNodeTestUtils.cpp
         test/engine/integration/PersistentMemoryPoolFixture.h
         test/engine/DbFixture.h
         test/engine/DbTestsHelper.h
-        test/engine/DbTestsHelper.cpp
-        )
+        test/engine/DbTestsHelper.cpp)
 
 # Enable benchmark testing
 add_executable(pmemdb_benchmark_tests "")

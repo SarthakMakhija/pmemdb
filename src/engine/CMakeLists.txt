@@ -31,7 +31,9 @@ add_library(SkipList
         configuration/Configuration.cpp
         comparator/KeyComparator.h
         comparator/StringKeyComparator.h
-        comparator/StringKeyComparator.cpp)
+        comparator/StringKeyComparator.cpp
+        iterator/SkipListIterator.h
+        iterator/SkipListIterator.cpp)
 
 target_include_directories(SkipList PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
 target_link_libraries(SkipList PRIVATE ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})

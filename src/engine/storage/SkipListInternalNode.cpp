@@ -43,6 +43,14 @@ namespace pmem {
                 this->down = down;
             }
 
+            SkipListInternalNode* SkipListInternalNode::next() {
+                SkipListInternalNode *current = this;
+                if (current != nullptr) {
+                    current = current->forwards[0];
+                }
+                return current;
+            }
+
             std::pair<SkipListNode *, bool> SkipListInternalNode::getBy(const char *key, KeyComparator *keyComparator) {
                 SkipListInternalNode *current = this;
                 for (int level = this->forwards.size() - 1; level >= 0; level--) {
@@ -53,7 +61,7 @@ namespace pmem {
                 current = current->forwards[0];
 
                 if (current && keyComparator->compare(current->key, key) == 0) {
-                    return std::make_pair(current->down, true);
+                    return std::make_pair(current, true);
                 }
                 return std::make_pair(nullptr, false);
             }

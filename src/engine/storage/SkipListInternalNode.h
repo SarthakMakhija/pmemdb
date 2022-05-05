@@ -33,6 +33,8 @@ namespace pmem {
 
                 void attach(SkipListLeafNode *down);
 
+                SkipListInternalNode* next();
+
                 std::pair<SkipListNode *, bool> getBy(const char *key, KeyComparator *keyComparator);
 
                 std::pair<SkipListNode *, bool> scan(const char *beginKey, KeyComparator *keyComparator);

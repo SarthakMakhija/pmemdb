@@ -67,6 +67,10 @@ namespace pmem {
                 return this->arena->totalKeys();
             }
 
+            SkipListIterator SkipList::newIterator(pmem::storage::KeyComparator *keyComparator) {
+                return SkipListIterator(this->header, keyComparator);
+            }
+
             void SkipList::close() {
                 delete this;
             }

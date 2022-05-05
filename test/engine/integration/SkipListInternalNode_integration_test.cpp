@@ -85,7 +85,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForAnExistingKe
 
   std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(sdd.c_str(), stringKeyComparator());
 
-  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), existenceByNode.first -> keyValuePair());
+  ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), static_cast<SkipListInternalNode*>(existenceByNode.first)->getDown() -> keyValuePair());
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExistingKeyInInternalNode) {
@@ -110,7 +110,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_AttemptsToPutSameKeyInI
   put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinelInternal, sdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  const char* actualValue = sentinelInternal -> getBy(hdd.c_str(), stringKeyComparator()).first -> keyValuePair().getValue();
+  auto leaf = static_cast<SkipListInternalNode*>(sentinelInternal -> getBy(hdd.c_str(), stringKeyComparator()).first)->getDown();
+  const char* actualValue = leaf -> keyValuePair().getValue();
   ASSERT_EQ("Hard disk drive", std::string(actualValue));
 }
 

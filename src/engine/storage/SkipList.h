@@ -10,6 +10,7 @@
 #include "comparator/KeyComparator.h"
 #include "utils/LevelGenerator.h"
 #include "storage/PersistentMemoryPool.h"
+#include "iterator/SkipListIterator.h"
 
 namespace pmem {
     namespace storage {
@@ -50,6 +51,8 @@ namespace pmem {
                 scan(const char *beginKey, const char *endKey, int64_t maxPairs);
 
                 unsigned long totalKeys();
+
+                SkipListIterator newIterator(pmem::storage::KeyComparator *keyComparator);
 
                 void close();
             };

@@ -10,6 +10,7 @@
 #include "storage/PersistentMemoryPool.h"
 #include "configuration/Configuration.h"
 #include "KeyValueSize.h"
+#include "iterator/SkipListIterator.h"
 
 namespace pmem {
     namespace storage {
@@ -38,6 +39,8 @@ namespace pmem {
             std::vector <pmem::storage::KeyValuePair> scan(const char* beginKey, const char* endKey, int64_t maxPairs);
 
             unsigned long totalKeys();
+
+            SkipListIterator newIterator();
 
             void close();
         };

@@ -55,8 +55,8 @@ namespace pmem {
                                                                                                               keyComparator);
 
                     if (existenceByNode.second) {
-                        result.push_back(
-                                static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator));
+                        auto leaf = static_cast<SkipListInternalNode *>(existenceByNode.first)->getDown();
+                        result.push_back(static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }
@@ -70,7 +70,8 @@ namespace pmem {
                                                                                                                 keyComparator);
 
                 if (existenceByNode.second) {
-                    return static_cast<SkipListLeafNode *>(existenceByNode.first)->getBy(key, keyComparator);
+                    auto leaf = static_cast<SkipListInternalNode *>(existenceByNode.first)->getDown();
+                    return static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator);
                 }
                 return std::make_pair("", false);
             }
