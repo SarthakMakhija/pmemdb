@@ -1,12 +1,3 @@
-src/engine/storage/SkipListLeafNode.cpp:156:69: style:inconclusive: Function 'deleteBy' argument 3 names different: declaration 'pool' definition 'persistentMemoryPool'. [funcArgNamesDifferent]
-                                              PersistentMemoryPool* persistentMemoryPool,
-                                                                    ^
-src/engine/storage/SkipListLeafNode.h:57:55: note: Function 'deleteBy' argument 3 names different: declaration 'pool' definition 'persistentMemoryPool'.
-                                PersistentMemoryPool *pool,
-                                                      ^
-src/engine/storage/SkipListLeafNode.cpp:156:69: note: Function 'deleteBy' argument 3 names different: declaration 'pool' definition 'persistentMemoryPool'.
-                                              PersistentMemoryPool* persistentMemoryPool,
-                                                                    ^
 test/engine/benchmark/DbBenchmark.cpp:75:0: style: The function 'DBGet' is never used. [unusedFunction]
 
 ^
