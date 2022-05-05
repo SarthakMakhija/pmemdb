@@ -153,7 +153,7 @@ namespace pmem {
 
             Status SkipListLeafNode::deleteBy(const char *key,
                                               pmem::storage::KeyComparator *keyComparator,
-                                              PersistentMemoryPool* persistentMemoryPool,
+                                              PersistentMemoryPool* pool,
                                               std::function<void(void)> postDeleteHook) {
 
                 pmem::storage::internal::PersistentLeaf *previousLeaf = nullptr;
@@ -170,7 +170,7 @@ namespace pmem {
                     targetLeaf = targetLeaf->right.get();
                 }
 
-                pmem::obj::pool_base pmpool = persistentMemoryPool->getPmpool();
+                pmem::obj::pool_base pmpool = pool->getPmpool();
                 SkipListLeafNode *previousRight = previousNode->right;
                 SkipListLeafNode *targetRight = targetNode->right;
                 persistent_ptr<pmem::storage::internal::PersistentLeaf> persistentLeaf = targetNode->leaf;
