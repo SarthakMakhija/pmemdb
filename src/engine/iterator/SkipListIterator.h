@@ -13,6 +13,10 @@ namespace pmem {
             KeyComparator *keyComparator;
 
         public:
+            // No copying allowed
+            SkipListIterator(const SkipListIterator &copy) = delete;
+            void operator=(const SkipListIterator &) = delete;
+
             SkipListIterator(pmem::storage::internal::SkipListInternalNode *startingNode, KeyComparator *keyComparator);
             bool isValid();
             void seekToFirst();
