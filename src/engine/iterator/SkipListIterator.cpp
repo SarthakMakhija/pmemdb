@@ -29,7 +29,7 @@ namespace pmem {
         }
 
         void SkipListIterator::seek(const char* key) {
-            auto existenceByNode = currentNode->getBy(key, keyComparator);
+            auto existenceByNode = startingNode->getBy(key, keyComparator);
             currentNode = static_cast<pmem::storage::internal::SkipListInternalNode *>(existenceByNode.first);
         }
 

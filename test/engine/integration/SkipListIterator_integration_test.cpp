@@ -30,8 +30,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekToLast) {
     ASSERT_EQ("Pmem", std::string(iterator.key()));
 }
 
-
-TEST_F(DbFixture, SkipListIteratorIntegration_Seek) {
+TEST_F(DbFixture, SkipListIteratorIntegration_Seek1) {
     put(DbFixture::getDb(), "HDD", "Hard disk drive");
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid State drive");
@@ -41,6 +40,22 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Seek) {
 
     ASSERT_EQ("SDD", std::string(iterator.key()));
     ASSERT_EQ("Solid State drive", std::string(iterator.value()));
+}
+
+TEST_F(DbFixture, SkipListIteratorIntegration_Seek2) {
+    put(DbFixture::getDb(), "HDD", "Hard disk drive");
+    put(DbFixture::getDb(), "Pmem", "Persistent Memory");
+    put(DbFixture::getDb(), "SDD", "Solid State drive");
+
+    SkipListIterator iterator = DbFixture::getDb() -> newIterator();
+    iterator.seek("SDD");
+
+    ASSERT_EQ("SDD", std::string(iterator.key()));
+    ASSERT_EQ("Solid State drive", std::string(iterator.value()));
+
+    iterator.seek("HDD");
+    ASSERT_EQ("HDD", std::string(iterator.key()));
+    ASSERT_EQ("Hard disk drive", std::string(iterator.value()));
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_Next1) {
