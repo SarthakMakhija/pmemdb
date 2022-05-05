@@ -18,7 +18,7 @@ namespace pmem {
             void operator=(const SkipListIterator &) = delete;
 
             SkipListIterator(pmem::storage::internal::SkipListInternalNode *startingNode, KeyComparator *keyComparator);
-            bool isValid();
+            bool isValid() const;
             void seekToFirst();
             void seekToLast();
             void seek(const char* key);

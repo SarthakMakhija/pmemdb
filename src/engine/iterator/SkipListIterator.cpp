@@ -4,12 +4,12 @@
 namespace pmem {
     namespace storage {
         SkipListIterator::SkipListIterator(pmem::storage::internal::SkipListInternalNode *startingNode, KeyComparator *keyComparator) 
-            : startingNode{startingNode}, 
-              keyComparator{keyComparator}, 
-              currentNode{startingNode} {
+            : startingNode{startingNode},
+              currentNode{startingNode},
+              keyComparator{keyComparator} {
         }
 
-        bool SkipListIterator::isValid() {
+        bool SkipListIterator::isValid() const {
             if (currentNode != nullptr) {
                 return true;
             }
