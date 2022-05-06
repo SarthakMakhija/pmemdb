@@ -2,6 +2,8 @@
 #define _SkipList_
 
 #include <vector>
+#include <mutex>
+#include <shared_mutex>
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "db/Status.h"
@@ -24,7 +26,6 @@ namespace pmem {
             public:
                 // No copying allowed
                 SkipList(const SkipList &copy) = delete;
-
                 void operator=(const SkipList &) = delete;
 
                 SkipList(LevelGenerator *levelGenerator,
@@ -52,7 +53,8 @@ namespace pmem {
 
                 unsigned long totalKeys();
 
-                SkipListIterator newIterator(pmem::storage::KeyComparator *keyComparator);
+                SkipListIterator newIterator(pmem::storage::KeyComparator *keyComparator,
+                                             std::shared_mutex             &mutex);
 
                 void close();
             };

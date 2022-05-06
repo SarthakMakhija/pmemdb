@@ -79,7 +79,7 @@ namespace pmem {
         }
 
         SkipListIterator Db::newIterator() {
-            return this->skipList->newIterator(this->keyComparator);
+            return this->skipList->newIterator(this->keyComparator, this->mutex_);
         }
 
         void Db::close() {
