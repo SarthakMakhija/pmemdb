@@ -2,6 +2,7 @@
 #define _KeyComparator_
 
 #include <stdexcept>
+#include "storage/Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -9,7 +10,7 @@ namespace pmem {
         public:
             virtual ~KeyComparator() = default;
 
-            virtual int compare(char const *a, char const *b) const = 0;
+            virtual int compare(const Slice& a, const Slice& b) const = 0;
         };
     }
 }

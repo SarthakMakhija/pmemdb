@@ -24,12 +24,12 @@ namespace pmem {
 
             bool SkipListLeafNode::matchesKey(const char *key, pmem::storage::KeyComparator *keyComparator) const {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return keyComparator->compare(leaf->key(), key) == 0;
+                return keyComparator->compare(Slice(leaf->key()), Slice(key)) == 0;
             }
 
             bool SkipListLeafNode::isKeyLessEqualTo(const char *key, pmem::storage::KeyComparator *keyComparator) {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return keyComparator->compare(leaf->key(), key) <= 0;
+                return keyComparator->compare(Slice(leaf->key()), Slice(key)) <= 0;
             }
 
             pmem::storage::KeyValuePair SkipListLeafNode::keyValuePair() {
@@ -55,7 +55,7 @@ namespace pmem {
                 pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
                 SkipListLeafNode *targetNode = this;
 
-                while (targetLeaf->right.get() && keyComparator->compare(targetLeaf->right.get()->key(), key.cdata()) <= 0) {
+                while (targetLeaf->right.get() && keyComparator->compare(Slice(targetLeaf->right.get()->key()), key) <= 0) {
                     targetLeaf = targetLeaf->right.get();
                     targetNode = targetNode->right;
                 }
@@ -84,10 +84,10 @@ namespace pmem {
             std::pair<const char *, bool>
             SkipListLeafNode::getBy(const pmem::storage::Slice& key, pmem::storage::KeyComparator *keyComparator) {
                 pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
-                while (targetLeaf->right.get() && keyComparator->compare(targetLeaf->right.get()->key(), key.cdata()) <= 0) {
+                while (targetLeaf->right.get() && keyComparator->compare(Slice(targetLeaf->right.get()->key()), key) <= 0) {
                     targetLeaf = targetLeaf->right.get();
                 }
-                if (keyComparator->compare(targetLeaf->key(), key.cdata()) == 0) {
+                if (keyComparator->compare(Slice(targetLeaf->key()), key) == 0) {
                     return std::make_pair(targetLeaf->value(), true);
                 }
                 return std::make_pair("", false);
@@ -101,10 +101,10 @@ namespace pmem {
 
                 pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
                 while (targetLeaf->right.get() &&
-                       keyComparator->compare(targetLeaf->right.get()->key(), beginKey.cdata()) <= 0) {
+                       keyComparator->compare(Slice(targetLeaf->right.get()->key()), beginKey) <= 0) {
                     targetLeaf = targetLeaf->right.get();
                 }
-                if (keyComparator->compare(targetLeaf->key(), beginKey.cdata()) < 0) {
+                if (keyComparator->compare(Slice(targetLeaf->key()), beginKey) < 0) {
                     targetLeaf = targetLeaf->right.get();
                 }
 
@@ -131,13 +131,13 @@ namespace pmem {
                                      std::function<void(void)> postUpdateHook) {
 
                 pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
-                while (targetLeaf->right.get() && keyComparator->compare(targetLeaf->right.get()->key(), key.cdata()) <= 0) {
+                while (targetLeaf->right.get() && keyComparator->compare(Slice(targetLeaf->right.get()->key()), key) <= 0) {
                     targetLeaf = targetLeaf->right.get();
                 }
 
                 pmem::obj::pool_base pmpool = persistentMemoryPool->getPmpool();
                 try {
-                    if (keyComparator->compare(targetLeaf->key(), key.cdata()) == 0) {
+                    if (keyComparator->compare(Slice(targetLeaf->key()), key) == 0) {
                         transaction::run(pmpool, [&] {
                             targetLeaf->put(key, value);
                             postUpdateHook();
@@ -160,7 +160,7 @@ namespace pmem {
                 SkipListLeafNode *previousNode = nullptr;
                 SkipListLeafNode *targetNode = this;
 
-                while (targetLeaf->right.get() && keyComparator->compare(targetLeaf->right.get()->key(), key.cdata()) <= 0) {
+                while (targetLeaf->right.get() && keyComparator->compare(Slice(targetLeaf->right.get()->key()), key) <= 0) {
                     previousNode = targetNode;
                     targetNode = targetNode->right;
 
@@ -174,7 +174,7 @@ namespace pmem {
                 persistent_ptr<pmem::storage::internal::PersistentLeaf> persistentLeaf = targetNode->leaf;
 
                 try {
-                    if (keyComparator->compare(targetLeaf->key(), key.cdata()) == 0) {
+                    if (keyComparator->compare(Slice(targetLeaf->key()), key) == 0) {
                         previousNode->right = targetNode->right;
                         targetNode->right = nullptr;
 

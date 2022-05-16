@@ -18,9 +18,9 @@ struct Employee {
 
 class EmployeeIdComparator : public KeyComparator {
 public:
-    int compare(const char* a, const char* b) const override {
-        const EmployeeId* first = reinterpret_cast<const EmployeeId*>(a);
-        const EmployeeId* other = reinterpret_cast<const EmployeeId*>(b);
+    int compare(const Slice& a, const Slice& b) const override {
+        const EmployeeId* first = reinterpret_cast<const EmployeeId*>(a.cdata());
+        const EmployeeId* other = reinterpret_cast<const EmployeeId*>(b.cdata());
 
         if (first->id == other->id) {
             return 0;
