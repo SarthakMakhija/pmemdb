@@ -27,6 +27,10 @@ add_library(SkipList
         storage/WritePosition.h
         storage/utils/LevelGenerator.h
         storage/utils/LevelGenerator.cpp
+        storage/fastmem.h
+        storage/integral_types.h
+        storage/Slice.h
+        storage/Slice.cpp
         configuration/Configuration.h
         configuration/Configuration.cpp
         comparator/KeyComparator.h
@@ -37,3 +41,5 @@ add_library(SkipList
 
 target_include_directories(SkipList PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_INCLUDE_DIR})
 target_link_libraries(SkipList PRIVATE ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
+
+install(TARGETS SkipList DESTINATION /usr/local/lib)

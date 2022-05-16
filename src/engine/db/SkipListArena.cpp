@@ -1,6 +1,7 @@
 #include "SkipListArena.h"
 #include "storage/SkipListInternalNode.h"
 #include "storage/SkipListLeafNode.h"
+#include "storage/Slice.h"
 #include <algorithm>
 
 namespace pmem {
@@ -25,9 +26,8 @@ namespace pmem {
                                                                                                                  levelGenerator);
                 if (putPosition.leaf != nullptr) {
                     std::pair < SkipListLeafNode * ,
-                            Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(key,
-                                                                                                             value,
-                                                                                                             keyValueSize,
+                            Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(pmem::storage::Slice(key, keyValueSize.getKeySize()),
+                                                                                                             pmem::storage::Slice(value, keyValueSize.getValueSize()),
                                                                                                              keyComparator,
                                                                                                              this->persistentMemoryPool,
                                                                                                              postPutHook);
@@ -56,7 +56,7 @@ namespace pmem {
 
                     if (existenceByNode.second) {
                         auto leaf = static_cast<SkipListInternalNode *>(existenceByNode.first)->getDown();
-                        result.push_back(static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator));
+                        result.push_back(static_cast<SkipListLeafNode *>(leaf)->getBy(pmem::storage::Slice(key, strlen(key)+1), keyComparator));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }
@@ -71,7 +71,7 @@ namespace pmem {
 
                 if (existenceByNode.second) {
                     auto leaf = static_cast<SkipListInternalNode *>(existenceByNode.first)->getDown();
-                    return static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator);
+                    return static_cast<SkipListLeafNode *>(leaf)->getBy(pmem::storage::Slice(key, strlen(key)+1), keyComparator);
                 }
                 return std::make_pair("", false);
             }
@@ -83,7 +83,9 @@ namespace pmem {
                                 beginKey, keyComparator);
 
                 if (existenceByNode.second) {
-                    return static_cast<SkipListLeafNode *>(existenceByNode.first)->scan(beginKey, endKey, maxPairs,
+                    return static_cast<SkipListLeafNode *>(existenceByNode.first)->scan(pmem::storage::Slice(beginKey, strlen(beginKey)+1), 
+                                                                                        pmem::storage::Slice(endKey, strlen(endKey)+1), 
+                                                                                        maxPairs,
                                                                                         keyComparator);
                 }
                 return std::vector<KeyValuePair>();
@@ -99,9 +101,8 @@ namespace pmem {
                         key, keyComparator);
 
                 if (updatePosition.leaf != nullptr) {
-                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(key,
-                                                                                        value,
-                                                                                        keyValueSize,
+                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(pmem::storage::Slice(key, keyValueSize.getKeySize()),
+                                                                                        pmem::storage::Slice(value, keyValueSize.getValueSize()),
                                                                                         keyComparator,
                                                                                         this->persistentMemoryPool,
                                                                                         postUpdateHook);
@@ -114,7 +115,7 @@ namespace pmem {
                         key, keyComparator);
 
                 if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
-                    Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteBy(key,
+                    Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteBy(pmem::storage::Slice(key, strlen(key)+1),
                                                                                                    keyComparator,
                                                                                                    this->persistentMemoryPool,
                                                                                                    postDeleteHook);

@@ -59,7 +59,7 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
 
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             Slice slice = kg.Next();
-            char *key = slice.buff;
+            const char *key = slice.cdata();
 
             PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
@@ -74,7 +74,7 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
     for (auto _: state) {
         state.PauseTiming();
         Slice slice = kg.Next();
-        char *key = slice.buff;
+        const char *key = slice.cdata();
         state.ResumeTiming();
 
         PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
@@ -116,7 +116,7 @@ static void SkipListInternalNodePut(benchmark::State &state) {
     for (auto _: state) {
         state.PauseTiming();
         Slice slice = kg.Next();
-        char *key = slice.buff;
+        const char *key = slice.cdata();
         state.ResumeTiming();
 
         PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
@@ -161,7 +161,7 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
 
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             Slice slice = kg.Next();
-            char *key = slice.buff;
+            const char *key = slice.cdata();
 
             PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
@@ -176,7 +176,7 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
     size_t notFound = 0;
     for (auto _: state) {
         state.PauseTiming();
-        char *key = kg.Next().buff;
+        const char *key = kg.Next().cdata();
         state.ResumeTiming();
         std::pair<SkipListNode*, bool> pair = skipListInternalNode->getBy(key, keyComparator);
         if (!pair.second) {
@@ -219,7 +219,7 @@ static void SkipListInternalNodeScan(benchmark::State &state) {
 
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             Slice slice = kg.Next();
-            char *key = slice.buff;
+            const char *key = slice.cdata();
 
             PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
@@ -234,7 +234,7 @@ static void SkipListInternalNodeScan(benchmark::State &state) {
     size_t notFound = 0;
     for (auto _: state) {
         state.PauseTiming();
-        char *beginKey = kg.Next().buff;
+        const char *beginKey = kg.Next().cdata();
         state.ResumeTiming();
         std::pair<SkipListNode*, bool> pair = skipListInternalNode->scan(beginKey, keyComparator);
         if (!pair.second) {

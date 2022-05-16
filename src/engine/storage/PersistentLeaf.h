@@ -8,6 +8,7 @@
 #include <libpmemobj++/pool.hpp>
 #include <libpmemobj/pool_base.h>
 #include "db/KeyValueSize.h"
+#include "Slice.h"
 
 using pmem::obj::delete_persistent;
 using pmem::obj::make_persistent;
@@ -30,14 +31,14 @@ namespace pmem {
                     *((uint32_t * )((char *) (p) + sizeof(uint32_t))) = v;
                 }
 
-                void put(const char *key, const char *value, KeyValueSize keyValueSize) {
+                void put(const pmem::storage::Slice& key, const pmem::storage::Slice& value) {
                     if (keyValue) {
                         char *p = keyValue.get();
                         delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) +
                                                             valueSizeDirect(p) );
                     }
-                    size_t ksize = keyValueSize.getKeySize();
-                    size_t vsize = keyValueSize.getValueSize();
+                    size_t ksize = key.size();
+                    size_t vsize = value.size();
                     size_t size = ksize + vsize + sizeof(uint32_t) + sizeof(uint32_t);
 
                     keyValue = make_persistent<char[]>(size);
@@ -47,9 +48,9 @@ namespace pmem {
                     setValueSizeDirect(p, (uint32_t) vsize);
 
                     char *kvptr = p + sizeof(uint32_t) + sizeof(uint32_t);
-                    memcpy(kvptr, key, ksize);
+                    memcpy(kvptr, key.cdata(), ksize);
                     kvptr += ksize;
-                    memcpy(kvptr, value, vsize);
+                    memcpy(kvptr, value.cdata(), vsize);
                 }
 
                 void clear() {

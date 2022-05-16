@@ -7,6 +7,7 @@
 #include "db/KeyValueSize.h"
 #include "comparator/KeyComparator.h"
 #include "PersistentMemoryPool.h"
+#include "Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -32,27 +33,27 @@ namespace pmem {
                 pmem::storage::KeyValuePair rightKeyValuePair();
 
                 std::pair<SkipListLeafNode *, Status>
-                put(const char *key,
-                    const char *value,
-                    const KeyValueSize &keyValueSize,
+                put(const pmem::storage::Slice& key,
+                    const pmem::storage::Slice& value,
                     pmem::storage::KeyComparator *keyComparator,
                     PersistentMemoryPool *pool,
                     std::function<void(void)> postPutHook = [] {});
 
-                std::pair<const char *, bool> getBy(const char *key, pmem::storage::KeyComparator *keyComparator);
+                std::pair<const char *, bool> getBy(const pmem::storage::Slice& key, pmem::storage::KeyComparator *keyComparator);
 
                 std::vector <pmem::storage::KeyValuePair>
-                scan(const char *beginKey, const char *endKey, int64_t maxPairs,
+                scan(const pmem::storage::Slice& beginKey,
+                     const pmem::storage::Slice& endKey, 
+                     int64_t maxPairs,
                      pmem::storage::KeyComparator *keyComparator);
 
-                Status update(const char *key,
-                              const char *value,
-                              const KeyValueSize &keyValueSize,
+                Status update(const pmem::storage::Slice& key,
+                              const pmem::storage::Slice& value,
                               pmem::storage::KeyComparator *keyComparator,
                               PersistentMemoryPool *pool,
                               std::function<void(void)> postUpdateHook = [] {});
 
-                Status deleteBy(const char *key,
+                Status deleteBy(const pmem::storage::Slice& key,
                                 pmem::storage::KeyComparator *keyComparator,
                                 PersistentMemoryPool *pool,
                                 std::function<void(void)> postDeleteHook = [] {});

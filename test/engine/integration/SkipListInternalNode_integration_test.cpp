@@ -13,9 +13,8 @@ void put(SkipListInternalNode* node, const char* key, const char* value, Persist
   PutPosition putPosition = node -> putPositionOf(key, stringKeyComparator(), new LevelGenerator(6));
   if (putPosition.newLevel != -1) {
       std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(
-              key,
-              value,
-              KeyValueSize(strlen(key) + 1, strlen(value) + 1),
+              Slice(key, strlen(key) + 1),
+              Slice(value, strlen(value) + 1),
               stringKeyComparator(),
               pool);
 

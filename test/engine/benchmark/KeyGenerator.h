@@ -2,11 +2,9 @@
 #define _KeyGenerator_
 
 #include "Random.h"
+#include "../../../src/engine/storage/Slice.h"
 
-struct Slice {
-    char *buff;
-    size_t keySize;
-};
+using namespace pmem::storage;
 
 class KeyGenerator {
 private:

@@ -8,16 +8,24 @@
 using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
-std::pair<SkipListLeafNode *, Status> put(SkipListLeafNode* node, const char* key, const char* value, PersistentMemoryPool* pool) {
-    return node->put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator(), pool);
+std::pair<SkipListLeafNode *, Status> put(SkipListLeafNode* node, const char* key, const char* value, PersistentMemoryPool* pool) {    
+    return node->put(
+                      Slice(key, strlen(key) + 1), 
+                      Slice(value, strlen(value) + 1), 
+                      stringKeyComparator(), 
+                      pool);
 }
 
 void update(SkipListLeafNode* node, const char* key, const char* value, PersistentMemoryPool* pool) {
-    node->update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator(), pool);
+    node->update(
+                  Slice(key, strlen(key) + 1), 
+                  Slice(value, strlen(value) + 1), 
+                  stringKeyComparator(), 
+                  pool);
 }
 
 void deleteBy(SkipListLeafNode* node, const char* key, PersistentMemoryPool* pool) {
-    node->deleteBy(key, stringKeyComparator(), pool);
+    node->deleteBy(Slice(key, strlen(key) + 1), stringKeyComparator(), pool);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_RightKeyValuePairGivenDownPointerIsNotNull) {

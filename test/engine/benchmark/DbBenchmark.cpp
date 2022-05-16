@@ -47,9 +47,9 @@ static void DbPut(benchmark::State &state) {
     for (auto _: state) {
         state.PauseTiming();
         Slice slice = kg.Next();
-        char *key = slice.buff;
+        const char *key = slice.cdata();
         char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
-        KeyValueSize keyValueSize = KeyValueSize(slice.keySize, strlen(value) + 1);
+        KeyValueSize keyValueSize = KeyValueSize(slice.size(), strlen(value) + 1);
         state.ResumeTiming();
 
         Status status = db->put(key, value, keyValueSize);
@@ -85,10 +85,10 @@ static void DBGet(benchmark::State &state) {
     if (state.thread_index() == 0) {
         db = SetupDB();
         for (uint64_t count = 0; count < numberOfKeys; count++) {
-            Slice slice = kg.Next();
-            char *key = slice.buff;
+            pmem::storage::Slice slice = kg.Next();
+            const char *key = slice.cdata();
             char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
-            KeyValueSize keyValueSize = KeyValueSize(slice.keySize, strlen(value) + 1);
+            KeyValueSize keyValueSize = KeyValueSize(slice.size(), strlen(value) + 1);
             Status status = db->put(key, value, keyValueSize);
 
             if (status == Status::Failed) {
@@ -100,7 +100,7 @@ static void DBGet(benchmark::State &state) {
 
     for (auto _: state) {
         state.PauseTiming();
-        char *key = kg.Next().buff;
+        const char *key = kg.Next().cdata();
         state.ResumeTiming();
         std::pair<const char *, bool> pair = db->get(key);
         if (!pair.second) {
@@ -139,10 +139,10 @@ static void DBScan(benchmark::State &state) {
     if (state.thread_index() == 0) {
         db = SetupDB();
         for (uint64_t count = 0; count < numberOfKeys; count++) {
-            Slice slice = kg.Next();
-            char *key = slice.buff;
+            pmem::storage::Slice slice = kg.Next();
+            const char *key = slice.cdata();
             char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
-            KeyValueSize keyValueSize = KeyValueSize(slice.keySize, strlen(value) + 1);
+            KeyValueSize keyValueSize = KeyValueSize(slice.size(), strlen(value) + 1);
             Status status = db->put(key, value, keyValueSize);
 
             if (status == Status::Failed) {
@@ -154,8 +154,8 @@ static void DBScan(benchmark::State &state) {
 
     for (auto _: state) {
         state.PauseTiming();
-        char *beginKey = kg.Next().buff;
-        char *endKey = kg.Next().buff;
+        const char *beginKey = kg.Next().cdata();
+        const char *endKey = kg.Next().cdata();
 
         std::vector <KeyValuePair> result;
         if (*(uint32_t *) beginKey > *(uint32_t *) endKey) {

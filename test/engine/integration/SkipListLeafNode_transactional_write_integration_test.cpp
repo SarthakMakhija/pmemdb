@@ -13,7 +13,11 @@ std::pair<SkipListLeafNode *, Status> put(SkipListLeafNode* node,
                                           PersistentMemoryPool* pool,
                                           std::function<void(void)> postPutHook = [] {}) {
 
-    return node->put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator(), pool, postPutHook);
+    return node->put(Slice(key, strlen(key) + 1), 
+                     Slice(value, strlen(value) + 1), 
+                     stringKeyComparator(), 
+                     pool,
+                     postPutHook);
 }
 
 Status update(SkipListLeafNode* node,
@@ -21,8 +25,12 @@ Status update(SkipListLeafNode* node,
               const char* value,
               PersistentMemoryPool* pool,
               std::function<void(void)> postUpdateHook = [] {}) {
-
-    return node->update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), stringKeyComparator(), pool, postUpdateHook);
+  
+  return node->update(Slice(key, strlen(key) + 1), 
+                      Slice(value, strlen(value) + 1), 
+                      stringKeyComparator(), 
+                      pool,
+                      postUpdateHook); 
 }
 
 Status deleteBy(SkipListLeafNode* node,
@@ -30,7 +38,7 @@ Status deleteBy(SkipListLeafNode* node,
                 PersistentMemoryPool* pool,
                 std::function<void(void)> postDeleteHook = [] {}) {
 
-    return node->deleteBy(key, stringKeyComparator(), pool, postDeleteHook);
+  return node->deleteBy(Slice(key, strlen(key) + 1), stringKeyComparator(), pool, postDeleteHook);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhilePuttingAKeyValue) {
