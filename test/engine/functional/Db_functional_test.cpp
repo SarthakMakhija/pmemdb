@@ -40,10 +40,10 @@ TEST(Db_Functional, Add500KeyValuePairs) {
         put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
     for (int count = 1; count <= 500; count++) {
-        std::string key   = "Key-"   + std::to_string(count);
+        Slice key   = Slice(keys.at(count - 1).c_str());
         std::string expectedValue = "Value-" + std::to_string(count);
 
-        std::pair<const char*, bool> existenceByValue = db -> get(key.c_str());
+        std::pair<const char*, bool> existenceByValue = db -> get(key);
         ASSERT_EQ(expectedValue, std::string(existenceByValue.first));
         ASSERT_TRUE(existenceByValue.second);
     }
@@ -66,8 +66,8 @@ TEST(Db_Functional, DoesAScan) {
     for (int index = 0; index < keys.size(); index++) {
         put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
-    std::string beginKey = "50";
-    std::string endKey   = "70";
+    Slice beginKey = Slice("50");
+    Slice endKey   = Slice("70");
 
     std::vector<std::string> expectedKeys;
     std::vector<std::string> expectedValues;
@@ -82,7 +82,7 @@ TEST(Db_Functional, DoesAScan) {
     }
     expected.push_back(KeyValuePair("7", "7"));
 
-    std::vector<KeyValuePair> pairs = db -> scan(beginKey.c_str(), endKey.c_str(), 50);
+    std::vector<KeyValuePair> pairs = db -> scan(beginKey, endKey, 50);
 
     ASSERT_EQ(expected.at(0), pairs.at(0));
 
@@ -105,8 +105,8 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
         put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
 
-    std::string beginKey = "50";
-    std::string endKey   = "70";
+    Slice beginKey = Slice("50");
+    Slice endKey   = Slice("70");
 
     std::vector<std::string> expectedKeys;
     std::vector<std::string> expectedValues;
@@ -120,7 +120,7 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
         expected.push_back(KeyValuePair(expectedKeys.at(index).c_str(), expectedValues.at(index).c_str()));
     }
 
-    std::vector<KeyValuePair> pairs = db -> scan(beginKey.c_str(), endKey.c_str(), 5);
+    std::vector<KeyValuePair> pairs = db -> scan(beginKey, endKey, 5);
     ASSERT_EQ(expected, pairs);
 
     closeDb(db);
@@ -151,10 +151,10 @@ TEST(Db_Functional, Update500KeyValuePairs) {
         update(db, keys.at(index).c_str(), valuesToUpdate.at(index).c_str());
     }
     for (int count = 1; count <= 500; count++) {
-        std::string key           = "Key-"   + std::to_string(count);
+        Slice key           = Slice(keys.at(count - 1).c_str());
         std::string expectedValue = "Value-" + std::to_string(count*2);
         
-        std::pair<const char*, bool> existenceByValue = db -> get(key.c_str());
+        std::pair<const char*, bool> existenceByValue = db -> get(key);
         ASSERT_EQ(expectedValue, std::string(existenceByValue.first));
         ASSERT_TRUE(existenceByValue.second);
     }
@@ -192,10 +192,10 @@ TEST(Db_Functional, DeleteKeys) {
     }
 
     for (int count = 2; count < 400; count++) {
-        std::string key           = "Key-"   + std::to_string(count);
+        Slice key           = Slice(keys.at(count - 1).c_str());
         std::string expectedValue = "Value-" + std::to_string(count);
         
-        std::pair<const char*, bool> existenceByValue = db -> get(key.c_str());
+        std::pair<const char*, bool> existenceByValue = db -> get(key);
 
         ASSERT_EQ(expectedValue, std::string(existenceByValue.first));
         ASSERT_TRUE(existenceByValue.second);
@@ -213,7 +213,6 @@ TEST(Db_Functional, DeleteKeys) {
 
     closeDb(db);
 }
-
 
 TEST(Db_Functional, GetTotalKeys) {
     Db* db = openDb(1);

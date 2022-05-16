@@ -59,11 +59,10 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
 
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             Slice slice = kg.Next();
-            const char *key = slice.cdata();
 
-            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
+            PutPosition putPosition = skipListInternalNode->putPositionOf(slice, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
-                SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
+                SkipListNode *newInternal = skipListInternalNode->put(slice, putPosition.positions, putPosition.newLevel);
                 if (newInternal == nullptr) {
                     state.SkipWithError("Returned nullptr as the new node");
                 }
@@ -74,10 +73,9 @@ static void SkipListInternalNodePutPosition(benchmark::State &state) {
     for (auto _: state) {
         state.PauseTiming();
         Slice slice = kg.Next();
-        const char *key = slice.cdata();
         state.ResumeTiming();
 
-        PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
+        PutPosition putPosition = skipListInternalNode->putPositionOf(slice, keyComparator, levelGenerator);
         benchmark::DoNotOptimize(putPosition);
     }
 
@@ -116,12 +114,11 @@ static void SkipListInternalNodePut(benchmark::State &state) {
     for (auto _: state) {
         state.PauseTiming();
         Slice slice = kg.Next();
-        const char *key = slice.cdata();
         state.ResumeTiming();
 
-        PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
+        PutPosition putPosition = skipListInternalNode->putPositionOf(slice, keyComparator, levelGenerator);
         if (putPosition.newLevel != -1) {
-            SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
+            SkipListNode *newInternal = skipListInternalNode->put(slice, putPosition.positions, putPosition.newLevel);
             if (newInternal == nullptr) {
                 state.SkipWithError("Returned nullptr as the new node");
             }
@@ -161,11 +158,10 @@ static void SkipListInternalNodeGet(benchmark::State &state) {
 
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             Slice slice = kg.Next();
-            const char *key = slice.cdata();
 
-            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
+            PutPosition putPosition = skipListInternalNode->putPositionOf(slice, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
-                SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
+                SkipListNode *newInternal = skipListInternalNode->put(slice, putPosition.positions, putPosition.newLevel);
                 if (newInternal == nullptr) {
                     state.SkipWithError("Returned nullptr as the new node");
                 }
@@ -219,11 +215,10 @@ static void SkipListInternalNodeScan(benchmark::State &state) {
 
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             Slice slice = kg.Next();
-            const char *key = slice.cdata();
 
-            PutPosition putPosition = skipListInternalNode->putPositionOf(key, keyComparator, levelGenerator);
+            PutPosition putPosition = skipListInternalNode->putPositionOf(slice, keyComparator, levelGenerator);
             if (putPosition.newLevel != -1) {
-                SkipListNode *newInternal = skipListInternalNode->put(key, putPosition.positions, putPosition.newLevel);
+                SkipListNode *newInternal = skipListInternalNode->put(slice, putPosition.positions, putPosition.newLevel);
                 if (newInternal == nullptr) {
                     state.SkipWithError("Returned nullptr as the new node");
                 }

@@ -95,8 +95,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_PutAKeyValuePair1) {
   SkipListLeafNode* sentinel = newSentinelLeafNode(PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinel, "SDD", "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "SDD";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("SDD");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("Solid state drive", std::string(valueByExistence.first));
 }
@@ -107,8 +107,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_PutAKeyValuePair2) {
   put(sentinel, "SDD", "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinel, "Pmem", "Persistent Storage", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "Pmem";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("Pmem");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("Persistent Storage", std::string(valueByExistence.first));
 }
@@ -118,8 +118,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForAnExistingKey) {
   put(sentinel, "HDD", "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinel, "Pmem", "Persistent Storage", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "Pmem";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("Pmem");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("Persistent Storage", std::string(valueByExistence.first));
 }
@@ -129,8 +129,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_GetByKeyForANonExistingKey)
   put(sentinel, "HDD", "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinel, "Pmem", "Persistent Storage", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "SDD";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("SDD");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("", std::string(valueByExistence.first));
 }
@@ -142,10 +142,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_ScanWithBeginKeyPresent) {
   put(sentinel, "RAM", "Random Access Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinel, "SDD", "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string beginKey = "Pmem";
-  std::string endKey = "SDD";
+  Slice beginKey = Slice("Pmem");
+  Slice endKey = Slice("SDD");
 
-  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey.c_str(), endKey.c_str(), 10, stringKeyComparator());
+  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey, 10, stringKeyComparator());
   std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Storage"), KeyValuePair("RAM", "Random Access Memory")};
 
   ASSERT_EQ(expected, pairs);
@@ -157,10 +157,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_ScanWithBeginKeyNotPresent)
   put(sentinel, "RAM", "Random Access Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinel, "SDD", "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string beginKey = "Pmem";
-  std::string endKey = "SDD";
-
-  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey.c_str(), endKey.c_str(), 10, stringKeyComparator());
+  Slice beginKey = Slice("Pmem");
+  Slice endKey = Slice("SDD");
+  
+  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey, 10, stringKeyComparator());
   std::vector<KeyValuePair> expected = {KeyValuePair("RAM", "Random Access Memory")};
 
   ASSERT_EQ(expected, pairs);
@@ -173,10 +173,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_ScanWithMaxPairsAs1) {
   put(sentinel, "RAM", "Random Access Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
   put(sentinel, "SDD", "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string beginKey = "Pmem";
-  std::string endKey = "SDD";
+  Slice beginKey = Slice("Pmem");
+  Slice endKey = Slice("SDD");
 
-  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey.c_str(), endKey.c_str(), 1, stringKeyComparator());
+  std::vector<KeyValuePair> pairs = sentinel -> scan(beginKey, endKey, 1, stringKeyComparator());
   std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Storage")};
 
   ASSERT_EQ(expected, pairs);
@@ -189,8 +189,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_UpdateValueOfAMatchingKey) 
 
   update(sentinel, "Pmem", "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "Pmem";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("Pmem");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("Persistent Memory", std::string(valueByExistence.first));
 }
@@ -203,8 +203,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyIn
 
   deleteBy(sentinel, "HDD", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "HDD";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("HDD");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("", std::string(valueByExistence.first));
 }
@@ -217,8 +217,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyIn
 
   deleteBy(sentinel, "Pmem", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "Pmem";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("Pmem");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("", std::string(valueByExistence.first));
 }
@@ -231,8 +231,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_DeleteValueOfAMatchingKeyIn
 
   deleteBy(sentinel, "SDD", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "SDD";
-  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("SDD");
+  std::pair<const char*, bool> valueByExistence = sentinel -> getBy(key, stringKeyComparator());
 
   ASSERT_EQ("", std::string(valueByExistence.first));
 }

@@ -13,11 +13,11 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingTheSameKey) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::thread reader1([&]() {
-        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
+        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get(Slice("HDD")).first));
     });
 
     std::thread reader2([&]() {
-        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
+        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get(Slice("HDD")).first));
     });
 
     reader1.join();
@@ -30,11 +30,11 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsReadingDifferentKeys) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
     std::thread reader1([&]() {
-        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get("HDD").first));
+        ASSERT_EQ("Hard disk drive", std::string(DbFixture::getDb() -> get(Slice("HDD")).first));
     });
 
     std::thread reader2([&]() {
-        ASSERT_EQ("Persistent Memory", std::string(DbFixture::getDb() -> get("Pmem").first));
+        ASSERT_EQ("Persistent Memory", std::string(DbFixture::getDb() -> get(Slice("Pmem")).first));
     });
 
     reader1.join();
@@ -210,7 +210,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingUpdateOnSameKey) {
     writer1.join();
     writer2.join();
 
-    const char* value = DbFixture::getDb() -> get("HDD").first;
+    const char* value = DbFixture::getDb() -> get(Slice("HDD")).first;
     ASSERT_TRUE(std::string(value) == "Hard disk" || std::string(value) == "HDD");
 }
 
@@ -226,6 +226,6 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndDeleteOnSame
     writer1.join();
     writer2.join();
 
-    const char* value = DbFixture::getDb() -> get("HDD").first;
+    const char* value = DbFixture::getDb() -> get(Slice("HDD")).first;
     ASSERT_TRUE(std::string(value) == "Hard disk drive" || std::string(value) == "");
 }

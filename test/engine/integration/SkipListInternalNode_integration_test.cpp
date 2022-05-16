@@ -78,24 +78,24 @@ TEST(SkipListInternalNode, NodesKeyIsGreaterThanGivenKeyInSkipListNode) {
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForAnExistingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(sdd.c_str(), stringKeyComparator());
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(sdd, stringKeyComparator());
 
   ASSERT_EQ(KeyValuePair("SDD", "Solid state drive"), static_cast<SkipListInternalNode*>(existenceByNode.first)->getDown() -> keyValuePair());
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_NextInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
   SkipListNode* node = sentinelInternal->next();
 
@@ -104,74 +104,74 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_NextInInternalNode) {
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExistingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "Pmem";
-  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key.c_str(), stringKeyComparator());
+  Slice key = Slice("Pmem");
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(key, stringKeyComparator());
 
   ASSERT_FALSE(existenceByNode.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_AttemptsToPutSameKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  auto leaf = static_cast<SkipListInternalNode*>(sentinelInternal -> getBy(hdd.c_str(), stringKeyComparator()).first)->getDown();
+  auto leaf = static_cast<SkipListInternalNode*>(sentinelInternal -> getBy(hdd, stringKeyComparator()).first)->getDown();
   const char* actualValue = leaf -> keyValuePair().getValue();
   ASSERT_EQ("Hard disk drive", std::string(actualValue));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheStartingLeafNodeToPerformScan) {
     SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-    std::string hdd = "HDD";
-    std::string sdd = "SDD";
-    std::string pmem = "Pmem";
+    Slice hdd = Slice("HDD");
+    Slice sdd = Slice("SDD");
+    Slice pmem = Slice("Pmem");
 
-    put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-    put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-    put(sentinelInternal, pmem.c_str(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+    put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+    put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+    put(sentinelInternal, pmem.cdata(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-    std::string beginKey = "Pmem";
-    std::pair<SkipListNode*, bool> nodeByExistence = sentinelInternal -> scan(beginKey.c_str(), stringKeyComparator());
+    Slice beginKey = Slice("Pmem");
+    std::pair<SkipListNode*, bool> nodeByExistence = sentinelInternal -> scan(beginKey, stringKeyComparator());
 
     ASSERT_EQ("Persistent Memory", std::string(nodeByExistence.first -> keyValuePair().getValue()));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsFalseToPerformScanGivenBeginKeyIsOutsideTheBounds) {
     SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-    std::string hdd = "HDD";
-    std::string sdd = "SDD";
-    std::string pmem = "Pmem";
+    Slice hdd = Slice("HDD");
+    Slice sdd = Slice("SDD");
+    Slice pmem = Slice("Pmem");
 
-    put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-    put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-    put(sentinelInternal, pmem.c_str(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+    put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+    put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+    put(sentinelInternal, pmem.cdata(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-    std::string beginKey = "Tuff";
-    std::pair<SkipListNode*, bool> nodeByExistence = sentinelInternal -> scan(beginKey.c_str(), stringKeyComparator());
+    Slice beginKey = Slice("Tuff");
+    std::pair<SkipListNode*, bool> nodeByExistence = sentinelInternal -> scan(beginKey, stringKeyComparator());
 
     ASSERT_FALSE(nodeByExistence.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositionOfAMatchingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
-  std::string pmem = "Pmem";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
+  Slice pmem = Slice("Pmem");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, pmem.c_str(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, pmem.cdata(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  UpdatePosition updatePosition = sentinelInternal -> updatePositionOf(sdd.c_str(), stringKeyComparator());
+  UpdatePosition updatePosition = sentinelInternal -> updatePositionOf(sdd, stringKeyComparator());
 
   ASSERT_EQ("SDD", std::string(updatePosition.internal -> keyValuePair().getKey()));
   ASSERT_EQ("Solid state drive", std::string(updatePosition.leaf -> keyValuePair().getValue()));
@@ -179,70 +179,70 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositio
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfANonMatchingKeyInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
-  std::string pmem = "Pmem";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
+  Slice pmem = Slice("Pmem");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, pmem.c_str(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, pmem.cdata(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  std::string key = "NonMatchingKey";
-  deleteBy(sentinelInternal, key.c_str());
+  Slice key = Slice("NonMatchingKey");
+  deleteBy(sentinelInternal, key.cdata());
 
-  ASSERT_TRUE(sentinelInternal -> getBy(hdd.c_str(), stringKeyComparator()).second);
-  ASSERT_TRUE(sentinelInternal -> getBy(sdd.c_str(), stringKeyComparator()).second);
-  ASSERT_TRUE(sentinelInternal -> getBy(pmem.c_str(), stringKeyComparator()).second);
-  ASSERT_FALSE(sentinelInternal -> getBy(key.c_str(), stringKeyComparator()).second);
+  ASSERT_TRUE(sentinelInternal -> getBy(hdd, stringKeyComparator()).second);
+  ASSERT_TRUE(sentinelInternal -> getBy(sdd, stringKeyComparator()).second);
+  ASSERT_TRUE(sentinelInternal -> getBy(pmem, stringKeyComparator()).second);
+  ASSERT_FALSE(sentinelInternal -> getBy(key, stringKeyComparator()).second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInBetweenInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
-  std::string pmem = "Pmem";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
+  Slice pmem = Slice("Pmem");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, pmem.c_str(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, pmem.cdata(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  deleteBy(sentinelInternal, pmem.c_str());
+  deleteBy(sentinelInternal, pmem.cdata());
 
-  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(pmem.c_str(), stringKeyComparator());
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(pmem, stringKeyComparator());
 
   ASSERT_FALSE(existenceByNode.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInEndInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
-  std::string pmem = "Pmem";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
+  Slice pmem = Slice("Pmem");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, pmem.c_str(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, pmem.cdata(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  deleteBy(sentinelInternal, sdd.c_str());
+  deleteBy(sentinelInternal, sdd.cdata());
 
-  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(sdd.c_str(), stringKeyComparator());
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(sdd, stringKeyComparator());
 
   ASSERT_FALSE(existenceByNode.second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfAMatchingKeyInBeginningInInternalNode) {
   SkipListInternalNode* sentinelInternal = newSentinelInternalNode(6, PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  std::string hdd = "HDD";
-  std::string sdd = "SDD";
-  std::string pmem = "Pmem";
+  Slice hdd = Slice("HDD");
+  Slice sdd = Slice("SDD");
+  Slice pmem = Slice("Pmem");
 
-  put(sentinelInternal, hdd.c_str(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, sdd.c_str(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
-  put(sentinelInternal, pmem.c_str(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, hdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, sdd.cdata(), "Solid state drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
+  put(sentinelInternal, pmem.cdata(), "Persistent Memory", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  deleteBy(sentinelInternal, hdd.c_str());
+  deleteBy(sentinelInternal, hdd.cdata());
 
-  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(hdd.c_str(), stringKeyComparator());
+  std::pair<SkipListNode*, bool> existenceByNode = sentinelInternal -> getBy(hdd, stringKeyComparator());
 
   ASSERT_FALSE(existenceByNode.second);
 }

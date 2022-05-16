@@ -50,7 +50,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhilePuttingAKeyValue)
                                                             PersistentMemoryPoolFixture::getPersistentMemoryPool(),
                                                             [] {throw std::runtime_error("FailsWhilePuttingAKeyValue");});
 
-  ASSERT_FALSE(sentinel -> getBy("HDD", stringKeyComparator()).second);
+  ASSERT_FALSE(sentinel -> getBy(Slice("HDD"), stringKeyComparator()).second);
   ASSERT_EQ(Status::Failed, statusNodePair.second);
 }
 
@@ -64,8 +64,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhilePuttingAKeyValueA
                                                             PersistentMemoryPoolFixture::getPersistentMemoryPool(),
                                                             [] {throw std::runtime_error("FailsWhilePuttingAKeyValueAndSucceedsWithOther");});
 
-  ASSERT_FALSE(sentinel -> getBy("HDD", stringKeyComparator()).second);
-  ASSERT_TRUE(sentinel -> getBy("SDD", stringKeyComparator()).second);
+  ASSERT_FALSE(sentinel -> getBy(Slice("HDD"), stringKeyComparator()).second);
+  ASSERT_TRUE(sentinel -> getBy(Slice("SDD"), stringKeyComparator()).second);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileUpdatingAKeyValue) {
@@ -78,7 +78,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileUpdatingAKeyValue
                          PersistentMemoryPoolFixture::getPersistentMemoryPool(),
                          [] {throw std::runtime_error("FailsWhileUpdatingAKeyValue");});
 
-  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy("SDD", stringKeyComparator()).first));
+  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy(Slice("SDD"), stringKeyComparator()).first));
   ASSERT_EQ(Status::Failed, status);
 }
 
@@ -94,8 +94,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileUpdatingAKeyValue
          PersistentMemoryPoolFixture::getPersistentMemoryPool(),
          [] {throw std::runtime_error("FailsWhileUpdatingAKeyValueAndSucceedsWithOther");});
 
-  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy("SDD", stringKeyComparator()).first));
-  ASSERT_EQ("HDD", std::string(sentinel -> getBy("HDD", stringKeyComparator()).first));
+  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy(Slice("SDD"), stringKeyComparator()).first));
+  ASSERT_EQ("HDD", std::string(sentinel -> getBy(Slice("HDD"), stringKeyComparator()).first));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileDeletingAKeyValue) {
@@ -104,7 +104,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileDeletingAKeyValue
 
   Status status = deleteBy(sentinel, "SDD", PersistentMemoryPoolFixture::getPersistentMemoryPool(), [] {throw std::runtime_error("FailsWhileDeleting");});
 
-  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy("SDD", stringKeyComparator()).first));
+  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy(Slice("SDD"), stringKeyComparator()).first));
   ASSERT_EQ(Status::Failed, status);
 }
 
@@ -116,6 +116,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListLeafNode_FailsWhileDeletingAKeyValue
   deleteBy(sentinel, "SDD", PersistentMemoryPoolFixture::getPersistentMemoryPool(), [] {throw std::runtime_error("FailsWhileDeletingAKeyValueAndSucceedsWithOther");});
   deleteBy(sentinel, "HDD", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
-  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy("SDD", stringKeyComparator()).first));
-  ASSERT_EQ("", std::string(sentinel -> getBy("HDD", stringKeyComparator()).first));
+  ASSERT_EQ("Solid state drive", std::string(sentinel -> getBy(Slice("SDD"), stringKeyComparator()).first));
+  ASSERT_EQ("", std::string(sentinel -> getBy(Slice("HDD"), stringKeyComparator()).first));
 }
