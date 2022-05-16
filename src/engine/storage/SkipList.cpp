@@ -67,9 +67,9 @@ namespace pmem {
                 return this->arena->totalKeys();
             }
 
-            SkipListIterator SkipList::newIterator(pmem::storage::KeyComparator *keyComparator,
+            SkipListIterator* SkipList::newIterator(pmem::storage::KeyComparator *keyComparator,
                                                    std::shared_mutex             &mutex) {
-                return SkipListIterator(this->header, keyComparator, mutex);
+                return new SkipListIterator(this->header, keyComparator, mutex);
             }
 
             void SkipList::close() {

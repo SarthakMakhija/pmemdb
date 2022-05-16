@@ -170,7 +170,7 @@ namespace pmem {
                 SkipListInternalNode *current = this;
                 unsigned long count = 0;
 
-                while (current->forwards[0]) {
+                while (current->forwards[0] != nullptr) {
                     current = current->forwards[0];
                     count = count + 1;
                 }

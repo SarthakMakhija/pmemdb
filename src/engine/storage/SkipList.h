@@ -53,7 +53,7 @@ namespace pmem {
 
                 unsigned long totalKeys();
 
-                SkipListIterator newIterator(pmem::storage::KeyComparator *keyComparator,
+                SkipListIterator* newIterator(pmem::storage::KeyComparator *keyComparator,
                                              std::shared_mutex             &mutex);
 
                 void close();

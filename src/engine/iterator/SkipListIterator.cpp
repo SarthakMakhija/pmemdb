@@ -13,46 +13,46 @@ namespace pmem {
         }
 
         bool SkipListIterator::isValid() const {
-            std::shared_lock <std::shared_mutex> lock(mutex);
-            if (currentNode->next() != nullptr) {
+            std::shared_lock <std::shared_mutex> lock(this->mutex);
+            if (this->currentNode != nullptr) {
                 return true;
             }
             return false;
         }
 
         void SkipListIterator::seekToFirst() {
-            std::shared_lock <std::shared_mutex> lock(mutex);
-            currentNode = startingNode;
+            std::shared_lock <std::shared_mutex> lock(this->mutex);
+            this->currentNode = startingNode->next();
         }
 
         void SkipListIterator::seekToLast() {
-            std::shared_lock <std::shared_mutex> lock(mutex);
-            pmem::storage::internal::SkipListInternalNode* node = currentNode;
+            std::shared_lock <std::shared_mutex> lock(this->mutex);
+            pmem::storage::internal::SkipListInternalNode* node = this->currentNode;
             while (node->next() != nullptr) {
                 node = node->next();
             }
-            currentNode = node;
+            this->currentNode = node;
         }
 
         void SkipListIterator::seek(const char* key) {
-            std::shared_lock <std::shared_mutex> lock(mutex);
-            auto existenceByNode = startingNode->getBy(key, keyComparator);
-            currentNode = static_cast<pmem::storage::internal::SkipListInternalNode *>(existenceByNode.first);
+            std::shared_lock <std::shared_mutex> lock(this->mutex);
+            auto existenceByNode = this->startingNode->getBy(key, keyComparator);
+            this->currentNode = static_cast<pmem::storage::internal::SkipListInternalNode *>(existenceByNode.first);
         }
 
         void SkipListIterator::next() {
-            std::shared_lock <std::shared_mutex> lock(mutex);
-            currentNode = currentNode->next();
+            std::shared_lock <std::shared_mutex> lock(this->mutex);
+            this->currentNode = currentNode->next();
         }
 
         const char* SkipListIterator::key() const {
-            std::shared_lock <std::shared_mutex> lock(mutex);
-            return currentNode->keyValuePair().getKey();
+            std::shared_lock <std::shared_mutex> lock(this->mutex);
+            return this->currentNode->keyValuePair().getKey();
         }
 
         const char* SkipListIterator::value() const {
-            std::shared_lock <std::shared_mutex> lock(mutex);
-            auto leaf = currentNode->getDown();
+            std::shared_lock <std::shared_mutex> lock(this->mutex);
+            auto leaf = this->currentNode->getDown();
             return static_cast<pmem::storage::internal::SkipListLeafNode *>(leaf)->keyValuePair().getValue();
         }
     }

@@ -78,7 +78,7 @@ namespace pmem {
             return this->skipList->totalKeys();
         }
 
-        SkipListIterator Db::newIterator() {
+        SkipListIterator* Db::newIterator() {
             return this->skipList->newIterator(this->keyComparator, this->mutex_);
         }
 

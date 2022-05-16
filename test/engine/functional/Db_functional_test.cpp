@@ -216,7 +216,7 @@ TEST(Db_Functional, DeleteKeys) {
 
 
 TEST(Db_Functional, GetTotalKeys) {
-    Db* db = openDb();
+    Db* db = openDb(1);
     std::vector<std::string> keys;
     std::vector<std::string> values;
 
