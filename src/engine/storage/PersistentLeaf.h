@@ -64,8 +64,9 @@ namespace pmem {
                     }
                 }
 
-                const char *key() const {
-                    return ((char *) (keyValue.get()) + sizeof(uint32_t) + sizeof(uint32_t));
+                Slice key() {
+                    const char* key = ((char *) (keyValue.get()) + sizeof(uint32_t) + sizeof(uint32_t));
+                    return Slice(key, keySize());
                 }
 
                 const char *value() const {
