@@ -30,40 +30,28 @@ namespace pmem {
                 delete this->arena;
             }
 
-            Status SkipList::put(const char *key,
-                                 const char *value,
-                                 const KeyValueSize &keyValueSize) {
-
-                return this->arena->put(Slice(key, keyValueSize.getKeySize()),
-                                        Slice(value, keyValueSize.getValueSize()),
-                                        this->levelGenerator);
+            Status SkipList::put(const Slice& key, const Slice& value) {
+                return this->arena->put(key, value, this->levelGenerator);
             }
 
-            Status SkipList::update(const char *key,
-                                    const char *value,
-                                    const KeyValueSize &keyValueSize) {
-
-                return this->arena->update(Slice(key, keyValueSize.getKeySize()), Slice(value, keyValueSize.getValueSize()));
+            Status SkipList::update(const Slice& key, const Slice& value) {
+                return this->arena->update(key, value);
             }
 
-            Status SkipList::deleteBy(const char *key) {
-                return this->arena->deleteBy(Slice(key, strlen(key) + 1));
+            Status SkipList::deleteBy(const Slice& key) {
+                return this->arena->deleteBy(key);
             }
 
-            std::pair<const char *, bool> SkipList::get(const char *key) {
-                return this->arena->getBy(Slice(key, strlen(key) + 1));
+            std::pair<const char *, bool> SkipList::get(const Slice& key) {
+                return this->arena->getBy(key);
             }
 
-            std::vector <std::pair<const char *, bool>> SkipList::multiGet(const std::vector<const char *> &keys) {
-                std::vector<Slice> keySlices;
-                for (auto key: keys) {
-                    keySlices.push_back(Slice(key, strlen(key) + 1));
-                }
-                return this->arena->multiGet(keySlices);
+            std::vector <std::pair<const char *, bool>> SkipList::multiGet(const std::vector<Slice> &keys) {               
+                return this->arena->multiGet(keys);
             }
 
-            std::vector <KeyValuePair> SkipList::scan(const char *beginKey, const char *endKey, int64_t maxPairs) {
-                return this->arena->scan(Slice(beginKey, strlen(beginKey) + 1), Slice(endKey, strlen(endKey) + 1), maxPairs);
+            std::vector <KeyValuePair> SkipList::scan(const Slice& beginKey, const Slice& endKey, int64_t maxPairs) {
+                return this->arena->scan(beginKey, endKey, maxPairs);
             }
 
             unsigned long SkipList::totalKeys() {

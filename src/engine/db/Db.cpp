@@ -1,5 +1,6 @@
 #include "Db.h"
-#include "../storage/utils/LevelGenerator.h"
+#include "storage/utils/LevelGenerator.h"
+#include "storage/Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -34,29 +35,33 @@ namespace pmem {
         Status Db::put(const char *key, const char *value, const KeyValueSize &keyValueSize) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->put(key, value, keyValueSize);
+            return this->skipList->put(Slice(key, keyValueSize.getKeySize()), Slice(value, keyValueSize.getValueSize()));
         }
 
         Status Db::update(const char *key, const char *value, const KeyValueSize &keyValueSize) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->update(key, value, keyValueSize);
+            return this->skipList->update(Slice(key, keyValueSize.getKeySize()), Slice(value, keyValueSize.getValueSize()));
         }
 
         Status Db::deleteBy(const char *key) {
             //TODO: Handle blank key
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->deleteBy(key);
+            return this->skipList->deleteBy(Slice(key, strlen(key) + 1));
         }
 
         std::pair<const char *, bool> Db::get(const char *key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->get(key);
+            return this->skipList->get(Slice(key, strlen(key) + 1));
         }
 
         std::vector <std::pair<const char *, bool>> Db::multiGet(const std::vector<const char *> &keys) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->multiGet(keys);
+            std::vector<Slice> keySlices;
+            for (auto key: keys) {
+                keySlices.push_back(Slice(key, strlen(key) + 1));
+            }
+            return this->skipList->multiGet(keySlices);
         }
 
         std::vector <pmem::storage::KeyValuePair> Db::scan(const char *beginKey, const char *endKey, int64_t maxPairs) {
@@ -70,7 +75,7 @@ namespace pmem {
             }
 
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
-            return this->skipList->scan(beginKey, endKey, maxPairs);
+            return this->skipList->scan(Slice(beginKey, strlen(beginKey) + 1), Slice(endKey, strlen(endKey) + 1), maxPairs);
         }
 
         unsigned long Db::totalKeys() {
