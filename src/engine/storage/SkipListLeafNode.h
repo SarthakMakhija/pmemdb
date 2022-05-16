@@ -4,7 +4,6 @@
 #include <functional>
 #include "SkipListNode.h"
 #include "db/Status.h"
-#include "db/KeyValueSize.h"
 #include "comparator/KeyComparator.h"
 #include "PersistentMemoryPool.h"
 #include "Slice.h"

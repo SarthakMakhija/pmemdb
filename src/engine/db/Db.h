@@ -10,7 +10,6 @@
 #include "storage/PersistentMemoryPool.h"
 #include "storage/Slice.h"
 #include "configuration/Configuration.h"
-#include "KeyValueSize.h"
 #include "iterator/SkipListIterator.h"
 
 namespace pmem {

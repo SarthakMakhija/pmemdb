@@ -12,8 +12,6 @@ add_library(SkipList
         db/Status.h
         db/Db.h
         db/Db.cpp
-        db/KeyValueSize.h
-        db/KeyValueSize.cpp
         storage/SkipListNode.h
         storage/SkipList.h
         storage/SkipList.cpp

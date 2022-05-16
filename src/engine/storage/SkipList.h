@@ -8,7 +8,6 @@
 #include "SkipListInternalNode.h"
 #include "db/Status.h"
 #include "db/SkipListArena.h"
-#include "db/KeyValueSize.h"
 #include "comparator/KeyComparator.h"
 #include "utils/LevelGenerator.h"
 #include "storage/PersistentMemoryPool.h"

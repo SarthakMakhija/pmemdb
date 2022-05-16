@@ -5,7 +5,6 @@
 #include "storage/SkipListNode.h"
 #include "Status.h"
 #include "comparator/KeyComparator.h"
-#include "KeyValueSize.h"
 #include "storage/utils/LevelGenerator.h"
 #include "storage/PersistentMemoryPool.h"
 #include "storage/Slice.h"
