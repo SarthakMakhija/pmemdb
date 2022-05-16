@@ -53,7 +53,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
                         std::make_pair("Solid state drive", true)
         };
 
-        std::vector<const char*> keys = {"HDD", "SDD"};
+        std::vector<Slice> keys = {Slice("HDD"), Slice("SDD")};
         std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
         std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
         std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
@@ -67,7 +67,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
                         std::make_pair("Non volatile memory", true),
                         std::make_pair("Persistent Memory", true)
         };
-        std::vector<const char*> keys = {"Pmem", "Nvm"};
+        std::vector<Slice> keys = {Slice("Pmem"), Slice("Nvm")};
         std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
         std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
         std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
@@ -95,7 +95,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingScan) {
             KeyValuePair("D", "D"), 
             KeyValuePair("E", "E")
         };
-        ASSERT_EQ(expected, DbFixture::getDb() -> scan("B", "F", 10));
+        ASSERT_EQ(expected, DbFixture::getDb() -> scan(Slice("B"), Slice("F"), 10));
     });
 
     std::thread reader2([&]() {
@@ -103,7 +103,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingScan) {
             KeyValuePair("A", "A"), 
             KeyValuePair("B", "B")
         };
-        ASSERT_EQ(expected, DbFixture::getDb() -> scan("A", "C", 10));
+        ASSERT_EQ(expected, DbFixture::getDb() -> scan(Slice("A"), Slice("C"), 10));
     });
 
     reader1.join();
@@ -130,7 +130,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnDifferentKeyV
                         std::make_pair("Persistent Memory", true),
                         std::make_pair("Solid state drive", true)
     };
-    std::vector<const char*> keys = {"Pmem", "Nvm", "HDD", "SDD"};
+    std::vector<Slice> keys = {Slice("Pmem"), Slice("Nvm"), Slice("HDD"), Slice("SDD")};
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
     std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
@@ -158,7 +158,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnSameKeyValueP
                         std::make_pair("Hard disk drive", true),
                         std::make_pair("Solid state drive", true)
     };
-    std::vector<const char*> keys = {"HDD", "SDD"};
+    std::vector<Slice> keys = {Slice("HDD"), Slice("SDD")};
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
     std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
@@ -186,7 +186,7 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndUpdate) {
                         std::make_pair("Hard disk", true),
                         std::make_pair("Solid state drive", true)
     };
-    std::vector<const char*> keys = {"HDD", "SDD"};
+    std::vector<Slice> keys = {Slice("HDD"), Slice("SDD")};
     std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
     std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {

@@ -46,7 +46,7 @@ TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid state drive");
 
-    std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
+    std::vector<Slice> keys = {Slice("HDD"), Slice("SDD"), Slice("Pmem"), Slice("DoesNotExist")};
     std::vector<std::pair<std::string, bool>> expected = {
                             std::make_pair("", false),
                             std::make_pair("Hard disk drive", true),
@@ -68,10 +68,10 @@ TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyPresent) {
     put(DbFixture::getDb(), "SDD", "Solid state drive");
     put(DbFixture::getDb(), "RAM", "Random access memory");
 
-    std::string beginKey = "Pmem";
-    std::string endKey = "SDD";
+    Slice beginKey = Slice("Pmem");
+    Slice endKey = Slice("SDD");
 
-    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey.c_str(), endKey.c_str(), 10);
+    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey, endKey, 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent Memory"), KeyValuePair("RAM", "Random access memory")};
 
     ASSERT_EQ(expected, pairs);
@@ -82,10 +82,10 @@ TEST_F(DbFixture, DbIntegration_ScanWithBeginKeyNotPresent) {
     put(DbFixture::getDb(), "SDD", "Solid state drive");
     put(DbFixture::getDb(), "RAM", "Random access memory");
 
-    std::string beginKey = "Pmem";
-    std::string endKey = "SDD";
+    Slice beginKey = Slice("Pmem");
+    Slice endKey = Slice("SDD");
 
-    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey.c_str(), endKey.c_str(), 10);
+    std::vector<KeyValuePair> pairs = DbFixture::getDb() -> scan(beginKey, endKey, 10);
     std::vector<KeyValuePair> expected = {KeyValuePair("RAM", "Random access memory")};
 
   ASSERT_EQ(expected, pairs);

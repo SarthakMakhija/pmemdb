@@ -8,6 +8,7 @@
 #include "Status.h"
 #include "storage/SkipList.h"
 #include "storage/PersistentMemoryPool.h"
+#include "storage/Slice.h"
 #include "configuration/Configuration.h"
 #include "KeyValueSize.h"
 #include "iterator/SkipListIterator.h"
@@ -26,17 +27,17 @@ namespace pmem {
             ~Db();
             static Db *open(const Configuration& configuration);
 
-            Status put(const char* key, const char* value, const KeyValueSize& keyValueSize);
+            Status put(const Slice& key, const Slice& value);
 
-            Status update(const char* key, const char* value, const KeyValueSize& keyValueSize);
+            Status update(const Slice& key, const Slice& value);
 
-            Status deleteBy(const char* key);
+            Status deleteBy(const Slice& key);
 
-            std::pair<const char*, bool> get(const char* key);
+            std::pair<const char*, bool> get(const Slice& key);
 
-            std::vector <std::pair<const char*, bool>> multiGet(const std::vector <const char*> &keys);
+            std::vector <std::pair<const char*, bool>> multiGet(const std::vector <Slice> &keys);
 
-            std::vector <pmem::storage::KeyValuePair> scan(const char* beginKey, const char* endKey, int64_t maxPairs);
+            std::vector <pmem::storage::KeyValuePair> scan(const Slice& beginKey, const Slice& endKey, int64_t maxPairs);
 
             unsigned long totalKeys();
 

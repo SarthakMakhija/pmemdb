@@ -47,12 +47,10 @@ static void DbPut(benchmark::State &state) {
     for (auto _: state) {
         state.PauseTiming();
         Slice slice = kg.Next();
-        const char *key = slice.cdata();
         char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
-        KeyValueSize keyValueSize = KeyValueSize(slice.size(), strlen(value) + 1);
         state.ResumeTiming();
 
-        Status status = db->put(key, value, keyValueSize);
+        Status status = db->put(slice, Slice(value, strlen(value) + 1));
         if (status == Status::Failed) {
             state.SkipWithError("Returned failed as the status");
         }
@@ -86,10 +84,8 @@ static void DBGet(benchmark::State &state) {
         db = SetupDB();
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             pmem::storage::Slice slice = kg.Next();
-            const char *key = slice.cdata();
             char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
-            KeyValueSize keyValueSize = KeyValueSize(slice.size(), strlen(value) + 1);
-            Status status = db->put(key, value, keyValueSize);
+            Status status = db->put(slice, Slice(value, strlen(value) + 1));
 
             if (status == Status::Failed) {
                 state.SkipWithError("failed while loading db in get");
@@ -140,10 +136,8 @@ static void DBScan(benchmark::State &state) {
         db = SetupDB();
         for (uint64_t count = 0; count < numberOfKeys; count++) {
             pmem::storage::Slice slice = kg.Next();
-            const char *key = slice.cdata();
             char *value = (new std::string(rnd.HumanReadableString(static_cast<int>(perKeySize))))->data();
-            KeyValueSize keyValueSize = KeyValueSize(slice.size(), strlen(value) + 1);
-            Status status = db->put(key, value, keyValueSize);
+            Status status = db->put(slice, Slice(value, strlen(value) + 1));
 
             if (status == Status::Failed) {
                 state.SkipWithError("failed while loading db in scan");

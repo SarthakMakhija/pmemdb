@@ -65,7 +65,7 @@ TEST(DbSerializedKeyIntegration, GetValueByKey) {
         char *value = (char*)malloc(sizeof(*employee));
         memcpy(value, (char*)employee, sizeof(*employee));
 
-        db->put(key, value, KeyValueSize(sizeof(*employeeId), sizeof(*employee)));
+        db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
     }
 
     for (auto employee : employees) {
@@ -97,7 +97,7 @@ TEST(DbSerializedKeyIntegration, GetByNonExistentKey) {
     char *value = (char*)malloc(sizeof(*employee));
     memcpy(value, (char*)employee, sizeof(*employee));
 
-    db->put(key, value, KeyValueSize(sizeof(*employeeId), sizeof(*employee)));
+    db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
 
     auto getEmployeeId = new EmployeeId{90, "Non-existent"};
     char *getKey = (char*)malloc(sizeof(*getEmployeeId));
@@ -126,7 +126,7 @@ TEST(DbSerializedKeyIntegration, Scan) {
         char *value = (char*)malloc(sizeof(*employee));
         memcpy(value, (char*)employee, sizeof(*employee));
 
-        db->put(key, value, KeyValueSize(sizeof(*employeeId), sizeof(*employee)));
+        db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
     }
 
     std::vector<EmployeeId*> scan = {new EmployeeId{-7, "Random"}, new EmployeeId{10, "Random"}};
@@ -139,7 +139,7 @@ TEST(DbSerializedKeyIntegration, Scan) {
     char *endKey = (char*)malloc(sizeof(*endEmployeeId));
     memcpy(endKey, (char*)endEmployeeId, sizeof(*endEmployeeId));
 
-    std::vector<KeyValuePair> result = db->scan(beginKey, endKey, 5);
+    std::vector<KeyValuePair> result = db->scan(Slice(beginKey, sizeof(*beginEmployeeId)), Slice(endKey, sizeof(*endEmployeeId)), 5);
 
     ASSERT_EQ(2, result.size());
 
@@ -173,7 +173,7 @@ TEST(DbSerializedKeyIntegration, MultiGet) {
         char *value = (char*)malloc(sizeof(*employee));
         memcpy(value, (char*)employee, sizeof(*employee));
 
-        db->put(key, value, KeyValueSize(sizeof(*employeeId), sizeof(*employee)));
+        db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
     }
 
     auto getId10 = new EmployeeId{10, "SomeRandomName"};
@@ -184,7 +184,7 @@ TEST(DbSerializedKeyIntegration, MultiGet) {
     char *getKey5 = (char*)malloc(sizeof(*getId5));
     memcpy(getKey5, (char*)getId5, sizeof(*getId5));
 
-    std::vector<const char *> multiGetKeys = {getKey10, getKey5};
+    std::vector<Slice> multiGetKeys = {Slice(getKey10, sizeof(*getId10)), Slice(getKey5, sizeof(*getId5))};
     std::vector<std::pair<const char*, bool>> result = db->multiGet(multiGetKeys);
 
     ASSERT_EQ(2, result.size());
@@ -219,7 +219,7 @@ TEST(DbSerializedKeyIntegration, Update) {
         char *value = (char*)malloc(sizeof(*employee));
         memcpy(value, (char*)employee, sizeof(*employee));
 
-        db->put(key, value, KeyValueSize(sizeof(*employeeId), sizeof(*employee)));
+        db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
     }
 
     auto updateEmployeeId10 = new EmployeeId{-7, "SomeRandomName"};
@@ -230,7 +230,7 @@ TEST(DbSerializedKeyIntegration, Update) {
     char *updateValue10 = (char*)malloc(sizeof(*updateEmployee));
     memcpy(updateValue10, (char*)updateEmployee, sizeof(*updateEmployee));
 
-    db->update(updateKey10, updateValue10, KeyValueSize(sizeof(*updateEmployeeId10), sizeof(*updateEmployee)));
+    db->update(Slice(updateKey10, sizeof(*updateEmployeeId10)), Slice(updateValue10, sizeof(*updateEmployee)));
 
     auto getId10 = new EmployeeId{-7, "OtherRandomName"};
     char *getKey10 = (char*)malloc(sizeof(*getId10));
@@ -264,14 +264,14 @@ TEST(DbSerializedKeyIntegration, Delete) {
         char *value = (char*)malloc(sizeof(*employee));
         memcpy(value, (char*)employee, sizeof(*employee));
 
-        db->put(key, value, KeyValueSize(sizeof(*employeeId), sizeof(*employee)));
+        db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
     }
 
     auto deleteEmployeeId = new EmployeeId{5, "SomeName"};
     char *deleteKey = (char*)malloc(sizeof(*deleteEmployeeId));
     memcpy(deleteKey, (char*)deleteEmployeeId, sizeof(*deleteEmployeeId));
 
-    db->deleteBy(deleteKey);
+    db->deleteBy(Slice(deleteKey, sizeof(*deleteEmployeeId)));
 
     auto getId5 = new EmployeeId{5, "SomeRandomName"};
     char *getKey5 = (char*)malloc(sizeof(*getId5));
@@ -289,7 +289,7 @@ TEST(DbSerializedKeyIntegration, Delete) {
     char *getKey7 = (char*)malloc(sizeof(*getId7));
     memcpy(getKey7, (char*)getId7, sizeof(*getId7));
 
-    std::vector<const char *> multiGetKeys = {getKey5, getKey7, getKey10, getKey11};
+    std::vector<Slice> multiGetKeys = {Slice(getKey5, sizeof(*getId5)), Slice(getKey7, sizeof(*getId7)), Slice(getKey10, sizeof(*getId10)), Slice(getKey11, sizeof(*getId11))};
     std::vector<std::pair<const char*, bool>> result = db->multiGet(multiGetKeys);
 
     ASSERT_EQ(4, result.size());
