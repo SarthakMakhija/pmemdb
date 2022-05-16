@@ -7,6 +7,7 @@
 #include "WritePosition.h"
 #include "comparator/KeyComparator.h"
 #include "utils/LevelGenerator.h"
+#include "Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -20,7 +21,7 @@ namespace pmem {
                 int generateLevel(int maxLevel);
 
             public:
-                SkipListInternalNode(const char *key, int level);
+                SkipListInternalNode(const Slice& key, int level);
                 ~SkipListInternalNode();
 
                 bool matchesKey(const char *key, KeyComparator *keyComparator) const override;
@@ -35,22 +36,22 @@ namespace pmem {
 
                 SkipListInternalNode* next();
 
-                std::pair<SkipListNode *, bool> getBy(const char *key, KeyComparator *keyComparator);
+                std::pair<SkipListNode *, bool> getBy(const Slice& key, KeyComparator *keyComparator);
 
-                std::pair<SkipListNode *, bool> scan(const char *beginKey, KeyComparator *keyComparator);
+                std::pair<SkipListNode *, bool> scan(const Slice& beginKey, KeyComparator *keyComparator);
 
-                PutPosition putPositionOf(const char *key, KeyComparator *keyComparator, LevelGenerator *levelGenerator);
+                PutPosition putPositionOf(const Slice& key, KeyComparator *keyComparator, LevelGenerator *levelGenerator);
 
                 SkipListNode *
-                put(const char *key,
+                put(const Slice& key,
                     const std::vector<SkipListInternalNode *>& positions,
                     int nodeLevel);
 
-                UpdatePosition updatePositionOf(const char *key, KeyComparator *keyComparator);
+                UpdatePosition updatePositionOf(const Slice& key, KeyComparator *keyComparator);
 
-                DeletePosition deletePositionOf(const char *key, KeyComparator *keyComparator);
+                DeletePosition deletePositionOf(const Slice& key, KeyComparator *keyComparator);
 
-                void deleteBy(const char *key,
+                void deleteBy(const Slice& key,
                               const std::vector<SkipListInternalNode *>& positions,
                               int deleteLevel,
                               KeyComparator *keyComparator);

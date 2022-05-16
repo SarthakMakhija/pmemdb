@@ -21,12 +21,13 @@ namespace pmem {
                                       LevelGenerator *levelGenerator,
                                       std::function<void(void)> postPutHook) {
 
-                PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(key,
+                auto keySlice = pmem::storage::Slice(key, keyValueSize.getKeySize());
+                PutPosition putPosition = static_cast<SkipListInternalNode *>(this->startingNode)->putPositionOf(keySlice,
                                                                                                                  keyComparator,
                                                                                                                  levelGenerator);
                 if (putPosition.leaf != nullptr) {
                     std::pair < SkipListLeafNode * ,
-                            Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(pmem::storage::Slice(key, keyValueSize.getKeySize()),
+                            Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(keySlice,
                                                                                                              pmem::storage::Slice(value, keyValueSize.getValueSize()),
                                                                                                              keyComparator,
                                                                                                              this->persistentMemoryPool,
@@ -51,7 +52,7 @@ namespace pmem {
                 });
                 for (auto key: keys) {
                     std::pair < SkipListNode * ,
-                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(key,
+                            bool > existenceByNode = static_cast<SkipListInternalNode *>(startingNode)->getBy(pmem::storage::Slice(key, strlen(key) +1),
                                                                                                               keyComparator);
 
                     if (existenceByNode.second) {
@@ -66,7 +67,7 @@ namespace pmem {
 
             std::pair<const char *, bool> SkipListArena::getBy(const char *key) {
                 std::pair < SkipListNode * ,
-                        bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key,
+                        bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(pmem::storage::Slice(key, strlen(key) +1),
                                                                                                                 keyComparator);
 
                 if (existenceByNode.second) {
@@ -79,8 +80,7 @@ namespace pmem {
             std::vector <KeyValuePair>
             SkipListArena::scan(const char *beginKey, const char *endKey, int64_t maxPairs) {
                 std::pair < SkipListNode * ,
-                        bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->scan(
-                                beginKey, keyComparator);
+                        bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->scan(pmem::storage::Slice(beginKey, strlen(beginKey) +1), keyComparator);
 
                 if (existenceByNode.second) {
                     return static_cast<SkipListLeafNode *>(existenceByNode.first)->scan(pmem::storage::Slice(beginKey, strlen(beginKey)+1), 
@@ -97,11 +97,11 @@ namespace pmem {
                                   const KeyValueSize &keyValueSize,
                                   std::function<void(void)> postUpdateHook) {
 
-                UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(
-                        key, keyComparator);
+                auto keySlice = pmem::storage::Slice(key, keyValueSize.getKeySize());
+                UpdatePosition updatePosition = static_cast<SkipListInternalNode *>(this->startingNode)->updatePositionOf(keySlice, keyComparator);
 
                 if (updatePosition.leaf != nullptr) {
-                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(pmem::storage::Slice(key, keyValueSize.getKeySize()),
+                    return static_cast<SkipListLeafNode *>(updatePosition.leaf)->update(keySlice,
                                                                                         pmem::storage::Slice(value, keyValueSize.getValueSize()),
                                                                                         keyComparator,
                                                                                         this->persistentMemoryPool,
@@ -114,13 +114,15 @@ namespace pmem {
                 DeletePosition deletePosition = static_cast<SkipListInternalNode *>(this->startingNode)->deletePositionOf(
                         key, keyComparator);
 
+                auto keySlice = pmem::storage::Slice(key, strlen(key) + 1);
+
                 if (deletePosition.internal != nullptr && deletePosition.leaf != nullptr) {
-                    Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteBy(pmem::storage::Slice(key, strlen(key)+1),
+                    Status status = static_cast<SkipListLeafNode *>(deletePosition.leaf)->deleteBy(keySlice,
                                                                                                    keyComparator,
                                                                                                    this->persistentMemoryPool,
                                                                                                    postDeleteHook);
                     if (status != Status::Failed) {
-                        static_cast<SkipListInternalNode *>(deletePosition.internal)->deleteBy(key,
+                        static_cast<SkipListInternalNode *>(deletePosition.internal)->deleteBy(keySlice,
                                                                                                deletePosition.positions,
                                                                                                deletePosition.deleteLevel,
                                                                                                keyComparator);

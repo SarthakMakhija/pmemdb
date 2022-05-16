@@ -12,14 +12,15 @@ using namespace pmem::storage::internal;
 void put(SkipListInternalNode* node, const char* key, const char* value, PersistentMemoryPool* pool) {
   PutPosition putPosition = node -> putPositionOf(key, stringKeyComparator(), new LevelGenerator(6));
   if (putPosition.newLevel != -1) {
+      auto keySlice = Slice(key, strlen(key) + 1);
       std::pair < SkipListLeafNode *, Status > statusNodePair = static_cast<SkipListLeafNode *>(putPosition.leaf)->put(
-              Slice(key, strlen(key) + 1),
+              keySlice,
               Slice(value, strlen(value) + 1),
               stringKeyComparator(),
               pool);
 
       SkipListLeafNode *newLeaf = statusNodePair.first;
-      SkipListNode *newInternal =  node -> put(key, putPosition.positions, putPosition.newLevel);
+      SkipListNode *newInternal =  node -> put(keySlice, putPosition.positions, putPosition.newLevel);
       static_cast<SkipListInternalNode *>(newInternal) -> attach(newLeaf);
   }
 }
@@ -27,7 +28,8 @@ void put(SkipListInternalNode* node, const char* key, const char* value, Persist
 void deleteBy(SkipListInternalNode* node, const char* key) {
   DeletePosition deletePosition = node -> deletePositionOf(key, stringKeyComparator());
   if (deletePosition.internal != nullptr) {
-    static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteBy(key, deletePosition.positions, deletePosition.deleteLevel, stringKeyComparator());
+    auto keySlice = Slice(key, strlen(key) + 1);
+    static_cast<SkipListInternalNode*>(deletePosition.internal) -> deleteBy(keySlice, deletePosition.positions, deletePosition.deleteLevel, stringKeyComparator());
   }
 }
 
