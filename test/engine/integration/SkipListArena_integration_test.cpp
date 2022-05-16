@@ -13,15 +13,17 @@ using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 void put(SkipListArena* arena, const char* key, const char* value) {
-    arena->put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), new LevelGenerator(6));
+    arena->put(Slice(key, strlen(key) + 1), 
+               Slice(value, strlen(value) + 1), new LevelGenerator(6));
 }
 
 void update(SkipListArena* arena, const char* key, const char* value) {
-    arena->update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1));
+    arena->update(Slice(key, strlen(key) + 1), 
+                  Slice(value, strlen(value) + 1));
 }
 
 void deleteBy(SkipListArena* arena, const char* key) {
-    arena->deleteBy(key);
+    arena->deleteBy(Slice(key, strlen(key) + 1));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_PutASingleKeyValuePair) {
@@ -76,7 +78,12 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_MultiGet) {
   put(arena, "Pmem", "Persistent memory");
 
   std::vector<const char*> keys = {"HDD", "SDD", "Pmem", "DoesNotExist"};
-  std::vector<std::pair<const char*, bool>> result = arena->multiGet(keys);
+  std::vector<Slice> keySlices;
+  for (auto key: keys) {
+      keySlices.push_back(Slice(key, strlen(key) + 1));
+  }
+
+  std::vector<std::pair<const char*, bool>> result = arena->multiGet(keySlices);
   std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
   std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<std::string, bool> pair){
         return std::make_pair(std::string(pair.first), pair.second);
@@ -100,10 +107,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_ScanWithBeginKeyPresent) {
   put(arena, "SDD", "Solid state drive");
   put(arena, "Pmem", "Persistent memory");
 
-  std::string beginKey = "Pmem";
-  std::string endKey = "SDD";
+  auto beginKey = Slice("Pmem");
+  auto endKey = Slice("SDD");
 
-  std::vector<KeyValuePair> pairs = arena->scan(beginKey.c_str(), endKey.c_str(), 10);
+  std::vector<KeyValuePair> pairs = arena->scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("Pmem", "Persistent memory")};
 
   ASSERT_EQ(expected, pairs);
@@ -117,10 +124,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_ScanWithBeginKeyNotPresent) {
   put(arena, "SDD", "Solid state drive");
   put(arena, "Pmem", "Persistent memory");
 
-  std::string beginKey = "RAM";
-  std::string endKey   = "Tuff";
+  Slice beginKey = Slice("RAM");
+  Slice endKey   = Slice("Tuff");
 
-  std::vector<KeyValuePair> pairs = arena->scan(beginKey.c_str(), endKey.c_str(), 10);
+  std::vector<KeyValuePair> pairs = arena->scan(beginKey, endKey, 10);
   std::vector<KeyValuePair> expected = {KeyValuePair("SDD", "Solid state drive")};
 
   ASSERT_EQ(expected, pairs);
@@ -134,10 +141,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_ScanWithBeginKeyOutsideTheBoun
     put(arena, "SDD", "Solid state drive");
     put(arena, "Pmem", "Persistent memory");
 
-    std::string beginKey = "Tuff";
-    std::string endKey   = "Zero";
+    Slice beginKey = Slice("Tuff");
+    Slice endKey   = Slice("Zero");
 
-    std::vector<KeyValuePair> pairs = arena->scan(beginKey.c_str(), endKey.c_str(), 10);
+    std::vector<KeyValuePair> pairs = arena->scan(beginKey, endKey, 10);
     std::vector<KeyValuePair> expected = {};
 
     ASSERT_EQ(expected, pairs);

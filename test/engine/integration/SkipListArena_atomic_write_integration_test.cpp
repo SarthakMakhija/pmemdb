@@ -15,7 +15,8 @@ void put(SkipListArena* arena,
          const char* value,
          std::function<void(void)> postPutHook = [] {}) {
 
-    arena->put(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), new LevelGenerator(6), postPutHook);
+    arena->put(Slice(key, strlen(key) + 1), 
+               Slice(value, strlen(value) + 1), new LevelGenerator(6), postPutHook);
 }
 
 void update(SkipListArena* arena,
@@ -23,14 +24,14 @@ void update(SkipListArena* arena,
             const char* value,
             std::function<void(void)> postUpdateHook = [] {}) {
 
-    arena->update(key, value, KeyValueSize(strlen(key) + 1, strlen(value) + 1), postUpdateHook);
+    arena->update(Slice(key, strlen(key) + 1), Slice(value, strlen(value) + 1), postUpdateHook);
 }
 
 void deleteBy(SkipListArena* arena,
               const char* key,
               std::function<void(void)> postDeleteHook = [] {}) {
 
-    arena->deleteBy(key, postDeleteHook);
+    arena->deleteBy(Slice(key, strlen(key) + 1), postDeleteHook);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhilePuttingAKeyValue) {

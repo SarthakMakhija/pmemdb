@@ -3,6 +3,7 @@
 #include "SkipListNode.h"
 #include "SkipListInternalNode.h"
 #include "SkipListLeafNode.h"
+#include "Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -33,9 +34,8 @@ namespace pmem {
                                  const char *value,
                                  const KeyValueSize &keyValueSize) {
 
-                return this->arena->put(key,
-                                        value,
-                                        keyValueSize,
+                return this->arena->put(Slice(key, keyValueSize.getKeySize()),
+                                        Slice(value, keyValueSize.getValueSize()),
                                         this->levelGenerator);
             }
 
@@ -43,24 +43,27 @@ namespace pmem {
                                     const char *value,
                                     const KeyValueSize &keyValueSize) {
 
-                return this->arena->update(key, value,
-                                           keyValueSize);
+                return this->arena->update(Slice(key, keyValueSize.getKeySize()), Slice(value, keyValueSize.getValueSize()));
             }
 
             Status SkipList::deleteBy(const char *key) {
-                return this->arena->deleteBy(key);
+                return this->arena->deleteBy(Slice(key, strlen(key) + 1));
             }
 
             std::pair<const char *, bool> SkipList::get(const char *key) {
-                return this->arena->getBy(key);
+                return this->arena->getBy(Slice(key, strlen(key) + 1));
             }
 
             std::vector <std::pair<const char *, bool>> SkipList::multiGet(const std::vector<const char *> &keys) {
-                return this->arena->multiGet(keys);
+                std::vector<Slice> keySlices;
+                for (auto key: keys) {
+                    keySlices.push_back(Slice(key, strlen(key) + 1));
+                }
+                return this->arena->multiGet(keySlices);
             }
 
             std::vector <KeyValuePair> SkipList::scan(const char *beginKey, const char *endKey, int64_t maxPairs) {
-                return this->arena->scan(beginKey, endKey, maxPairs);
+                return this->arena->scan(Slice(beginKey, strlen(beginKey) + 1), Slice(endKey, strlen(endKey) + 1), maxPairs);
             }
 
             unsigned long SkipList::totalKeys() {

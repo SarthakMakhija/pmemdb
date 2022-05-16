@@ -8,6 +8,7 @@
 #include "KeyValueSize.h"
 #include "storage/utils/LevelGenerator.h"
 #include "storage/PersistentMemoryPool.h"
+#include "storage/Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -23,24 +24,22 @@ namespace pmem {
                               pmem::storage::KeyComparator *keyComparator,
                               PersistentMemoryPool *persistentMemoryPool);
 
-                Status put(const char *key,
-                           const char *value,
-                           const KeyValueSize &keyValueSize,
+                Status put(const Slice& key,
+                           const Slice& value, 
                            LevelGenerator *levelGenerator,
                            std::function<void(void)> postPutHook = [] {});
 
-                std::pair<const char *, bool> getBy(const char *key);
+                std::pair<const char *, bool> getBy(const Slice& key);
 
-                std::vector <std::pair<const char *, bool>> multiGet(std::vector<const char *> keys);
+                std::vector <std::pair<const char *, bool>> multiGet(std::vector<Slice> keys);
 
-                std::vector <KeyValuePair> scan(const char *beginKey, const char *endKey, int64_t maxPairs);
+                std::vector <KeyValuePair> scan(const Slice& key, const Slice& endKey, int64_t maxPairs);
 
-                Status update(const char *key,
-                              const char *value,
-                              const KeyValueSize &keyValueSize,
+                Status update(const Slice& key,
+                              const Slice& value,
                               std::function<void(void)> postUpdateHook = [] {});
 
-                Status deleteBy(const char *key, std::function<void(void)> postDeleteHook = [] {});
+                Status deleteBy(const Slice& key, std::function<void(void)> postDeleteHook = [] {});
 
                 unsigned long totalKeys();
             };
