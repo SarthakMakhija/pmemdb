@@ -60,7 +60,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Seek1) {
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
-    iterator->seek("SDD");
+    iterator->seek(Slice("SDD"));
 
     ASSERT_EQ(Slice("SDD"), iterator->key());
     ASSERT_EQ(Slice("Solid State drive"), iterator->value());
@@ -72,12 +72,12 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Seek2) {
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
-    iterator->seek("SDD");
+    iterator->seek(Slice("SDD"));
 
     ASSERT_EQ(Slice("SDD"),               iterator->key());
     ASSERT_EQ(Slice("Solid State drive"), iterator->value());
 
-    iterator->seek("HDD");
+    iterator->seek(Slice("HDD"));
     ASSERT_EQ(Slice("HDD"),             iterator->key());
     ASSERT_EQ(Slice("Hard disk drive"), iterator->value());
 }
@@ -196,7 +196,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekWithConcurrentPut) {
 
     std::thread iterator([&]() {
         SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
-        iterator->seek("Pmem");
+        iterator->seek(Slice("Pmem"));
         if (iterator->isValid()) {
             ASSERT_EQ(Slice("Pmem"), iterator->key());
         } else {

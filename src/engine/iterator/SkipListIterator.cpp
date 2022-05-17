@@ -34,7 +34,7 @@ namespace pmem {
             this->currentNode = node;
         }
 
-        void SkipListIterator::seek(const char* key) {
+        void SkipListIterator::seek(const Slice& key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex);
             auto existenceByNode = this->startingNode->getBy(key, keyComparator);
             this->currentNode = static_cast<pmem::storage::internal::SkipListInternalNode *>(existenceByNode.first);

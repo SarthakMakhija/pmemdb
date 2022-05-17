@@ -27,7 +27,7 @@ namespace pmem {
             bool isValid() const;
             void seekToFirst();
             void seekToLast();
-            void seek(const char* key);
+            void seek(const Slice& key);
             void next();
             Slice key() const;
             Slice value() const;
