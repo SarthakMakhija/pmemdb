@@ -32,7 +32,7 @@ namespace pmem {
 
                 std::vector <std::pair<Slice, bool>> multiGet(std::vector<Slice> keys);
 
-                std::vector <KeyValuePair> scan(const Slice& key, const Slice& endKey, int64_t maxPairs);
+                std::vector <KeyValuePair> scan(const Slice& beginKey, const Slice& endKey, int64_t maxPairs);
 
                 Status update(const Slice& key,
                               const Slice& value,
