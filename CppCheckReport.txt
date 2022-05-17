@@ -15,77 +15,92 @@ src/engine/storage/utils/IntegralTypes.h:65:0: error: failed to expand 'GG_LONGL
 ^
 src/engine/storage/PersistentMemoryPool.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 src/engine/storage/SkipList.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 src/engine/storage/SkipListInternalNode.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 src/engine/storage/SkipListLeafNode.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 src/engine/storage/Slice.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/DbTestsHelper.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/SkipListNodeTestUtils.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/benchmark/DbBenchmark.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/benchmark/SkipListInternalNodeBenchmark.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/integration/SkipListArena_atomic_write_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/integration/SkipListArena_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/integration/SkipListInternalNode_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/integration/SkipListLeafNode_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/integration/SkipListLeafNode_transactional_write_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/unit/SkipList_exception_unit_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
 '' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
-_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+__GNUC__ : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
 test/engine/benchmark/Random.cpp:3:0: style: The function 'HumanReadableString' is never used. [unusedFunction]
