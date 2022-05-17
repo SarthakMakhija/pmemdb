@@ -148,11 +148,11 @@ static void DBScan(benchmark::State &state) {
 
     for (auto _: state) {
         state.PauseTiming();
-        const char *beginKey = kg.Next().cdata();
-        const char *endKey = kg.Next().cdata();
+        Slice beginKey = kg.Next();
+        Slice endKey = kg.Next();
 
         std::vector <KeyValuePair> result;
-        if (*(uint32_t *) beginKey > *(uint32_t *) endKey) {
+        if (*(uint32_t *) beginKey.cdata() > *(uint32_t *) endKey.cdata()) {
             state.ResumeTiming();
             result = db->scan(endKey, beginKey, maxPairs);
         } else {

@@ -42,7 +42,7 @@ namespace pmem {
                 if (right) {
                     return KeyValuePair(right->key(), right->value());
                 }
-                return KeyValuePair("", "");
+                return KeyValuePair(Slice(""), Slice(""));
             }
 
             std::pair<SkipListLeafNode *, Status>
