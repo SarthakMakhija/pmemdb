@@ -8,7 +8,18 @@
 
 #define UNALIGNED_LOAD32(_p) (*reinterpret_cast<const uint32 *>(_p))
 #define UNALIGNED_LOAD64(_p) (*reinterpret_cast<const uint64 *>(_p))
+
+//
+// GCC can be told that a certain branch is not likely to be taken (for
+// instance, a CHECK failure), and use that information in static analysis.
+// Giving it this information can help it optimize for the common case in
+// the absence of better information (ie. -fprofile-arcs).
+//
+#if defined(__GNUC__)
 #define PREDICT_FALSE(x) (__builtin_expect(x, 0))
+#else
+#define PREDICT_FALSE(x) x
+#endif
 
 namespace pmem {
     namespace storage {
