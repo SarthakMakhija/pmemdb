@@ -20,7 +20,7 @@ jobs:
           exclude_check: ./vcpkg/
           std: c++17
           output_file: ./CppCheckReport.txt
-          other_options: -v --suppress=missingIncludeSystem --suppress=preprocessorErrorDirective:./src/engine/storage/utils/IntegralTypes.h:70 --suppress=preprocessorErrorDirective:./src/engine/storage/utils/IntegralTypes.h:65 --suppress=noValidConfiguration:./src/engine/storage/utils/IntegralTypes.h:65 --suppress=noValidConfiguration:./src/engine/storage/utils/IntegralTypes.h:70
+          other_options: -v --suppress=missingIncludeSystem --suppress=preprocessorErrorDirective:src/engine/storage/utils/IntegralTypes.h:70 --suppress=preprocessorErrorDirective:src/engine/storage/utils/IntegralTypes.h:65 --suppress=noValidConfiguration:src/engine/storage/utils/IntegralTypes.h:65 --suppress=noValidConfiguration:src/engine/storage/utils/IntegralTypes.h:70
 
       - name: publish report
         uses: mikeal/publish-to-github-action@master
