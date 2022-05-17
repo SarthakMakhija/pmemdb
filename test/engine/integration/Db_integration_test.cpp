@@ -53,10 +53,10 @@ TEST_F(DbFixture, DbIntegration_DoesMultiGet) {
                             std::make_pair("Persistent Memory", true),
                             std::make_pair("Solid state drive", true)
     };
-    std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
+    std::vector<std::pair<Slice, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
-    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
-        return std::make_pair(std::string(pair.first), pair.second);
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<Slice, bool> pair) {
+        return std::make_pair(std::string(pair.first.cdata()), pair.second);
     });
 
     ASSERT_EQ(expected, resultTransformed);

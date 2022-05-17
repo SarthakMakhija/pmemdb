@@ -54,10 +54,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
         };
 
         std::vector<Slice> keys = {Slice("HDD"), Slice("SDD")};
-        std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
+        std::vector<std::pair<Slice, bool>> result = DbFixture::getDb() -> multiGet(keys);
         std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
-        std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
-            return std::make_pair(std::string(pair.first), pair.second);
+        std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<Slice, bool> pair) {
+            return std::make_pair(std::string(pair.first.cdata()), pair.second);
         });
         ASSERT_EQ(expected, resultTransformed);
     });
@@ -68,10 +68,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingMultiGet) {
                         std::make_pair("Persistent Memory", true)
         };
         std::vector<Slice> keys = {Slice("Pmem"), Slice("Nvm")};
-        std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
+        std::vector<std::pair<Slice, bool>> result = DbFixture::getDb() -> multiGet(keys);
         std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
-        std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
-            return std::make_pair(std::string(pair.first), pair.second);
+        std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<Slice, bool> pair) {
+            return std::make_pair(std::string(pair.first.cdata()), pair.second);
         });
 
         ASSERT_EQ(expected, resultTransformed);
@@ -131,10 +131,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnDifferentKeyV
                         std::make_pair("Solid state drive", true)
     };
     std::vector<Slice> keys = {Slice("Pmem"), Slice("Nvm"), Slice("HDD"), Slice("SDD")};
-    std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
+    std::vector<std::pair<Slice, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
-    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
-        return std::make_pair(std::string(pair.first), pair.second);
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<Slice, bool> pair) {
+        return std::make_pair(std::string(pair.first.cdata()), pair.second);
     });
 
     ASSERT_EQ(expected, resultTransformed);
@@ -159,10 +159,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutOnSameKeyValueP
                         std::make_pair("Solid state drive", true)
     };
     std::vector<Slice> keys = {Slice("HDD"), Slice("SDD")};
-    std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
+    std::vector<std::pair<Slice, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
-    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
-        return std::make_pair(std::string(pair.first), pair.second);
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<Slice, bool> pair) {
+        return std::make_pair(std::string(pair.first.cdata()), pair.second);
     });
 
     ASSERT_EQ(expected, resultTransformed);
@@ -187,10 +187,10 @@ TEST_F(DbFixture, DbConcurrentIntegration_TwoThreadsPerformingPutAndUpdate) {
                         std::make_pair("Solid state drive", true)
     };
     std::vector<Slice> keys = {Slice("HDD"), Slice("SDD")};
-    std::vector<std::pair<const char*, bool>> result = DbFixture::getDb() -> multiGet(keys);
+    std::vector<std::pair<Slice, bool>> result = DbFixture::getDb() -> multiGet(keys);
     std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
-    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<const char*, bool> pair) {
-        return std::make_pair(std::string(pair.first), pair.second);
+    std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<Slice, bool> pair) {
+        return std::make_pair(std::string(pair.first.cdata()), pair.second);
     });
 
     ASSERT_EQ(expected, resultTransformed);

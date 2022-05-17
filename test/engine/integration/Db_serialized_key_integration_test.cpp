@@ -185,16 +185,16 @@ TEST(DbSerializedKeyIntegration, MultiGet) {
     memcpy(getKey5, (char*)getId5, sizeof(*getId5));
 
     std::vector<Slice> multiGetKeys = {Slice(getKey10, sizeof(*getId10)), Slice(getKey5, sizeof(*getId5))};
-    std::vector<std::pair<const char*, bool>> result = db->multiGet(multiGetKeys);
+    std::vector<std::pair<Slice, bool>> result = db->multiGet(multiGetKeys);
 
     ASSERT_EQ(2, result.size());
 
-    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).first);
+    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).first.cdata());
     ASSERT_EQ(5, first->id);
     ASSERT_EQ("Kartik", first->firstName);
     ASSERT_EQ("Rajan", first->lastName);
 
-    const Employee* second = reinterpret_cast<const Employee*>(result.at(1).first);
+    const Employee* second = reinterpret_cast<const Employee*>(result.at(1).first.cdata());
     ASSERT_EQ(10, second->id);
     ASSERT_EQ("Rahul", second->firstName);
     ASSERT_EQ("Jain", second->lastName);
@@ -290,23 +290,23 @@ TEST(DbSerializedKeyIntegration, Delete) {
     memcpy(getKey7, (char*)getId7, sizeof(*getId7));
 
     std::vector<Slice> multiGetKeys = {Slice(getKey5, sizeof(*getId5)), Slice(getKey7, sizeof(*getId7)), Slice(getKey10, sizeof(*getId10)), Slice(getKey11, sizeof(*getId11))};
-    std::vector<std::pair<const char*, bool>> result = db->multiGet(multiGetKeys);
+    std::vector<std::pair<Slice, bool>> result = db->multiGet(multiGetKeys);
 
     ASSERT_EQ(4, result.size());
 
-    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).first);
+    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).first.cdata());
     ASSERT_EQ(-7, first->id);
     ASSERT_EQ("John", first->firstName);
     ASSERT_EQ("", first->lastName);
 
     ASSERT_FALSE(result.at(1).second);
 
-    const Employee* third = reinterpret_cast<const Employee*>(result.at(2).first);
+    const Employee* third = reinterpret_cast<const Employee*>(result.at(2).first.cdata());
     ASSERT_EQ(10, third->id);
     ASSERT_EQ("Rahul", third->firstName);
     ASSERT_EQ("Jain", third->lastName);
 
-    const Employee* fourth = reinterpret_cast<const Employee*>(result.at(3).first);
+    const Employee* fourth = reinterpret_cast<const Employee*>(result.at(3).first.cdata());
     ASSERT_EQ(11, fourth->id);
     ASSERT_EQ("Mark", fourth->firstName);
     ASSERT_EQ("Johnson", fourth->lastName);

@@ -55,7 +55,7 @@ namespace pmem {
             return this->skipList->get(key);
         }
 
-        std::vector <std::pair<const char *, bool>> Db::multiGet(const std::vector<Slice> &keys) {
+        std::vector <std::pair<Slice, bool>> Db::multiGet(const std::vector<Slice> &keys) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);            
             return this->skipList->multiGet(keys);
         }

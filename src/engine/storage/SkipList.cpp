@@ -46,7 +46,7 @@ namespace pmem {
                 return this->arena->getBy(key);
             }
 
-            std::vector <std::pair<const char *, bool>> SkipList::multiGet(const std::vector<Slice> &keys) {               
+            std::vector <std::pair<Slice, bool>> SkipList::multiGet(const std::vector<Slice> &keys) {               
                 return this->arena->multiGet(keys);
             }
 

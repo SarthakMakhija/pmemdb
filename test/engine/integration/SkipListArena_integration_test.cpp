@@ -83,10 +83,10 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_MultiGet) {
       keySlices.push_back(Slice(key, strlen(key) + 1));
   }
 
-  std::vector<std::pair<const char*, bool>> result = arena->multiGet(keySlices);
+  std::vector<std::pair<Slice, bool>> result = arena->multiGet(keySlices);
   std::vector<std::pair<std::string, bool>> resultTransformed(result.size());
-  std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<std::string, bool> pair){
-        return std::make_pair(std::string(pair.first), pair.second);
+  std::transform(result.begin(), result.end(), resultTransformed.begin(), [](std::pair<Slice, bool> pair){
+        return std::make_pair(std::string(pair.first.cdata()), pair.second);
   });
 
   std::vector<std::pair<std::string, bool>> expected = {

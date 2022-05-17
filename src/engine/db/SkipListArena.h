@@ -30,7 +30,7 @@ namespace pmem {
 
                 std::pair<Slice, bool> getBy(const Slice& key);
 
-                std::vector <std::pair<const char *, bool>> multiGet(std::vector<Slice> keys);
+                std::vector <std::pair<Slice, bool>> multiGet(std::vector<Slice> keys);
 
                 std::vector <KeyValuePair> scan(const Slice& key, const Slice& endKey, int64_t maxPairs);
 

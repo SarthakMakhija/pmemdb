@@ -42,8 +42,8 @@ namespace pmem {
                 return Status::KeyAlreadyExists;
             }
 
-            std::vector <std::pair<const char *, bool>> SkipListArena::multiGet(std::vector<Slice> keys) {
-                std::vector <std::pair<const char *, bool>> result;
+            std::vector <std::pair<Slice, bool>> SkipListArena::multiGet(std::vector<Slice> keys) {
+                std::vector <std::pair<Slice, bool>> result;
 
                 std::sort(keys.begin(), keys.end(), [&](const Slice& c1, const Slice& c2) {
                     return keyComparator->compare(c1.cdata(), c2.cdata()) < 0;
@@ -55,11 +55,9 @@ namespace pmem {
 
                     if (existenceByNode.second) {
                         auto leaf = static_cast<SkipListInternalNode *>(existenceByNode.first)->getDown();
-                        auto pair = static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator);
-
-                        result.push_back(std::make_pair(pair.first.cdata(), pair.second));
+                        result.push_back(static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator));
                     } else {
-                        result.push_back(std::make_pair("", false));
+                        result.push_back(std::make_pair(Slice(""), false));
                     }
                 }
                 return result;

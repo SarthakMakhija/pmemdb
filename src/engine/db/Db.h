@@ -34,7 +34,7 @@ namespace pmem {
 
             std::pair<Slice, bool> get(const Slice& key);
 
-            std::vector <std::pair<const char*, bool>> multiGet(const std::vector <Slice> &keys);
+            std::vector <std::pair<Slice, bool>> multiGet(const std::vector <Slice> &keys);
 
             std::vector <pmem::storage::KeyValuePair> scan(const Slice& beginKey, const Slice& endKey, int64_t maxPairs);
 
