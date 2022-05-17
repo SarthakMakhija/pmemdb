@@ -4,8 +4,9 @@ namespace pmem {
     namespace storage {
         namespace internal {
             SkipListInternalNode::SkipListInternalNode(const Slice& key, int level) {
-                this->key = key;
-                this->down = nullptr;
+                this->key       = key.cdata();
+                this->keySize   = key.size();
+                this->down      = nullptr;
 
                 this->forwards.resize(level);
                 for (int index = 0; index < level; index++) {
@@ -32,7 +33,7 @@ namespace pmem {
             }
 
             KeyValuePair SkipListInternalNode::keyValuePair() {
-                return KeyValuePair(this->key, Slice(""));
+                return KeyValuePair(Slice(this->key, this->keySize), Slice(""));
             }
 
             SkipListNode *SkipListInternalNode::getDown() {
