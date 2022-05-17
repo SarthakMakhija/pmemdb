@@ -68,8 +68,6 @@ namespace pmem {
             // Return a string that contains the copy of the referenced data.
             std::string ToBuffer() const;
 
-            std::string ToString() const __attribute__ ((deprecated)) { return ToBuffer(); }
-
             std::string ToDebugHexString() const;
 
             // Three-way comparison.  Returns value:
