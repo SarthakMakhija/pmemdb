@@ -22,14 +22,14 @@ namespace pmem {
                 });
             }
 
-            bool SkipListLeafNode::matchesKey(const char *key, pmem::storage::KeyComparator *keyComparator) const {
+            bool SkipListLeafNode::matchesKey(const Slice& key, pmem::storage::KeyComparator *keyComparator) const {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return keyComparator->compare(leaf->key(), Slice(key)) == 0;
+                return keyComparator->compare(leaf->key(), key) == 0;
             }
 
-            bool SkipListLeafNode::isKeyLessEqualTo(const char *key, pmem::storage::KeyComparator *keyComparator) {
+            bool SkipListLeafNode::isKeyLessEqualTo(const Slice& key, pmem::storage::KeyComparator *keyComparator) {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return keyComparator->compare(leaf->key(), Slice(key)) <= 0;
+                return keyComparator->compare(leaf->key(), key) <= 0;
             }
 
             pmem::storage::KeyValuePair SkipListLeafNode::keyValuePair() {

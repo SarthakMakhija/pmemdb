@@ -23,9 +23,9 @@ namespace pmem {
 
                 void persist(pmem::storage::internal::PersistentMemoryPool *pool);
 
-                bool matchesKey(const char *key, pmem::storage::KeyComparator *keyComparator) const override;
+                bool matchesKey(const Slice& key, pmem::storage::KeyComparator *keyComparator) const override;
 
-                bool isKeyLessEqualTo(const char *key, pmem::storage::KeyComparator *keyComparator) override;
+                bool isKeyLessEqualTo(const Slice& key, pmem::storage::KeyComparator *keyComparator) override;
 
                 pmem::storage::KeyValuePair keyValuePair() override;
 

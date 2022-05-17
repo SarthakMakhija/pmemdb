@@ -7,7 +7,6 @@
 #include "WritePosition.h"
 #include "comparator/KeyComparator.h"
 #include "utils/LevelGenerator.h"
-#include "Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -25,9 +24,9 @@ namespace pmem {
                 SkipListInternalNode(const Slice& key, int level);
                 ~SkipListInternalNode();
 
-                bool matchesKey(const char *key, KeyComparator *keyComparator) const override;
+                bool matchesKey(const Slice& key, KeyComparator *keyComparator) const override;
 
-                bool isKeyLessEqualTo(const char *key, KeyComparator *keyComparator) override;
+                bool isKeyLessEqualTo(const Slice& key, KeyComparator *keyComparator) override;
 
                 KeyValuePair keyValuePair() override;
 
