@@ -51,7 +51,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhilePuttingAKeyValueSucc
     put(arena, "HDD", "Hard disk drive", [] {throw std::runtime_error("FailsWhilePuttingAKeyValueSucceedsWithOther");});
 
     ASSERT_FALSE(arena->getBy(Slice("HDD")).second);
-    ASSERT_EQ("Solid state drive", std::string(arena->getBy(Slice("SDD")).first));
+    ASSERT_EQ(Slice("Solid state drive"), arena->getBy(Slice("SDD")).first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileUpdatingAKeyValue) {
@@ -61,7 +61,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileUpdatingAKeyValue) {
     put(arena, "HDD", "Hard disk drive");
     update(arena, "HDD", "HDD", [] {throw std::runtime_error("FailsWhileUpdatingAKeyValue");});
 
-    ASSERT_EQ("Hard disk drive", std::string(arena->getBy(Slice("HDD")).first));
+    ASSERT_EQ(Slice("Hard disk drive"), arena->getBy(Slice("HDD")).first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileUpdatingAKeyValueSucceedsWithOther) {
@@ -74,8 +74,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileUpdatingAKeyValueSuc
     update(arena, "HDD", "HDD", [] {throw std::runtime_error("FailsWhileUpdatingAKeyValueSucceedsWithOther");});
     update(arena, "SDD", "SDD");
 
-    ASSERT_EQ("Hard disk drive", std::string(arena->getBy(Slice("HDD")).first));
-    ASSERT_EQ("SDD", std::string(arena->getBy(Slice("SDD")).first));
+    ASSERT_EQ(Slice("Hard disk drive"), arena->getBy(Slice("HDD")).first);
+    ASSERT_EQ(Slice("SDD"), arena->getBy(Slice("SDD")).first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileDeletingAKeyValue) {
@@ -85,7 +85,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileDeletingAKeyValue) {
     put(arena, "HDD", "Hard disk drive");
     deleteBy(arena, "HDD", [] {throw std::runtime_error("FailsWhileDeletingAKeyValue");});
 
-    ASSERT_EQ("Hard disk drive", std::string(arena->getBy(Slice("HDD")).first));
+    ASSERT_EQ(Slice("Hard disk drive"), arena->getBy(Slice("HDD")).first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileDeletingAKeyValueSucceedsWithOther) {
@@ -98,6 +98,6 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_FailsWhileDeletingAKeyValueSuc
     deleteBy(arena, "HDD", [] {throw std::runtime_error("FailsWhileDeletingAKeyValueSucceedsWithOther");});
     deleteBy(arena, "SDD");
 
-    ASSERT_EQ("Hard disk drive", std::string(arena->getBy(Slice("HDD")).first));
+    ASSERT_EQ(Slice("Hard disk drive"), arena->getBy(Slice("HDD")).first);
     ASSERT_FALSE(arena->getBy(Slice("SDD")).second);
 }

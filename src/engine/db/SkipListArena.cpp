@@ -55,7 +55,9 @@ namespace pmem {
 
                     if (existenceByNode.second) {
                         auto leaf = static_cast<SkipListInternalNode *>(existenceByNode.first)->getDown();
-                        result.push_back(static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator));
+                        auto pair = static_cast<SkipListLeafNode *>(leaf)->getBy(key, keyComparator);
+
+                        result.push_back(std::make_pair(pair.first.cdata(), pair.second));
                     } else {
                         result.push_back(std::make_pair("", false));
                     }
@@ -63,7 +65,7 @@ namespace pmem {
                 return result;
             }
 
-            std::pair<const char *, bool> SkipListArena::getBy(const Slice& key) {
+            std::pair<Slice, bool> SkipListArena::getBy(const Slice& key) {
                 std::pair < SkipListNode * ,
                         bool > existenceByNode = static_cast<SkipListInternalNode *>(this->startingNode)->getBy(key,
                                                                                                                 keyComparator);

@@ -38,7 +38,7 @@ namespace pmem {
                     PersistentMemoryPool *pool,
                     std::function<void(void)> postPutHook = [] {});
 
-                std::pair<const char *, bool> getBy(const pmem::storage::Slice& key, pmem::storage::KeyComparator *keyComparator);
+                std::pair<Slice, bool> getBy(const pmem::storage::Slice& key, pmem::storage::KeyComparator *keyComparator);
 
                 std::vector <pmem::storage::KeyValuePair>
                 scan(const pmem::storage::Slice& beginKey,

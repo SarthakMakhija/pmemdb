@@ -41,10 +41,10 @@ TEST(Db_Functional, Add500KeyValuePairs) {
     }
     for (int count = 1; count <= 500; count++) {
         Slice key   = Slice(keys.at(count - 1).c_str());
-        std::string expectedValue = "Value-" + std::to_string(count);
+        Slice expectedValue = Slice(values.at(count - 1).c_str());
 
-        std::pair<const char*, bool> existenceByValue = db -> get(key);
-        ASSERT_EQ(expectedValue, std::string(existenceByValue.first));
+        std::pair<Slice, bool> existenceByValue = db -> get(key);
+        ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
 
@@ -152,10 +152,10 @@ TEST(Db_Functional, Update500KeyValuePairs) {
     }
     for (int count = 1; count <= 500; count++) {
         Slice key           = Slice(keys.at(count - 1).c_str());
-        std::string expectedValue = "Value-" + std::to_string(count*2);
+        Slice expectedValue = Slice(valuesToUpdate.at(count - 1).c_str());
         
-        std::pair<const char*, bool> existenceByValue = db -> get(key);
-        ASSERT_EQ(expectedValue, std::string(existenceByValue.first));
+        std::pair<Slice, bool> existenceByValue = db -> get(key);
+        ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
 
@@ -193,21 +193,21 @@ TEST(Db_Functional, DeleteKeys) {
 
     for (int count = 2; count < 400; count++) {
         Slice key           = Slice(keys.at(count - 1).c_str());
-        std::string expectedValue = "Value-" + std::to_string(count);
+        Slice expectedValue = Slice(values.at(count - 1).c_str());
         
-        std::pair<const char*, bool> existenceByValue = db -> get(key);
+        std::pair<Slice, bool> existenceByValue = db -> get(key);
 
-        ASSERT_EQ(expectedValue, std::string(existenceByValue.first));
+        ASSERT_EQ(expectedValue, existenceByValue.first);
         ASSERT_TRUE(existenceByValue.second);
     }
 
-    ASSERT_FALSE(db -> get(deleteKey.c_str()).second);
+    ASSERT_FALSE(db -> get(Slice(deleteKey.c_str())).second);
     for (int count = 500; count <= 400; count++) {
-        std::string key           = "Key-"   + std::to_string(count);
+        Slice key = Slice(keys.at(count - 1).c_str());
         
-        std::pair<const char*, bool> existenceByValue = db -> get(key.c_str());
+        std::pair<Slice, bool> existenceByValue = db -> get(key);
 
-        ASSERT_EQ("", std::string(existenceByValue.first));
+        ASSERT_EQ(Slice(""), existenceByValue.first);
         ASSERT_FALSE(existenceByValue.second);
     }
 

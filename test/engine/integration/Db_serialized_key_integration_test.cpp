@@ -74,8 +74,8 @@ TEST(DbSerializedKeyIntegration, GetValueByKey) {
         char *key = (char*)malloc(sizeof(*employeeId));
         memcpy(key, (char*)employeeId, sizeof(*employeeId));
 
-        std::pair<const char*, bool> existenceByValue = db->get(Slice(key, sizeof(*employeeId)));
-        const Employee* saved = reinterpret_cast<const Employee*>(existenceByValue.first);
+        std::pair<Slice, bool> existenceByValue = db->get(Slice(key, sizeof(*employeeId)));
+        const Employee* saved = reinterpret_cast<const Employee*>(existenceByValue.first.cdata());
 
         ASSERT_EQ(employee->id, saved->id);
         ASSERT_EQ(employee->firstName, saved->firstName);
@@ -103,7 +103,7 @@ TEST(DbSerializedKeyIntegration, GetByNonExistentKey) {
     char *getKey = (char*)malloc(sizeof(*getEmployeeId));
     memcpy(getKey, (char*)getEmployeeId, sizeof(*getEmployeeId));
 
-    std::pair<const char*, bool> existenceByValue = db->get(Slice(getKey, sizeof(*getEmployeeId)));
+    std::pair<Slice, bool> existenceByValue = db->get(Slice(getKey, sizeof(*getEmployeeId)));
     ASSERT_FALSE(existenceByValue.second);
 
     close(db);
@@ -236,9 +236,9 @@ TEST(DbSerializedKeyIntegration, Update) {
     char *getKey10 = (char*)malloc(sizeof(*getId10));
     memcpy(getKey10, (char*)getId10, sizeof(*getId10));
 
-    std::pair<const char*, bool> result = db->get(Slice(getKey10, sizeof(*getId10)));
+    std::pair<Slice, bool> result = db->get(Slice(getKey10, sizeof(*getId10)));
 
-    const Employee* first = reinterpret_cast<const Employee*>(result.first);
+    const Employee* first = reinterpret_cast<const Employee*>(result.first.cdata());
     ASSERT_EQ(-7, first->id);
     ASSERT_EQ("John", first->firstName);
     ASSERT_EQ("Mathews", first->lastName);

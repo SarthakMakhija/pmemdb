@@ -50,7 +50,7 @@ namespace pmem {
             return this->skipList->deleteBy(key);
         }
 
-        std::pair<const char *, bool> Db::get(const Slice& key) {
+        std::pair<Slice, bool> Db::get(const Slice& key) {
             std::shared_lock <std::shared_mutex> lock(this->mutex_);
             return this->skipList->get(key);
         }

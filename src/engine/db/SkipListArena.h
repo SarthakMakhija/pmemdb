@@ -28,7 +28,7 @@ namespace pmem {
                            LevelGenerator *levelGenerator,
                            std::function<void(void)> postPutHook = [] {});
 
-                std::pair<const char *, bool> getBy(const Slice& key);
+                std::pair<Slice, bool> getBy(const Slice& key);
 
                 std::vector <std::pair<const char *, bool>> multiGet(std::vector<Slice> keys);
 

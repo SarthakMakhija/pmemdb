@@ -42,7 +42,7 @@ namespace pmem {
                 return this->arena->deleteBy(key);
             }
 
-            std::pair<const char *, bool> SkipList::get(const Slice& key) {
+            std::pair<Slice, bool> SkipList::get(const Slice& key) {
                 return this->arena->getBy(key);
             }
 

@@ -56,7 +56,7 @@ namespace pmem {
                     if (keyValue) {
                         char *p = keyValue.get();
                         //setKeySizeDirect(p, 0);
-                        setValueSizeDirect(p, 0);
+                        //setValueSizeDirect(p, 0);
                         delete_persistent<char[]>(keyValue, sizeof(uint32_t) + sizeof(uint32_t) + keySizeDirect(p) +
                                                             valueSizeDirect(p) );
                         keyValue = nullptr;
@@ -68,8 +68,9 @@ namespace pmem {
                     return Slice(key, keySize());
                 }
 
-                const char *value() const {
-                    return ((char *) (keyValue.get()) + sizeof(uint32_t) + sizeof(uint32_t) + keySize() );
+                Slice value() const {
+                    const char* value =  ((char *) (keyValue.get()) + sizeof(uint32_t) + sizeof(uint32_t) + keySize() );
+                    return Slice(value, valueSize());
                 }
 
                 uint32_t keySize() const {

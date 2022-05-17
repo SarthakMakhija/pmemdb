@@ -34,13 +34,13 @@ namespace pmem {
 
             pmem::storage::KeyValuePair SkipListLeafNode::keyValuePair() {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return KeyValuePair(leaf->key().cdata(), leaf->value());
+                return KeyValuePair(leaf->key().cdata(), leaf->value().cdata());
             }
 
             pmem::storage::KeyValuePair SkipListLeafNode::rightKeyValuePair() {
                 pmem::storage::internal::PersistentLeaf *right = this->leaf->right.get();
                 if (right) {
-                    return KeyValuePair(right->key().cdata(), right->value());
+                    return KeyValuePair(right->key().cdata(), right->value().cdata());
                 }
                 return KeyValuePair("", "");
             }
@@ -81,7 +81,7 @@ namespace pmem {
                 return std::make_pair(newNode, Status::Ok);
             }
 
-            std::pair<const char *, bool>
+            std::pair<Slice, bool>
             SkipListLeafNode::getBy(const pmem::storage::Slice& key, pmem::storage::KeyComparator *keyComparator) {
                 pmem::storage::internal::PersistentLeaf *targetLeaf = this->leaf.get();
                 while (targetLeaf->right.get() && keyComparator->compare(targetLeaf->right.get()->key(), key) <= 0) {
@@ -90,7 +90,7 @@ namespace pmem {
                 if (keyComparator->compare(targetLeaf->key(), key) == 0) {
                     return std::make_pair(targetLeaf->value(), true);
                 }
-                return std::make_pair("", false);
+                return std::make_pair(Slice(""), false);
             }
 
             std::vector <pmem::storage::KeyValuePair>
@@ -112,7 +112,7 @@ namespace pmem {
                 int64_t pairCount = 0;
 
                 while (targetLeaf && keyComparator->compare(targetLeaf->key(), endKey) < 0) {
-                    keyValuePairs.push_back(KeyValuePair(targetLeaf->key().cdata(), targetLeaf->value()));
+                    keyValuePairs.push_back(KeyValuePair(targetLeaf->key().cdata(), targetLeaf->value().cdata()));
                     targetLeaf = targetLeaf->right.get();
                     pairCount = pairCount + 1;
 

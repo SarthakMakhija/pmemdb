@@ -32,9 +32,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_PutASingleKeyValuePair) {
 
     put(arena, "HDD", "Hard disk drive");
 
-    std::pair<const char*, bool> valueByExistence = arena->getBy(Slice("HDD"));
+    std::pair<Slice, bool> valueByExistence = arena->getBy(Slice("HDD"));
 
-    ASSERT_EQ("Hard disk drive", std::string(valueByExistence.first));
+    ASSERT_EQ(Slice("Hard disk drive"), valueByExistence.first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_PutMultipleKeyValuePairs) {
@@ -44,8 +44,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_PutMultipleKeyValuePairs) {
   put(arena, "HDD", "Hard disk drive");
   put(arena, "SDD", "Solid state drive");
 
-  ASSERT_EQ("Hard disk drive", std::string(arena->getBy(Slice("HDD")).first));
-  ASSERT_EQ("Solid state drive", std::string(arena->getBy(Slice("SDD")).first));
+  ASSERT_EQ(Slice("Hard disk drive"), arena->getBy(Slice("HDD")).first);
+  ASSERT_EQ(Slice("Solid state drive"), arena->getBy(Slice("SDD")).first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_GetByKeyForAnExistingKey) {
@@ -55,8 +55,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_GetByKeyForAnExistingKey) {
   put(arena, "HDD", "Hard disk drive");
   put(arena, "SDD", "Solid state drive");
 
-  ASSERT_EQ("Hard disk drive",   std::string(arena->getBy(Slice("HDD")).first));
-  ASSERT_EQ("Solid state drive", std::string(arena->getBy(Slice("SDD")).first));
+  ASSERT_EQ(Slice("Hard disk drive"),   arena->getBy(Slice("HDD")).first);
+  ASSERT_EQ(Slice("Solid state drive"), arena->getBy(Slice("SDD")).first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_GetByKeyForANonExistingKey) {
@@ -66,7 +66,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_GetByKeyForANonExistingKey) {
   put(arena, "HDD", "Hard disk drive");
   put(arena, "SDD", "Solid state drive");
 
-  ASSERT_EQ("", std::string(arena->getBy(Slice("Pmem")).first));
+  ASSERT_EQ(Slice(""), arena->getBy(Slice("Pmem")).first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_MultiGet) {
@@ -160,9 +160,9 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_UpdateTheValueOfAMatchingKey) 
 
   update(arena, "HDD", "Hard drive");
 
-  std::pair<const char*, bool> valueByExistence = arena->getBy(Slice("HDD"));
+  std::pair<Slice, bool> valueByExistence = arena->getBy(Slice("HDD"));
 
-  ASSERT_EQ("Hard drive", std::string(valueByExistence.first));
+  ASSERT_EQ(Slice("Hard drive"), valueByExistence.first);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_UpdateTheValueOfAMatchingKeyInLeafNode) {
@@ -175,8 +175,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListArena_UpdateTheValueOfAMatchingKeyIn
 
   update(arena, "HDD", "Hard drive");
 
-  const char* actual = static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy("HDD", stringKeyComparator()).first;
-  ASSERT_EQ("Hard drive", std::string(actual));
+  Slice actual = static_cast<SkipListLeafNode*>(sentinel -> getDown()) -> getBy("HDD", stringKeyComparator()).first;
+  ASSERT_EQ(Slice("Hard drive"), actual);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_DeleteValueOfAMatchingKeyInBetween) {

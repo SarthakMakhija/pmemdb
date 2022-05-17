@@ -98,7 +98,7 @@ static void DBGet(benchmark::State &state) {
         state.PauseTiming();
         const char *key = kg.Next().cdata();
         state.ResumeTiming();
-        std::pair<const char *, bool> pair = db->get(key);
+        std::pair<Slice, bool> pair = db->get(key);
         if (!pair.second) {
             notFound++;
         }
