@@ -3,7 +3,7 @@
 
 #include <string>
 #include <cstring>
-#include "fastmem.h"
+#include "utils/Fastmem.h"
 
 namespace pmem {
     namespace storage {

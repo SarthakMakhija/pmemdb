@@ -25,8 +25,8 @@ add_library(SkipList
         storage/WritePosition.h
         storage/utils/LevelGenerator.h
         storage/utils/LevelGenerator.cpp
-        storage/fastmem.h
-        storage/integral_types.h
+        storage/utils/Fastmem.h
+        storage/utils/IntegralTypes.h
         storage/Slice.h
         storage/Slice.cpp
         configuration/Configuration.h

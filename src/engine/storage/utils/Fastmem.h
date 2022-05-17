@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include "integral_types.h"
+#include "IntegralTypes.h"
 
 #define UNALIGNED_LOAD32(_p) (*reinterpret_cast<const uint32 *>(_p))
 #define UNALIGNED_LOAD64(_p) (*reinterpret_cast<const uint64 *>(_p))
