@@ -1,13 +1,100 @@
-test/engine/benchmark/DbBenchmark.cpp:75:0: style: The function 'DBGet' is never used. [unusedFunction]
+src/engine/db/SkipListArena.cpp:79:46: style:inconclusive: Function 'scan' argument 1 names different: declaration 'key' definition 'beginKey'. [funcArgNamesDifferent]
+            SkipListArena::scan(const Slice& beginKey, const Slice& endKey, int64_t maxPairs) {
+                                             ^
+src/engine/db/SkipListArena.h:35:62: note: Function 'scan' argument 1 names different: declaration 'key' definition 'beginKey'.
+                std::vector <KeyValuePair> scan(const Slice& key, const Slice& endKey, int64_t maxPairs);
+                                                             ^
+src/engine/db/SkipListArena.cpp:79:46: note: Function 'scan' argument 1 names different: declaration 'key' definition 'beginKey'.
+            SkipListArena::scan(const Slice& beginKey, const Slice& endKey, int64_t maxPairs) {
+                                             ^
+src/engine/storage/utils/IntegralTypes.h:70:0: error: failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [preprocessorErrorDirective]
+#define GG_LONGLONG(x) x##LL
+^
+src/engine/storage/utils/IntegralTypes.h:65:0: error: failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [preprocessorErrorDirective]
+#define GG_LONGLONG(x) x##I64
+^
+src/engine/storage/PersistentMemoryPool.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
-test/engine/benchmark/DbBenchmark.cpp:116:0: style: The function 'DBGetArguments' is never used. [unusedFunction]
+src/engine/storage/SkipList.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
-test/engine/benchmark/DbBenchmark.cpp:128:0: style: The function 'DBScan' is never used. [unusedFunction]
+src/engine/storage/SkipListInternalNode.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
 
 ^
-test/engine/benchmark/DbBenchmark.cpp:178:0: style: The function 'DBScanArguments' is never used. [unusedFunction]
+src/engine/storage/SkipListLeafNode.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+src/engine/storage/Slice.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/DbTestsHelper.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/SkipListNodeTestUtils.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/benchmark/DbBenchmark.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/benchmark/SkipListInternalNodeBenchmark.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/integration/SkipListArena_atomic_write_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/integration/SkipListArena_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/integration/SkipListInternalNode_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/integration/SkipListLeafNode_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/integration/SkipListLeafNode_transactional_write_integration_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/unit/SkipList_exception_unit_test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. The tested configurations have these preprocessor errors:
+'' : [src/engine/storage/utils/IntegralTypes.h:70] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'.
+_MSC_VER : [src/engine/storage/utils/IntegralTypes.h:65] failed to expand 'GG_LONGLONG', Invalid ## usage when expanding 'GG_LONGLONG'. [noValidConfiguration]
+
+^
+test/engine/benchmark/Random.cpp:3:0: style: The function 'HumanReadableString' is never used. [unusedFunction]
+
+^
+src/engine/storage/utils/LevelGenerator.cpp:13:0: style: The function 'generate' is never used. [unusedFunction]
+
+^
+src/engine/storage/utils/LevelGenerator.cpp:23:0: style: The function 'getMaxLevel' is never used. [unusedFunction]
 
 ^
 nofile:0:0: information: Cppcheck cannot find all the include files. Cppcheck can check the code without the include files found. But the results will probably be more accurate if all the include files are found. Please check your project's include directories and add all of them as include directories for Cppcheck. To see what files Cppcheck cannot find use --check-config. [missingInclude]
