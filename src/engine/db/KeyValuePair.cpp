@@ -2,19 +2,22 @@
 
 namespace pmem {
     namespace storage {
-        KeyValuePair::KeyValuePair(const char* key, const char* value) : key(key), value(value) {
+        KeyValuePair::KeyValuePair(const char* key, const char* value) : key(Slice(key)), value(Slice(value)) {
+        }
+        
+        KeyValuePair::KeyValuePair(const Slice& key, const Slice& value): key(key), value(value) {            
         }
 
-        const char* KeyValuePair::getKey() const {
-            return key;
+        Slice KeyValuePair::getKey() const {
+            return key.cdata();
         }
 
-        const char* KeyValuePair::getValue() const {
-            return value;
+        Slice KeyValuePair::getValue() const {
+            return value.cdata();
         }
 
         bool KeyValuePair::operator==(const KeyValuePair &other) const {
-            return strcmp(key, other.key) == 0 && strcmp(value, other.value) == 0;
+            return key == other.key && value == other.value;
         }
     }
 }

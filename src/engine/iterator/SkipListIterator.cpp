@@ -47,13 +47,13 @@ namespace pmem {
 
         const char* SkipListIterator::key() const {
             std::shared_lock <std::shared_mutex> lock(this->mutex);
-            return this->currentNode->keyValuePair().getKey();
+            return this->currentNode->keyValuePair().getKey().cdata();
         }
 
         const char* SkipListIterator::value() const {
             std::shared_lock <std::shared_mutex> lock(this->mutex);
             auto leaf = this->currentNode->getDown();
-            return static_cast<pmem::storage::internal::SkipListLeafNode *>(leaf)->keyValuePair().getValue();
+            return static_cast<pmem::storage::internal::SkipListLeafNode *>(leaf)->keyValuePair().getValue().cdata();
         }
     }
 }

@@ -34,13 +34,13 @@ namespace pmem {
 
             pmem::storage::KeyValuePair SkipListLeafNode::keyValuePair() {
                 pmem::storage::internal::PersistentLeaf *leaf = this->leaf.get();
-                return KeyValuePair(leaf->key().cdata(), leaf->value().cdata());
+                return KeyValuePair(leaf->key(), leaf->value());
             }
 
             pmem::storage::KeyValuePair SkipListLeafNode::rightKeyValuePair() {
                 pmem::storage::internal::PersistentLeaf *right = this->leaf->right.get();
                 if (right) {
-                    return KeyValuePair(right->key().cdata(), right->value().cdata());
+                    return KeyValuePair(right->key(), right->value());
                 }
                 return KeyValuePair("", "");
             }
@@ -112,7 +112,7 @@ namespace pmem {
                 int64_t pairCount = 0;
 
                 while (targetLeaf && keyComparator->compare(targetLeaf->key(), endKey) < 0) {
-                    keyValuePairs.push_back(KeyValuePair(targetLeaf->key().cdata(), targetLeaf->value().cdata()));
+                    keyValuePairs.push_back(KeyValuePair(targetLeaf->key(), targetLeaf->value()));
                     targetLeaf = targetLeaf->right.get();
                     pairCount = pairCount + 1;
 

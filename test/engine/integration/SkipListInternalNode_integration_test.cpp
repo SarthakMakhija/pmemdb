@@ -99,7 +99,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_NextInInternalNode) {
 
   SkipListNode* node = sentinelInternal->next();
 
-  ASSERT_EQ("HDD", std::string(node->keyValuePair().getKey()));
+  ASSERT_EQ(Slice("HDD"), node->keyValuePair().getKey());
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_GetByKeyForANonExistingKeyInInternalNode) {
@@ -125,8 +125,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_AttemptsToPutSameKeyInI
   put(sentinelInternal, sdd.cdata(), "Hard disk drive", PersistentMemoryPoolFixture::getPersistentMemoryPool());
 
   auto leaf = static_cast<SkipListInternalNode*>(sentinelInternal -> getBy(hdd, stringKeyComparator()).first)->getDown();
-  const char* actualValue = leaf -> keyValuePair().getValue();
-  ASSERT_EQ("Hard disk drive", std::string(actualValue));
+  Slice actualValue = leaf -> keyValuePair().getValue();
+  ASSERT_EQ(Slice("Hard disk drive"), actualValue);
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheStartingLeafNodeToPerformScan) {
@@ -142,7 +142,7 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheStartingLeafN
     Slice beginKey = Slice("Pmem");
     std::pair<SkipListNode*, bool> nodeByExistence = sentinelInternal -> scan(beginKey, stringKeyComparator());
 
-    ASSERT_EQ("Persistent Memory", std::string(nodeByExistence.first -> keyValuePair().getValue()));
+    ASSERT_EQ(Slice("Persistent Memory"), nodeByExistence.first -> keyValuePair().getValue());
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsFalseToPerformScanGivenBeginKeyIsOutsideTheBounds) {
@@ -173,8 +173,8 @@ TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_ReturnsTheUpdatePositio
 
   UpdatePosition updatePosition = sentinelInternal -> updatePositionOf(sdd, stringKeyComparator());
 
-  ASSERT_EQ("SDD", std::string(updatePosition.internal -> keyValuePair().getKey()));
-  ASSERT_EQ("Solid state drive", std::string(updatePosition.leaf -> keyValuePair().getValue()));
+  ASSERT_EQ(Slice("SDD"),               updatePosition.internal -> keyValuePair().getKey());
+  ASSERT_EQ(Slice("Solid state drive"), updatePosition.leaf -> keyValuePair().getValue());
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListInternalNode_DeleteValueOfANonMatchingKeyInInternalNode) {

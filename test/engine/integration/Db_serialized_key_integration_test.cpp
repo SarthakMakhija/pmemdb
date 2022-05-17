@@ -143,12 +143,12 @@ TEST(DbSerializedKeyIntegration, Scan) {
 
     ASSERT_EQ(2, result.size());
 
-    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).getValue());
+    const Employee* first = reinterpret_cast<const Employee*>(result.at(0).getValue().cdata());
     ASSERT_EQ(-7, first->id);
     ASSERT_EQ("John", first->firstName);
     ASSERT_EQ("", first->lastName);
 
-    const Employee* second = reinterpret_cast<const Employee*>(result.at(1).getValue());
+    const Employee* second = reinterpret_cast<const Employee*>(result.at(1).getValue().cdata());
     ASSERT_EQ(5, second->id);
     ASSERT_EQ("Kartik", second->firstName);
     ASSERT_EQ("Rajan", second->lastName);
