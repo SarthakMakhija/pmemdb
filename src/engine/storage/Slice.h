@@ -48,7 +48,7 @@ namespace pmem {
             Slice(const char *begin, const char *end)
                     : Slice(to_uchar_ptr(begin), to_uchar_ptr(end)) {}
 
-            // Create a slice that refers to s[0,strlen(s)-1]
+            // Create a slice that refers to s[0,strlen(s)]
             Slice(const char *s) // NOLINT(runtime/explicit)
                     : Slice(to_uchar_ptr(s), strlen(s)+1) {}
 
