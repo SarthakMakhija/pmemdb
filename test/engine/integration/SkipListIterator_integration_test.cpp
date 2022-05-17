@@ -9,6 +9,31 @@
 
 using namespace pmem::storage;
 
+struct EmployeeId {
+    int id;
+    std::string lastName;
+};
+struct Employee {
+    int id;
+    std::string firstName;
+    std::string lastName;
+};
+class EmployeeIdComparator : public KeyComparator {
+public:
+    int compare(const Slice& a, const Slice& b) const override {
+        const EmployeeId* first = reinterpret_cast<const EmployeeId*>(a.cdata());
+        const EmployeeId* other = reinterpret_cast<const EmployeeId*>(b.cdata());
+
+        if (first->id == other->id) {
+            return 0;
+        }
+        if (first->id < other->id) {
+            return -1;
+        }
+        return 1;
+    }
+};
+
 TEST_F(DbFixture, SkipListIteratorIntegration_SeekToFirst) {
     put(DbFixture::getDb(), "HDD", "Hard disk drive");
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
@@ -16,7 +41,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekToFirst) {
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
     iterator->seekToFirst();
 
-    ASSERT_EQ("HDD", std::string(iterator->key()));
+    ASSERT_EQ(Slice("HDD"), iterator->key());
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_SeekToLast) {
@@ -26,7 +51,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekToLast) {
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
     iterator->seekToLast();
 
-    ASSERT_EQ("Pmem", std::string(iterator->key()));
+    ASSERT_EQ(Slice("Pmem"), iterator->key());
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_Seek1) {
@@ -37,8 +62,8 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Seek1) {
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
     iterator->seek("SDD");
 
-    ASSERT_EQ("SDD", std::string(iterator->key()));
-    ASSERT_EQ("Solid State drive", std::string(iterator->value()));
+    ASSERT_EQ(Slice("SDD"), iterator->key());
+    ASSERT_EQ(Slice("Solid State drive"), iterator->value());
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_Seek2) {
@@ -49,12 +74,12 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Seek2) {
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
     iterator->seek("SDD");
 
-    ASSERT_EQ("SDD", std::string(iterator->key()));
-    ASSERT_EQ("Solid State drive", std::string(iterator->value()));
+    ASSERT_EQ(Slice("SDD"),               iterator->key());
+    ASSERT_EQ(Slice("Solid State drive"), iterator->value());
 
     iterator->seek("HDD");
-    ASSERT_EQ("HDD", std::string(iterator->key()));
-    ASSERT_EQ("Hard disk drive", std::string(iterator->value()));
+    ASSERT_EQ(Slice("HDD"),             iterator->key());
+    ASSERT_EQ(Slice("Hard disk drive"), iterator->value());
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_Next1) {
@@ -65,7 +90,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Next1) {
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
     iterator->seekToFirst();
 
-    ASSERT_EQ("HDD", std::string(iterator->key()));
+    ASSERT_EQ(Slice("HDD"), iterator->key());
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_Next2) {
@@ -77,7 +102,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Next2) {
     iterator->seekToFirst();
     iterator->next();
 
-    ASSERT_EQ("Pmem", std::string(iterator->key()));
+    ASSERT_EQ(Slice("Pmem"), iterator->key());
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_Value) {
@@ -88,7 +113,35 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Value) {
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
     iterator->seekToFirst();
 
-    ASSERT_EQ("Hard disk drive", std::string(iterator->value()));
+    ASSERT_EQ(Slice("Hard disk drive"), iterator->value());
+}
+
+TEST_F(DbFixture, SkipListIteratorIntegration_SerializedValue) {
+    auto employee   = new Employee  {11, "Mark", "Johnson"};
+    auto employeeId = new EmployeeId{11, "Johnson"};
+    Db* db          = DbFixture::getDb();
+
+    char *key = (char*)malloc(sizeof(*employeeId));
+    memcpy(key, (char*)employeeId, sizeof(*employeeId));
+    
+    char *value = (char*)malloc(sizeof(*employee));
+    memcpy(value, (char*)employee, sizeof(*employee));
+
+    db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
+    
+    SkipListIterator* iterator = db->newIterator();
+    iterator->seekToFirst();
+
+    Slice savedKey   = iterator->key();
+    Slice savedValue = iterator->value();
+
+    ASSERT_EQ(sizeof(*employeeId),  savedKey.size());
+    ASSERT_EQ(sizeof(*employee),    savedValue.size());
+
+    const Employee* saved = reinterpret_cast<const Employee*>(savedValue.cdata());
+    ASSERT_EQ(11,           saved->id);
+    ASSERT_EQ("Mark",       saved->firstName);
+    ASSERT_EQ("Johnson",    saved->lastName);
 }
 
 TEST_F(DbFixture, SkipListIteratorIntegration_IsValid) {
@@ -113,18 +166,18 @@ TEST_F(DbFixture, SkipListIteratorIntegration_IterateAll) {
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
     SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
-    std::vector<std::pair<std::string, std::string>> expected = {
-                                                                    std::make_pair("HDD", "Hard disk drive"),
-                                                                    std::make_pair("Pmem", "Persistent Memory"),
-                                                                    std::make_pair("SDD", "Solid State drive")
-                                                                };
+    std::vector<std::pair<Slice, Slice>> expected = {
+                                                        std::make_pair(Slice("HDD"),  Slice("Hard disk drive")),
+                                                        std::make_pair(Slice("Pmem"), Slice("Persistent Memory")),
+                                                        std::make_pair(Slice("SDD"),  Slice("Solid State drive"))
+                                                    };
 
-    std::vector<std::pair<std::string, std::string>> result;
+    std::vector<std::pair<Slice, Slice>> result;
     iterator->seekToFirst();
 
     while (iterator->isValid()) {
-        std::string key = std::string(iterator->key());
-        std::string value = std::string(iterator->value());
+        Slice key   = iterator->key();
+        Slice value = iterator->value();
 
         result.push_back(std::make_pair(key, value));
         iterator->next();
@@ -145,7 +198,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekWithConcurrentPut) {
         SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
         iterator->seek("Pmem");
         if (iterator->isValid()) {
-            ASSERT_EQ("Pmem", std::string(iterator->key()));
+            ASSERT_EQ(Slice("Pmem"), iterator->key());
         } else {
             ASSERT_FALSE(iterator->isValid());
         }
@@ -164,16 +217,16 @@ TEST_F(DbFixture, SkipListIteratorIntegration_IterateAllWithConcurrentPut) {
 
     std::thread iterator([&]() {
         SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
-        std::vector<std::pair<std::string, std::string>> expected1 = {std::make_pair("HDD", "Hard disk drive")};                                                                  
-        std::vector<std::pair<std::string, std::string>> expected2 = {std::make_pair("HDD", "Hard disk drive"),
-                                                                      std::make_pair("Pmem", "Persistent Memory") };
+        std::vector<std::pair<Slice, Slice>> expected1 = {std::make_pair(Slice("HDD"),  Slice("Hard disk drive"))};                                                                  
+        std::vector<std::pair<Slice, Slice>> expected2 = {std::make_pair(Slice("HDD"),  Slice("Hard disk drive")),
+                                                          std::make_pair(Slice("Pmem"), Slice("Persistent Memory")) };
 
-        std::vector<std::pair<std::string, std::string>> result;
+        std::vector<std::pair<Slice, Slice>> result;
         iterator->seekToFirst();
         
         while (iterator->isValid()) {
-            std::string key = std::string(iterator->key());
-            std::string value = std::string(iterator->value());
+            Slice key   = iterator->key();
+            Slice value = iterator->value();
 
             result.push_back(std::make_pair(key, value));
             iterator->next();

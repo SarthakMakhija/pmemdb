@@ -45,15 +45,15 @@ namespace pmem {
             this->currentNode = currentNode->next();
         }
 
-        const char* SkipListIterator::key() const {
+        Slice SkipListIterator::key() const {
             std::shared_lock <std::shared_mutex> lock(this->mutex);
-            return this->currentNode->keyValuePair().getKey().cdata();
+            return this->currentNode->keyValuePair().getKey();
         }
 
-        const char* SkipListIterator::value() const {
+        Slice SkipListIterator::value() const {
             std::shared_lock <std::shared_mutex> lock(this->mutex);
-            auto leaf = this->currentNode->getDown();
-            return static_cast<pmem::storage::internal::SkipListLeafNode *>(leaf)->keyValuePair().getValue().cdata();
+            auto leafNode = this->currentNode->getDown();
+            return static_cast<pmem::storage::internal::SkipListLeafNode *>(leafNode)->keyValuePair().getValue();
         }
     }
 }

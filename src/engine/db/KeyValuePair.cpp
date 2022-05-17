@@ -9,11 +9,11 @@ namespace pmem {
         }
 
         Slice KeyValuePair::getKey() const {
-            return key.cdata();
+            return key;
         }
 
         Slice KeyValuePair::getValue() const {
-            return value.cdata();
+            return value;
         }
 
         bool KeyValuePair::operator==(const KeyValuePair &other) const {

@@ -5,6 +5,7 @@
 #include <shared_mutex>
 #include "comparator/KeyComparator.h"
 #include "storage/SkipListInternalNode.h"
+#include "storage/Slice.h"
 
 namespace pmem {
     namespace storage {
@@ -28,8 +29,8 @@ namespace pmem {
             void seekToLast();
             void seek(const char* key);
             void next();
-            const char* key() const;
-            const char* value() const;
+            Slice key() const;
+            Slice value() const;
         };
     }
 }

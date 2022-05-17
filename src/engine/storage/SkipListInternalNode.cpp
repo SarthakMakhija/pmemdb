@@ -32,7 +32,7 @@ namespace pmem {
             }
 
             KeyValuePair SkipListInternalNode::keyValuePair() {
-                return KeyValuePair(this->key.cdata(), "");
+                return KeyValuePair(this->key, Slice(""));
             }
 
             SkipListNode *SkipListInternalNode::getDown() {
