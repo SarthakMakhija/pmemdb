@@ -33,19 +33,31 @@ namespace pmem {
         }
 
         Status Db::put(const Slice& key, const Slice& value) {
-            //TODO: Handle blank key
+            if (key.empty()) {
+                throw std::invalid_argument("Key can not be blank while performing put");
+            }
+            if (value.empty()) {
+                throw std::invalid_argument("Value can not be blank while performing put");
+            }
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->put(key, value);
         }
 
         Status Db::update(const Slice& key, const Slice& value) {
-            //TODO: Handle blank key
+            if (key.empty()) {
+                throw std::invalid_argument("Key can not be blank while performing update");
+            }
+            if (value.empty()) {
+                throw std::invalid_argument("Value can not be blank while performing update");
+            }
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->update(key, value);
         }
 
         Status Db::deleteBy(const Slice& key) {
-            //TODO: Handle blank key
+            if (key.empty()) {
+                throw std::invalid_argument("Key can not be blank while performing delete");
+            }
             std::lock_guard <std::shared_mutex> lock(this->mutex_);
             return this->skipList->deleteBy(key);
         }
@@ -64,7 +76,13 @@ namespace pmem {
             if (maxPairs <= 0) {
                 throw std::invalid_argument("maxPairs must be greater than 0");
             }
-            auto comparisonResult = this->keyComparator->compare(endKey.cdata(), beginKey.cdata());
+            if (beginKey.empty()) {
+                throw std::invalid_argument("BeginKey can not be blank while performing scan");
+            }
+            if (endKey.empty()) {
+                throw std::invalid_argument("EndKey can not be blank while performing scan");
+            }
+            auto comparisonResult = this->keyComparator->compare(endKey, beginKey);
             if (comparisonResult == 0 || comparisonResult < 0) {
                 throw std::invalid_argument(
                         "beginKey and endKey must be different and endKey must be greater than beginKey");

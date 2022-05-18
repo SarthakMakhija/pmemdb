@@ -49,8 +49,15 @@ namespace pmem {
                     : Slice(to_uchar_ptr(begin), to_uchar_ptr(end)) {}
 
             // Create a slice that refers to s[0,strlen(s)]
-            Slice(const char *s) // NOLINT(runtime/explicit)
-                    : Slice(to_uchar_ptr(s), strlen(s)+1) {}
+            Slice(const char *s) {
+                const uint8_t *d = to_uchar_ptr(s);
+                begin_ = d;
+                if (strlen(s) == 0) {
+                    end_ = d;
+                } else {
+                    end_ = d + strlen(s) + 1;
+                }
+            }                    
 
             const char *cdata() const { return to_char_ptr(begin_); }
 

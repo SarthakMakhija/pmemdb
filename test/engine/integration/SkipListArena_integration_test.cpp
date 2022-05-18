@@ -13,17 +13,17 @@ using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
 void put(SkipListArena* arena, const char* key, const char* value) {
-    arena->put(Slice(key, strlen(key) + 1), 
-               Slice(value, strlen(value) + 1), new LevelGenerator(6));
+    arena->put(Slice(key), 
+               Slice(value), new LevelGenerator(6));
 }
 
 void update(SkipListArena* arena, const char* key, const char* value) {
-    arena->update(Slice(key, strlen(key) + 1), 
-                  Slice(value, strlen(value) + 1));
+    arena->update(Slice(key), 
+                  Slice(value));
 }
 
 void deleteBy(SkipListArena* arena, const char* key) {
-    arena->deleteBy(Slice(key, strlen(key) + 1));
+    arena->deleteBy(Slice(key));
 }
 
 TEST_F(PersistentMemoryPoolFixture, SkipListArena_PutASingleKeyValuePair) {
