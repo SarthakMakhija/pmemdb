@@ -73,22 +73,22 @@ typedef unsigned long      uword_t;
 #endif  // _MSC_VER
 
 
-static const uint8  kuint8max  = (( uint8) 0xFF);
-static const uint16 kuint16max = ((uint16) 0xFFFF);
-static const uint32 kuint32max = ((uint32) 0xFFFFFFFF);
-static const uint64 kuint64max = ((uint64) GG_LONGLONG(0xFFFFFFFFFFFFFFFF));
-static const  int8  kint8min   = ((  int8) ~0x7F);
-static const  int8  kint8max   = ((  int8) 0x7F);
-static const  int16 kint16min  = (( int16) ~0x7FFF);
-static const  int16 kint16max  = (( int16) 0x7FFF);
-static const  int32 kint32min  = (( int32) ~0x7FFFFFFF);
-static const  int32 kint32max  = (( int32) 0x7FFFFFFF);
-static const  int64 kint64min  = (( int64) GG_LONGLONG(~0x7FFFFFFFFFFFFFFF));
-static const  int64 kint64max  = (( int64) GG_LONGLONG(0x7FFFFFFFFFFFFFFF));
+static const uint8  kuint8max_  = (( uint8) 0xFF);
+static const uint16 kuint16max_ = ((uint16) 0xFFFF);
+static const uint32 kuint32max_ = ((uint32) 0xFFFFFFFF);
+static const uint64 kuint64max_ = ((uint64) GG_LONGLONG(0xFFFFFFFFFFFFFFFF));
+static const  int8  kint8min_   = ((  int8) ~0x7F);
+static const  int8  kint8max_   = ((  int8) 0x7F);
+static const  int16 kint16min_  = (( int16) ~0x7FFF);
+static const  int16 kint16max_  = (( int16) 0x7FFF);
+static const  int32 kint32min_  = (( int32) ~0x7FFFFFFF);
+static const  int32 kint32max_  = (( int32) 0x7FFFFFFF);
+static const  int64 kint64min_  = (( int64) GG_LONGLONG(~0x7FFFFFFFFFFFFFFF));
+static const  int64 kint64max_  = (( int64) GG_LONGLONG(0x7FFFFFFFFFFFFFFF));
 
 // No object has kIllegalFprint as its Fingerprint.
 typedef uint64 Fprint;
-static const Fprint kIllegalFprint = 0;
-static const Fprint kMaxFprint = GG_ULONGLONG(0xFFFFFFFFFFFFFFFF);
+static const Fprint kIllegalFprint_ = 0;
+static const Fprint kMaxFprint_ = GG_ULONGLONG(0xFFFFFFFFFFFFFFFF);
 
 #endif  // BASE_INTEGRAL_TYPES_H_
