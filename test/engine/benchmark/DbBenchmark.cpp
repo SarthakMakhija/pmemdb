@@ -7,7 +7,7 @@
 
 using namespace pmem::storage;
 
-const char *dbFilePath = "./DB_Benchmark.log";
+const char *dbFilePath = "./tests_db_benchmark.log";
 
 class UInt32KeyComparator : public KeyComparator {
     int compare(const Slice& a, const Slice& b) const override {

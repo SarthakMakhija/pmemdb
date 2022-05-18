@@ -11,7 +11,7 @@
 using namespace pmem::storage;
 using namespace pmem::storage::internal;
 
-const char *skipListInternalNodeFilePath = "./SkipListInternalNode_benchmark.log";
+const char *skipListInternalNodeFilePath = "./tests_skipListInternalNode_benchmark.log";
 
 LevelGenerator* levelGenerator = new LevelGenerator(18);
 

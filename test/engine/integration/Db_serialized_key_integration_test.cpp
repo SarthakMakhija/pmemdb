@@ -32,7 +32,7 @@ public:
     }
 };
 
-const char* serializedKeyFilePath = "./serializedKey.log";
+const char* serializedKeyFilePath = "./tests_serializedKey.log";
 
 Db* open(int skipListTowerSize = 100) {
     Configuration configuration = Configuration(serializedKeyFilePath,

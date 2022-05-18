@@ -14,7 +14,7 @@ class DbFixture : public ::testing::Test {
 
 private:
     pmem::storage::Db *db;
-    const char *filePath = "./tests.log";
+    const char *filePath = "./tests_db_fixture.log";
 
 public:
     DbFixture() {
