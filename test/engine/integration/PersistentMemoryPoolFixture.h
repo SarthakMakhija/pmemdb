@@ -2,7 +2,6 @@
 #define _PersistentMemoryPoolFixture_
 
 #include <gtest/gtest.h>
-#include  <cstdio>
 #include  <string>
 #include <filesystem>
 
@@ -25,8 +24,7 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
     }
 
     void TearDown() {
-        remove(filePath);
-        std::filesystem::remove("./pool/");
+        std::filesystem::remove(filePath);
         delete pool;
     }
 

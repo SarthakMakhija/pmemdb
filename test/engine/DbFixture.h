@@ -2,7 +2,6 @@
 #define _DbFixture_
 
 #include <gtest/gtest.h>
-#include  <cstdio>
 #include  <string>
 #include <filesystem>
 
@@ -31,8 +30,7 @@ public:
 
     void TearDown() {
         db->close();
-        remove(filePath);
-        std::filesystem::remove("./db/");
+        std::filesystem::remove(filePath);
     }
 
     pmem::storage::Db* getDb() {
