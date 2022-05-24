@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include  <cstdio>
 #include  <string>
+#include <filesystem>
 
 #include "../../../src/engine/storage/PersistentMemoryPool.h"
 
@@ -13,7 +14,7 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
 
     private:
     PersistentMemoryPool* pool;
-    const char* filePath = "./tests_persistent_memory_pool_fixture.log";
+    const char* filePath = "./pool/tests_persistent_memory_pool_fixture.log";
 
     public:
     PersistentMemoryPoolFixture() {
@@ -25,6 +26,7 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
 
     void TearDown() {
         remove(filePath);
+        std::filesystem::remove("./pool/");
         delete pool;
     }
 

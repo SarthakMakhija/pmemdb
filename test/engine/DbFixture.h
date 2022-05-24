@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include  <cstdio>
 #include  <string>
+#include <filesystem>
 
 #include "../../src/engine/db/Db.h"
 #include "../../src/engine/comparator/StringKeyComparator.h"
@@ -14,7 +15,7 @@ class DbFixture : public ::testing::Test {
 
 private:
     pmem::storage::Db *db;
-    const char *filePath = "./tests_db_fixture.log";
+    const char *filePath = "./db/tests_db_fixture.log";
 
 public:
     DbFixture() {
@@ -31,6 +32,7 @@ public:
     void TearDown() {
         db->close();
         remove(filePath);
+        std::filesystem::remove("./db/");
     }
 
     pmem::storage::Db* getDb() {

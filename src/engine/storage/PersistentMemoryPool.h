@@ -3,6 +3,7 @@
 
 #include <libpmemobj++/pool.hpp>
 #include <string>
+#include <filesystem>
 #include "PersistentLeaf.h"
 
 namespace pmem {
@@ -38,8 +39,13 @@ namespace pmem {
             private:
 
                 explicit PersistentMemoryPool(const char *filePath, uint64_t size = 8 * 1024 * 1024) {
+                    std::string pathAsString  = std::string(filePath);
+                    size_t lastIndex          = pathAsString.find_last_of("/");
+                    std::string layout        = pathAsString.substr(lastIndex + 1);
+                    std::string directoryPath = pathAsString.substr(0, lastIndex);
+
+                    std::filesystem::create_directories(directoryPath);
                     bool openFailed = false;
-                    std::string layout = strstr(filePath, "/") + 1;
 
                     try {
                         pmpool = pmem::obj::pool<Root>::open(filePath, layout);
