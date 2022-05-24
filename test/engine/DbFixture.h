@@ -31,7 +31,8 @@ public:
 
     void TearDown() {
         db->close();
-        std::filesystem::remove_all(filePath);
+        remove(filePath);
+        std::filesystem::remove("./db/");
     }
 
     pmem::storage::Db* getDb() {

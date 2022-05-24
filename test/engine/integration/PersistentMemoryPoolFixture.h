@@ -26,7 +26,7 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
 
     void TearDown() {
         remove(filePath);
-        std::filesystem::remove_all(filePath);
+        std::filesystem::remove("./pool/");
         delete pool;
     }
 

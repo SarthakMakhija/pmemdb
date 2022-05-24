@@ -44,9 +44,12 @@ namespace pmem {
                     std::string layout        = pathAsString.substr(lastIndex + 1);
                     std::string directoryPath = pathAsString.substr(0, lastIndex);
 
-                    std::filesystem::create_directories(directoryPath);
+                    std::filesystem::file_status status;
+                    if (!(std::filesystem::status_known(status) ? std::filesystem::exists(status) : std::filesystem::exists(directoryPath))) {
+                        std::filesystem::create_directories(directoryPath);
+                    }
+                    
                     bool openFailed = false;
-
                     try {
                         pmpool = pmem::obj::pool<Root>::open(filePath, layout);
                     } catch (pmem::pool_invalid_argument &e) {
