@@ -2,8 +2,8 @@
 #define _DbFixture_
 
 #include <gtest/gtest.h>
-#include  <string>
-#include <filesystem>
+#include <string>
+#include <cstdio>
 
 #include "../../src/engine/db/Db.h"
 #include "../../src/engine/comparator/StringKeyComparator.h"
@@ -30,7 +30,7 @@ public:
 
     void TearDown() {
         db->close();
-        std::filesystem::remove(filePath);
+        remove(filePath);
     }
 
     pmem::storage::Db* getDb() {
