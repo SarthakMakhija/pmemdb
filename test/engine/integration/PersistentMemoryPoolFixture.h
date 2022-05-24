@@ -13,7 +13,7 @@ class PersistentMemoryPoolFixture : public ::testing::Test {
 
     private:
     PersistentMemoryPool* pool;
-    const char* filePath = "./pool/tests_persistent_memory_pool_fixture.log";
+    const char* filePath = "./tests_persistent_memory_pool_fixture.log";
 
     public:
     PersistentMemoryPoolFixture() {
