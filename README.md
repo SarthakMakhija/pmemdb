@@ -2,39 +2,6 @@
 
 ### pmemdb
 K/V store for persistent memory
-
-### Building the project
-- Install CMake
-
-    `On Mac - brew install cmake`
-
-- Clone the project
-
-    `git@github.com:SarthakMakhija/pmemdb.git`
-
-- Create a build directory
-
-    `mkdir build`
-
-- Change to build directory
-
-    `cd build`
-
-- Execute CMake
-
-    `cmake ../`
-
-    `cmake --build . -v`
-
-### Running tests
-
-- Change to build directory
-
-    `cd build`
-
-- Execute pmemdb_tests
-
-    `./pmemdb_tests`
     
 ## Building on local (Ubuntu)
 
@@ -75,3 +42,13 @@ K/V store for persistent memory
 - mkdir `build` inside pmemdb
 - from the project root execute, cmake ../ -DCMAKE_TOOLCHAIN_FILE=<path_to_vcpkg.cmake>
 - from the build directory execute, cmake --build .
+
+### Running tests
+
+- Change to build directory
+
+    `cd build`
+
+- Execute pmemdb_tests
+
+    `./pmemdb_tests`
