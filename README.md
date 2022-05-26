@@ -38,38 +38,40 @@ K/V store for persistent memory
     
 ## Building on local (Ubuntu)
 
-1)
-sudo apt install autoconf automake pkg-config libglib2.0-dev libfabric-dev pandoc libncurses5-dev
+**Install dependencies**
 
-2)
-git clone https://github.com/pmem/pmdk
-cd pmdk
-make -j$(nproc)
-sudo make install
+- sudo apt install autoconf automake pkg-config libglib2.0-dev libfabric-dev pandoc libncurses5-dev
 
-3)
-git clone https://github.com/memkind/memkind
-cd memkind
-./autogen.sh
-./configure
-make
-sudo make install
+**Build PMDK**
 
-4) 
-git clone https://github.com/pmem/libpmemobj-cpp
-cd libpmemobj-cpp
-mkdir build
-cd build
-cmake .. -DTESTS_USE_VALGRIND=OFF
-make -j$(nproc)
-sudo make install
+- git clone https://github.com/pmem/pmdk
+- cd pmdk
+- make -j$(nproc)
+- sudo make install
 
-5)
-git clone https://github.com/SarthakMakhija/pmemdb
+**Build memkind**
 
-Once these steps are done,
-(Remove/comment, `pmdk` / `libpmemobjcpp` from vcpkg.json)
+- git clone https://github.com/memkind/memkind
+- cd memkind
+- ./autogen.sh
+- ./configure
+- make
+- sudo make install
 
-1) mkdir build inside pmemdb
-2) from the project root execute, cmake ../ -DCMAKE_TOOLCHAIN_FILE=<path_to_vcpkg.cmake>
-3) from the build directory execute, cmake --build .
+**Build libpmemobj-cpp**
+
+- git clone https://github.com/pmem/libpmemobj-cpp
+- cd libpmemobj-cpp
+- mkdir build
+- cd build
+- cmake .. -DTESTS_USE_VALGRIND=OFF
+- make -j$(nproc)
+- sudo make install
+
+**Build Pmemdb**
+
+- git clone https://github.com/SarthakMakhija/pmemdb
+- Once these steps are done, (Remove/comment, `pmdk` / `libpmemobjcpp` from vcpkg.json)
+- mkdir `build` inside pmemdb
+- from the project root execute, cmake ../ -DCMAKE_TOOLCHAIN_FILE=<path_to_vcpkg.cmake>
+- from the build directory execute, cmake --build .
