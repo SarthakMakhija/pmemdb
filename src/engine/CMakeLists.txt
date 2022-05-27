@@ -5,6 +5,7 @@ find_library(LIBPMEM_LIBRARY NAMES pmem libpmem)
 find_library(LIBPMEMOBJ_LIBRARY NAMES pmemobj libpmemobj)
 
 add_library(SkipList
+        SHARED
         db/KeyValuePair.h
         db/KeyValuePair.cpp
         db/SkipListArena.h
@@ -41,3 +42,42 @@ target_include_directories(SkipList PRIVATE ${LIBPMEMOBJ_INCLUDE_DIR} ${LIBPMEM_
 target_link_libraries(SkipList PRIVATE ${LIBPMEM_LIBRARY} ${LIBPMEMOBJ_LIBRARY})
 
 install(TARGETS SkipList DESTINATION /usr/local/lib)
+
+
+install(FILES   comparator/KeyComparator.h 
+                comparator/StringKeyComparator.h
+        DESTINATION 
+                /usr/local/include/comparator)
+
+install(FILES  configuration/Configuration.h
+        DESTINATION
+                /usr/local/include/configuration)
+
+install(FILES   db/KeyValuePair.h
+                db/SkipListArena.h
+                db/Status.h
+                db/Db.h 
+        DESTINATION
+                /usr/local/include/db)
+
+install(FILES   iterator/SkipListIterator.h 
+        DESTINATION 
+                /usr/local/include/iterator)
+
+install(FILES   storage/SkipListNode.h
+                storage/SkipList.h
+                storage/SkipListInternalNode.h
+                storage/SkipListLeafNode.h
+                storage/PersistentMemoryPool.h
+                storage/PersistentLeaf.h
+                storage/WritePosition.h
+                storage/Slice.h
+                storage/Slice.cpp 
+        DESTINATION 
+                /usr/local/include/storage)
+
+install(FILES   storage/utils/LevelGenerator.h
+                storage/utils/Fastmem.h
+                storage/utils/IntegralTypes.h
+        DESTINATION 
+                /usr/local/include/storage/utils)
