@@ -18,6 +18,8 @@ namespace pmem {
             const Slice             *upperBound;  
 
         public:
+            ~SkipListIterator();
+
             // No copying allowed
             SkipListIterator(const SkipListIterator &copy) = delete;
             void operator=(const SkipListIterator &) = delete;

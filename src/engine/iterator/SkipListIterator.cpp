@@ -15,6 +15,10 @@ namespace pmem {
               upperBound{upperBound} {
         }
 
+        SkipListIterator::~SkipListIterator() {
+            delete this->upperBound;
+        }
+
         bool SkipListIterator::isValid() const {
             std::shared_lock <std::shared_mutex> lock(this->mutex);
             if (this->currentNode != nullptr) {
