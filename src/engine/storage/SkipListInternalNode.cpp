@@ -53,19 +53,17 @@ namespace pmem {
             }
 
             std::pair<SkipListNode *, bool> SkipListInternalNode::getBy(const Slice& key, KeyComparator *keyComparator) {
-                SkipListInternalNode *current = this;
-                for (int level = this->forwards.size() - 1; level >= 0; level--) {
-                    while (current->forwards[level] && 
-                           keyComparator->compare(Slice(current->forwards[level]->key, current->forwards[level]->keySize), key) < 0) {
-                        current = current->forwards[level];
-                    }
-                }
-                current = current->forwards[0];
+                SkipListInternalNode* current = this->nearestTo(key, keyComparator);
 
                 if (current && keyComparator->compare(Slice(current->key, current->keySize), key) == 0) {
                     return std::make_pair(current, true);
                 }
                 return std::make_pair(nullptr, false);
+            }
+
+            std::pair<SkipListNode *, bool> SkipListInternalNode::seek(const Slice& key, KeyComparator *keyComparator) {
+                SkipListInternalNode* current = this->nearestTo(key, keyComparator);
+                return std::make_pair(current, true);
             }
 
             std::pair<SkipListNode *, bool>
@@ -192,6 +190,18 @@ namespace pmem {
 
                     delete previous;
                 }
+            }
+
+            SkipListInternalNode* SkipListInternalNode::nearestTo(const Slice& key, KeyComparator *keyComparator) {
+                SkipListInternalNode *current = this;
+                for (int level = this->forwards.size() - 1; level >= 0; level--) {
+                    while (current->forwards[level] && 
+                           keyComparator->compare(Slice(current->forwards[level]->key, current->forwards[level]->keySize), key) < 0) {
+                        current = current->forwards[level];
+                    }
+                }
+                current = current->forwards[0];
+                return current;
             }
         }
     }

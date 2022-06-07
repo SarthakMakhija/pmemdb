@@ -3,13 +3,16 @@
 
 namespace pmem {
     namespace storage {
+        
         SkipListIterator::SkipListIterator(pmem::storage::internal::SkipListInternalNode *startingNode, 
                                            KeyComparator                                 *keyComparator,
-                                           std::shared_mutex                              &mutex)
+                                           std::shared_mutex                             &mutex,
+                                           const Slice                                   *upperBound)
             : startingNode{startingNode},
               currentNode{startingNode},
               keyComparator{keyComparator},
-              mutex{mutex} {
+              mutex{mutex},
+              upperBound{upperBound} {
         }
 
         bool SkipListIterator::isValid() const {
@@ -35,9 +38,16 @@ namespace pmem {
         }
 
         void SkipListIterator::seek(const Slice& key) {
+            if (this->upperBound != nullptr) {
+                if (this->keyComparator->compare(key, *this->upperBound) >= 0 ) {
+                    this->currentNode = nullptr;
+                    return;
+                }
+            }
             std::shared_lock <std::shared_mutex> lock(this->mutex);
-            auto existenceByNode = this->startingNode->getBy(key, keyComparator);
-            this->currentNode = static_cast<pmem::storage::internal::SkipListInternalNode *>(existenceByNode.first);
+            auto existenceByNode = this->startingNode->seek(key, keyComparator);
+
+            this->currentNode = static_cast<pmem::storage::internal::SkipListInternalNode *>(existenceByNode.first);            
         }
 
         void SkipListIterator::next() {

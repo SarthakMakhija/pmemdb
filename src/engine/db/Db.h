@@ -40,7 +40,7 @@ namespace pmem {
 
             unsigned long totalKeys();
 
-            SkipListIterator* newIterator();
+            SkipListIterator* newIterator(const Slice* upperBound);
 
             void close();
         };

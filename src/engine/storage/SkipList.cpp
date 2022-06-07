@@ -59,8 +59,9 @@ namespace pmem {
             }
 
             SkipListIterator* SkipList::newIterator(pmem::storage::KeyComparator *keyComparator,
-                                                   std::shared_mutex             &mutex) {
-                return new SkipListIterator(this->header, keyComparator, mutex);
+                                                     std::shared_mutex            &mutex,
+                                                     const Slice                  *upperBound) {
+                return new SkipListIterator(this->header, keyComparator, mutex, upperBound);
             }
 
             void SkipList::close() {

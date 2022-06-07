@@ -48,10 +48,11 @@ namespace pmem {
                 scan(const Slice& key, const Slice& value, int64_t maxPairs);
 
                 unsigned long totalKeys();
-
+               
                 SkipListIterator* newIterator(pmem::storage::KeyComparator *keyComparator,
-                                             std::shared_mutex             &mutex);
-
+                                              std::shared_mutex             &mutex,
+                                              const Slice                   *upperBound);                                             
+                
                 void close();
             };
         }

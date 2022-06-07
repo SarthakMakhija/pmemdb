@@ -38,7 +38,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekToFirst) {
     put(DbFixture::getDb(), "HDD", "Hard disk drive");
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seekToFirst();
 
     ASSERT_EQ(Slice("HDD"), iterator->key());
@@ -48,7 +48,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekToLast) {
     put(DbFixture::getDb(), "HDD", "Hard disk drive");
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seekToLast();
 
     ASSERT_EQ(Slice("Pmem"), iterator->key());
@@ -59,7 +59,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Seek1) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seek(Slice("SDD"));
 
     ASSERT_EQ(Slice("SDD"), iterator->key());
@@ -71,7 +71,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Seek2) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seek(Slice("SDD"));
 
     ASSERT_EQ(Slice("SDD"),               iterator->key());
@@ -87,7 +87,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Next1) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seekToFirst();
 
     ASSERT_EQ(Slice("HDD"), iterator->key());
@@ -98,7 +98,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Next2) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seekToFirst();
     iterator->next();
 
@@ -110,7 +110,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_Value) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seekToFirst();
 
     ASSERT_EQ(Slice("Hard disk drive"), iterator->value());
@@ -129,7 +129,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SerializedValue) {
 
     db->put(Slice(key, sizeof(*employeeId)), Slice(value, sizeof(*employee)));
     
-    SkipListIterator* iterator = db->newIterator();
+    SkipListIterator* iterator = db->newIterator(nullptr);
     iterator->seekToFirst();
 
     Slice savedKey   = iterator->key();
@@ -148,7 +148,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_IsValid) {
     put(DbFixture::getDb(), "HDD", "Hard disk drive");
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     iterator->seekToFirst();
 
     ASSERT_TRUE(iterator->isValid());
@@ -165,7 +165,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_IterateAll) {
     put(DbFixture::getDb(), "Pmem", "Persistent Memory");
     put(DbFixture::getDb(), "SDD", "Solid State drive");
 
-    SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
     std::vector<std::pair<Slice, Slice>> expected = {
                                                         std::make_pair(Slice("HDD"),  Slice("Hard disk drive")),
                                                         std::make_pair(Slice("Pmem"), Slice("Persistent Memory")),
@@ -195,7 +195,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_SeekWithConcurrentPut) {
     });
 
     std::thread iterator([&]() {
-        SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+        SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
         iterator->seek(Slice("Pmem"));
         if (iterator->isValid()) {
             ASSERT_EQ(Slice("Pmem"), iterator->key());
@@ -216,7 +216,7 @@ TEST_F(DbFixture, SkipListIteratorIntegration_IterateAllWithConcurrentPut) {
     });
 
     std::thread iterator([&]() {
-        SkipListIterator* iterator = DbFixture::getDb() -> newIterator();
+        SkipListIterator* iterator = DbFixture::getDb() -> newIterator(nullptr);
         std::vector<std::pair<Slice, Slice>> expected1 = {std::make_pair(Slice("HDD"),  Slice("Hard disk drive"))};                                                                  
         std::vector<std::pair<Slice, Slice>> expected2 = {std::make_pair(Slice("HDD"),  Slice("Hard disk drive")),
                                                           std::make_pair(Slice("Pmem"), Slice("Persistent Memory")) };
@@ -236,4 +236,54 @@ TEST_F(DbFixture, SkipListIteratorIntegration_IterateAllWithConcurrentPut) {
 
     writer.join();
     iterator.join();
+}
+
+TEST_F(DbFixture, SkipListIteratorIntegration_SeekWithAKeyPresentWithinUpperBound) {
+    put(DbFixture::getDb(), "A", "Hard disk drive");
+    put(DbFixture::getDb(), "C", "Persistent Memory");
+
+    Slice* upperBound = new Slice("G");
+
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(upperBound);
+    iterator->seek(Slice("C"));
+
+    ASSERT_EQ(Slice("C"), iterator->key());
+}
+
+TEST_F(DbFixture, SkipListIteratorIntegration_SeekWithAKeyPresentEqualToUpperBound) {
+    put(DbFixture::getDb(), "A", "Hard disk drive");
+    put(DbFixture::getDb(), "C", "Persistent Memory");
+
+    Slice* upperBound = new Slice("C");
+
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(upperBound);
+    iterator->seek(Slice("C"));
+
+    ASSERT_FALSE(iterator->isValid());
+}
+
+TEST_F(DbFixture, SkipListIteratorIntegration_SeekWithAKeyPresentBeyondUpperBound) {
+    put(DbFixture::getDb(), "A", "Hard disk drive");
+    put(DbFixture::getDb(), "C", "Persistent Memory");
+    put(DbFixture::getDb(), "D", "Solid State drive");
+
+    Slice* upperBound = new Slice("C");
+
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(upperBound);
+    iterator->seek(Slice("D"));
+
+    ASSERT_FALSE(iterator->isValid());
+}
+
+TEST_F(DbFixture, SkipListIteratorIntegration_SeekWithANonExistingKeyWithinUpperBound) {
+    put(DbFixture::getDb(), "A", "Hard disk drive");
+    put(DbFixture::getDb(), "C", "Persistent Memory");
+
+    Slice* upperBound = new Slice("G");
+
+    SkipListIterator* iterator = DbFixture::getDb() -> newIterator(upperBound);
+    iterator->seek(Slice("B"));
+
+    ASSERT_TRUE(iterator->isValid());
+    ASSERT_EQ(Slice("C"), iterator->key());
 }

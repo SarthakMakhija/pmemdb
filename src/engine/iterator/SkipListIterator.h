@@ -15,6 +15,7 @@ namespace pmem {
             pmem::storage::internal::SkipListInternalNode *currentNode;
             KeyComparator *keyComparator;
             std::shared_mutex &mutex;
+            const Slice             *upperBound;  
 
         public:
             // No copying allowed
@@ -23,7 +24,10 @@ namespace pmem {
 
             SkipListIterator(pmem::storage::internal::SkipListInternalNode *startingNode, 
                              KeyComparator                                 *keyComparator,
-                             std::shared_mutex                              &mutex);
+                             std::shared_mutex                             &mutex,
+                             const Slice                                   *upperBound);
+
+
             bool isValid() const;
             void seekToFirst();
             void seekToLast();

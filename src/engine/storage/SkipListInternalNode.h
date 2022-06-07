@@ -20,6 +20,8 @@ namespace pmem {
 
                 int generateLevel(int maxLevel);
 
+                SkipListInternalNode* nearestTo(const Slice& key, KeyComparator *keyComparator);
+
             public:
                 SkipListInternalNode(const Slice& key, int level);
                 ~SkipListInternalNode();
@@ -37,6 +39,8 @@ namespace pmem {
                 SkipListInternalNode* next();
 
                 std::pair<SkipListNode *, bool> getBy(const Slice& key, KeyComparator *keyComparator);
+
+                std::pair<SkipListNode *, bool> seek(const Slice& key, KeyComparator *keyComparator);
 
                 std::pair<SkipListNode *, bool> scan(const Slice& beginKey, KeyComparator *keyComparator);
 

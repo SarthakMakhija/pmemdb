@@ -97,8 +97,8 @@ namespace pmem {
             return this->skipList->totalKeys();
         }
 
-        SkipListIterator* Db::newIterator() {
-            return this->skipList->newIterator(this->keyComparator, this->mutex_);
+        SkipListIterator* Db::newIterator(const Slice* upperBound) {
+            return this->skipList->newIterator(this->keyComparator, this->mutex_, upperBound);
         }
 
         void Db::close() {
