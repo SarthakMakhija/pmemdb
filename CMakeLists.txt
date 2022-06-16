@@ -6,9 +6,22 @@ project(pmemdb)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Build type - debug/release
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif(NOT CMAKE_BUILD_TYPE)
+
+string (TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
+
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
+  set(CMAKE_BUILD_TYPE RELEASE)
+endif()
+
+message("PmemDb build type ${CMAKE_BUILD_TYPE}")
+
+# Include functions
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 include(functions)
-
 
 if(NOT WIN32)
         ADD_CXX_FLAGS("-Werror")
@@ -100,3 +113,4 @@ target_link_libraries(pmemdb_benchmark_tests
 #        NAME pmemdb_benchmark_tests
 #        COMMAND $<TARGET_FILE:pmemdb_benchmark_tests>
 #)
+
