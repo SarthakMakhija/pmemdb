@@ -47,7 +47,6 @@ jobs:
         id: runvcpkg
         with:
           vcpkgJsonGlob: '**/windows/vcpkg.json'
-          runVcpkgInstall: true
 
       - name: Run CMake+vcpkg+Ninja+CTest to generate/build/test
         uses: lukka/run-cmake@v10
@@ -56,3 +55,5 @@ jobs:
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-multi-vcpkg-release'
           testPreset: 'ninja-multi-vcpkg-release'
+          configurePresetCmdString:
+            default: "[`--preset`, `$[env.CONFIGURE_PRESET_NAME]`, `-DCMAKE_TOOLCHAIN_FILE`, `$[github.workspace]/vcpkg/scripts/buildsystems/vcpkg.cmake`, `-DVCPKG_MANIFEST_DIR`, `$[github.workspace]/manifest/windows/`]"
