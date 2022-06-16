@@ -44,7 +44,7 @@ jobs:
 
       - name: Restore artifacts, or setup vcpkg for building artifacts
         uses: lukka/run-vcpkg@v10
-        id: runvcpkg_
+        id: runvcpkg
         with:
           vcpkgJsonGlob: '**/windows/vcpkg.json'
 
@@ -52,6 +52,7 @@ jobs:
         uses: lukka/run-cmake@v10
         id: runcmake
         with:
+          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-multi-vcpkg-release'
           testPreset: 'ninja-multi-vcpkg-release'
