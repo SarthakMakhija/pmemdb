@@ -43,7 +43,7 @@ jobs:
       - uses: lukka/get-cmake@latest
 
       - name: Restore artifacts, or setup vcpkg for building artifacts
-        uses: lukka/run-vcpkg@v10
+        uses: lukka/run-vcpkg@main
         id: runvcpkg
         with:
           vcpkgJsonGlob: '**/windows/vcpkg.json'
