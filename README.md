@@ -7,7 +7,7 @@ K/V store for persistent memory
 
 - Install `git` and `CMake` on local
 - Execute `build-ubuntu` and pass a directory path where all the dependencies will be installed 
-- `sudo ./build-ubuntu /projects`
+- `sudo ./build-ubuntu.sh /projects`
 
 ### Running tests
 
