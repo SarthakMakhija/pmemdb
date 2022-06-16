@@ -13,8 +13,7 @@ namespace pmem {
         namespace internal {
             class SkipListInternalNode : public SkipListNode {
             private:
-                const char* key;
-                size_t keySize;
+                const Slice  *key;
                 SkipListNode *down;
                 std::vector<SkipListInternalNode *> forwards;
 
