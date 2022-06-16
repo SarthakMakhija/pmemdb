@@ -56,3 +56,5 @@ jobs:
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-multi-vcpkg-release'
           testPreset: 'ninja-multi-vcpkg-release'
+        env:
+          TOOLCHAINFILE: ${{ env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake
