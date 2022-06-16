@@ -44,7 +44,7 @@ jobs:
 
       - name: Restore artifacts, or setup vcpkg for building artifacts
         uses: lukka/run-vcpkg@v10
-        id: runvcpkg
+        id: runvcpkg_
         with:
           vcpkgJsonGlob: '**/windows/vcpkg.json'
 
