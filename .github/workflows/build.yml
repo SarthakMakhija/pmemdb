@@ -55,4 +55,4 @@ jobs:
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-multi-vcpkg-release'
           testPreset: 'ninja-multi-vcpkg-release'
-          configurePresetCmdString: "[`--preset`, `$[env.CONFIGURE_PRESET_NAME]`, `-DCMAKE_TOOLCHAIN_FILE`, `$[env.GITHUB_WORKSPACE]/vcpkg/scripts/buildsystems/vcpkg.cmake`, `-DVCPKG_MANIFEST_DIR`, `$[env.GITHUB_WORKSPACE]/manifest/windows/`]"
+          configurePresetCmdString: "[`--preset`, `$[env.CONFIGURE_PRESET_NAME]`, `-DCMAKE_TOOLCHAIN_FILE`, `D:/a/pmemdb/pmemdb/vcpkg/scripts/buildsystems/vcpkg.cmake`, `-DVCPKG_MANIFEST_DIR`, `D:/a/pmemdb/pmemdb/manifest/windows/`]"
