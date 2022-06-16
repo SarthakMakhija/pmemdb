@@ -10,9 +10,9 @@ namespace pmem {
             SkipListArena::SkipListArena(SkipListNode *startingNode,
                                          KeyComparator *keyComparator,
                                          PersistentMemoryPool *persistentMemoryPool)
-                    : startingNode{startingNode},
-                      keyComparator{keyComparator},
-                      persistentMemoryPool{persistentMemoryPool} {
+                    : persistentMemoryPool{persistentMemoryPool},
+                      startingNode{startingNode},
+                      keyComparator{keyComparator} {
             }
 
             Status SkipListArena::put(const Slice& key,

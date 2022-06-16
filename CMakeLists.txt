@@ -6,6 +6,24 @@ project(pmemdb)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
+include(functions)
+
+ADD_CXX_FLAGS("-Werror")
+
+# Don't allow virtual classes with non-virtual destructors.
+ADD_CXX_FLAGS("-Wnon-virtual-dtor")
+
+ADD_CXX_FLAGS("-fno-strict-aliasing -Wall")
+
+# Flags common to gcc and clang.
+ADD_CXX_FLAGS("-Werror=enum-compare")
+ADD_CXX_FLAGS("-Werror=reorder")
+ADD_CXX_FLAGS("-Werror=switch")
+ADD_CXX_FLAGS("-Werror=return-type")
+ADD_CXX_FLAGS("-Werror=non-virtual-dtor")
+
+
 # include engine and dependencies
 include_directories(src/engine)
 add_subdirectory(src/engine)

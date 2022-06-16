@@ -14,7 +14,7 @@ namespace pmem {
             }
 
             SkipListInternalNode::~SkipListInternalNode() {
-                for (int index = 0; index < this->forwards.size(); index++) {
+                for (size_t index = 0; index < this->forwards.size(); index++) {
                     this->forwards[index] = nullptr;
                 }
                 this->forwards.clear();

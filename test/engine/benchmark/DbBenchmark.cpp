@@ -181,7 +181,7 @@ static void DBScanArguments(benchmark::internal::Benchmark *b) {
 }
 
 BENCHMARK(DbPut)->Apply(DBPutArguments);
-//BENCHMARK(DBGet)->Apply(DBGetArguments);
-//BENCHMARK(DBScan)->Apply(DBScanArguments);
+BENCHMARK(DBGet)->Apply(DBGetArguments);
+BENCHMARK(DBScan)->Apply(DBScanArguments);
 
 BENCHMARK_MAIN();

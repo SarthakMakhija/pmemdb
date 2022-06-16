@@ -63,7 +63,7 @@ TEST(Db_Functional, DoesAScan) {
         keys.push_back(key);
         values.push_back(value);
     }
-    for (int index = 0; index < keys.size(); index++) {
+    for (size_t index = 0; index < keys.size(); index++) {
         put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
     Slice beginKey = Slice("50");
@@ -77,7 +77,7 @@ TEST(Db_Functional, DoesAScan) {
         expectedKeys.push_back(std::to_string(count));
         expectedValues.push_back(std::to_string(count));
     }
-    for (int index = 0; index < expectedKeys.size(); index++) {
+    for (size_t index = 0; index < expectedKeys.size(); index++) {
         expected.push_back(KeyValuePair(expectedKeys.at(index).c_str(), expectedValues.at(index).c_str()));
     }
     expected.push_back(KeyValuePair("7", "7"));
@@ -101,7 +101,7 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
         keys.push_back(key);
         values.push_back(value);
     }
-    for (int index = 0; index < keys.size(); index++) {
+    for (size_t index = 0; index < keys.size(); index++) {
         put(db, keys.at(index).c_str(), values.at(index).c_str());
     }
 
@@ -116,7 +116,7 @@ TEST(Db_Functional, DoesAScanWithMaxPairsAs5) {
         expectedKeys.push_back(std::to_string(count));
         expectedValues.push_back(std::to_string(count));
     }
-    for (int index = 0; index < expectedKeys.size(); index++) {
+    for (size_t index = 0; index < expectedKeys.size(); index++) {
         expected.push_back(KeyValuePair(expectedKeys.at(index).c_str(), expectedValues.at(index).c_str()));
     }
 
@@ -187,7 +187,7 @@ TEST(Db_Functional, DeleteKeys) {
         keysToDelete.push_back(key);
     }
 
-    for (int index = 0; index < keysToDelete.size(); index++) {
+    for (size_t index = 0; index < keysToDelete.size(); index++) {
         deleteBy(db, keysToDelete.at(index).c_str());
     }
 

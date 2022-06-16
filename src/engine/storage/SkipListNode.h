@@ -11,6 +11,8 @@ namespace pmem {
         namespace internal {
             class SkipListNode {
             public:
+                virtual ~SkipListNode() = default;
+
                 virtual bool matchesKey(const Slice& key, pmem::storage::KeyComparator* keyComparator) const = 0;
 
                 virtual bool isKeyLessEqualTo(const Slice& key, pmem::storage::KeyComparator* keyComparator) = 0;
